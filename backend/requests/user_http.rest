@@ -1,0 +1,42 @@
+POST  http://localhost:5000/api/users/auth HTTP/1.1
+content-type: application/json
+
+{
+    "email": "swe@gmail.com",
+    "password": "swe123"
+}
+
+###Register
+
+POST http://localhost:5000/api/users  HTTP/1.1
+content-type: application/json
+
+{
+   "name": "Swetha Naidu",
+    "email": "swe@gmail.com",
+    "password": "swe123",
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "country": "India",
+    "occupation": "MERN Developer",
+    "phoneNumber": "3868813669",
+    "transactions": [],
+    "role": "admin"
+}
+
+###logout
+
+POST  http://localhost:5000/api/users/logout
+
+###profile
+
+GET   http://localhost:5000/api/users/profile
+
+###update profile
+
+PUT   http://localhost:5000/api/users/profile HTTP/1.1
+content-type: application/json
+
+{
+   "name": "Swetha Naidu"
+}
