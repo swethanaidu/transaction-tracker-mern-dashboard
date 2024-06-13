@@ -12,17 +12,23 @@ POST http://localhost:5000/api/users  HTTP/1.1
 content-type: application/json
 
 {
-   "name": "Swetha Naidu",
-    "email": "swe@gmail.com",
+   "name": "BBB",
+    "email": "bbb@gmail.com",
     "password": "swe123",
     "city": "Bengaluru",
     "state": "Karnataka",
     "country": "India",
-    "occupation": "MERN Developer",
+    "occupation": "Enginner",
     "phoneNumber": "3868813669",
     "transactions": [],
-    "role": "admin"
+    "role": "manager"
 }
+
+###Get all users
+
+GET   http://localhost:5000/api/users
+
+
 
 ###logout
 
@@ -39,4 +45,13 @@ content-type: application/json
 
 {
    "name": "Swetha Naidu"
+}
+
+###update profile
+
+PUT   http://localhost:5000/api/users/6666fbac567a18df136636ef HTTP/1.1
+content-type: application/json
+
+{
+   "occupation": "Senior Tester"
 }

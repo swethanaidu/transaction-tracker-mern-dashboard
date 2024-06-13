@@ -11,6 +11,8 @@ import Team from './scenes/team';
 import {createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import ProfilePage from './scenes/profilePage/index.jsx';
+import Bar from './scenes/bar/index.jsx';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
      <Route path='/' element={<App />} >
@@ -18,9 +20,11 @@ const router = createBrowserRouter(
         <Route index={true} path='/' element={<LoginPage />} />
         <Route  path='/admin' element={<Dashboard />} />
         <Route path='/team' element={<Team />} />
+        
         {/* Private Routes */}
         <Route path='' element={<PrivateRoute />} >
           <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/bar' element={<Bar />} />
         </Route>
       </Route>
   )

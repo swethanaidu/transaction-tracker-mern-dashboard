@@ -3,12 +3,17 @@ import { authUser,
     registerUser,
     logoutUser,
     getUserProfile,
-    updateUserProfile } from '../controllers/userController.js';
-import { protect } from '../middleware/authMiddleware.js';
+    getAllUserDetails,
+    updateUserProfile,
+    updateUserByID,
+    deleteUserByID
+} from '../controllers/userController.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', registerUser);
+router.route('/').post(registerUser).get(protect, admin, getAllUserDetails);
+router.route('/:id').put(protect, admin, updateUserByID).delete(protect, admin, deleteUserByID);
 router.post('/auth', authUser);
 router.post('/logout', logoutUser);
 router.route('/profile').get(protect, getUserProfile).put(protect , updateUserProfile);

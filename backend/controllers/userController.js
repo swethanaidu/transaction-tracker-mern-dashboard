@@ -146,11 +146,86 @@ const updateUserProfile = asyncHandler(async(req, res) => {
 
 });
 
+// @desc      Get user profile
+// route      GET /api/users
+// @access    Private/Admin
+const getAllUserDetails = asyncHandler(async(req, res) => {
+    const users = await User.find().select("-password");
+    // console.log(users);
+    res.status(200).json(users)
+});
 
+// @desc      Get user profile by ID
+// route      GET /api/users/:id
+// @access    Private/Admin
+const getUserByID = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.params.id);
+    // console.log(user);
+    res.status(200).json(user);
+});
+
+
+// @desc    Update user
+// @route   PUT /api/users/:id
+// @access  Private/Admin
+const updateUserByID = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+  
+    if (user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        user.city = req.body.city || user.city;
+        user.state = req.body.state || user.state;
+        user.country = req.body.country || user.country;
+        user.occupation = req.body.occupation || user.occupation;
+        user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+        user.role = req.body.role || user.role;
+  
+      const updatedUser = await user.save();
+  
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        city: updatedUser.city,
+        state: updatedUser.state,
+        country: updatedUser.country,
+        occupation: updatedUser.occupation,
+        phoneNumber: updatedUser.phoneNumber,
+        role: updatedUser.role,
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+  });
+
+  // @desc    Delete user
+// @route   DELETE /api/users/:id
+// @access  Private/Admin
+const deleteUserByID = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+  
+    if (user) {
+      if (user.isAdmin) {
+        res.status(400);
+        throw new Error('Can not delete admin user');
+      }
+      await User.deleteOne({ _id: user._id });
+      res.json({ message: 'User removed' });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+  });
 export {
     authUser,
     registerUser,
     logoutUser,
     getUserProfile,
-    updateUserProfile
+    getAllUserDetails,
+    updateUserProfile,
+    getUserByID,
+    updateUserByID,
+    deleteUserByID
 }

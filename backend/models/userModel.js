@@ -24,8 +24,8 @@ const userSchema = mongoose.Schema(
         transactions: [{type: mongoose.Types.ObjectId, ref: "Transaction"}],
         role: {
             type: String,
-            enum: ["user", "admin", "superadmin"],
-            default: "admin"
+            enum: ["user", "admin", "manager"],
+            default: "user"
         },
     },
     { timestamps: true}
