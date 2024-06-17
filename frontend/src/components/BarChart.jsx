@@ -13,6 +13,14 @@ const BarChart = ({ isDashboard = false }) => {
       data={data}
       theme={{
         // added
+        tooltip: {
+          wrapper: {},
+          container: {
+            background: "#ffffff",
+            color: "#000",
+            fontSize: 12,
+          },
+        },
         axis: {
           domain: {
             line: {
@@ -40,8 +48,10 @@ const BarChart = ({ isDashboard = false }) => {
           },
         },
       }}
-      keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-      indexBy="country"
+      groupMode="grouped"
+      keys={["Expected Budget", "Total Paid"]}
+      // keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
+      indexBy="expenseCategories"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
@@ -77,7 +87,7 @@ const BarChart = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "country", // changed
+        legend: isDashboard ? undefined : "House Construction Category", // changed
         legendPosition: "middle",
         legendOffset: 32,
       }}
@@ -85,7 +95,7 @@ const BarChart = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "food", // changed
+        legend: isDashboard ? undefined : "expense(in lakhs)", // changed
         legendPosition: "middle",
         legendOffset: -40,
       }}

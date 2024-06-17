@@ -1,0 +1,43 @@
+ 
+
+###Register
+
+POST http://localhost:5000/api/dashboard  HTTP/1.1
+content-type: application/json
+
+{
+   "totalUsers": 3,
+   "totalTransactions": 0,
+   "totalExpectedBudget": 0,
+   "totalPaidExpenses": 0,
+   "year": 2024,
+   "monthlyData": [],
+   "dailyData": [],
+   "ebc": [],
+   "expensesByCategory": [],
+   "expectedBudgetByCategory": []
+   
+}
+
+###Get all EC
+
+GET   http://localhost:5000/api/dashboard
+
+ 
+###get by id
+
+GET   http://localhost:5000/api/expensesCategories/666891c8334739cc0ca3f247
+
+###update EC by id
+ 
+PUT   http://localhost:5000/api/dashboard/666e9703ceb3a6363d49ae8a HTTP/1.1
+content-type: application/json
+
+{
+    "totalUsers": 3
+}
+
+###delete ID
+
+DELETE    http://localhost:5000/api/dashboard/6668928a1196d7fa8dd0ca78 HTTP/1.1
+ 

@@ -1,19 +1,20 @@
+
 POST  http://localhost:5000/api/users/auth HTTP/1.1
 content-type: application/json
 
 {
-    "email": "swe@gmail.com1",
-    "password": "123"
+    "email": "swe@gmail.com",
+    "password": "swe123"
 }
 
 ###Register
-
+ 
 POST http://localhost:5000/api/users  HTTP/1.1
 content-type: application/json
 
 {
-   "name": "BBB",
-    "email": "bbb@gmail.com",
+   "name": "ABC",
+    "email": "ABC@gmail.com",
     "password": "swe123",
     "city": "Bengaluru",
     "state": "Karnataka",
@@ -21,7 +22,7 @@ content-type: application/json
     "occupation": "Enginner",
     "phoneNumber": "3868813669",
     "transactions": [],
-    "role": "manager"
+    "role": "user"
 }
 
 ###Get all users
@@ -55,3 +56,8 @@ content-type: application/json
 {
    "occupation": "Senior Tester"
 }
+
+###Delete profile
+
+DELETE    http://localhost:5000/api/users/666fba2bb00293d9cce94eda HTTP/1.1
+ 
