@@ -13,8 +13,8 @@ POST http://localhost:5000/api/users  HTTP/1.1
 content-type: application/json
 
 {
-   "name": "ABC",
-    "email": "ABC@gmail.com",
+   "name": "ABVC",
+    "email": "ABVC@gmail.com",
     "password": "swe123",
     "city": "Bengaluru",
     "state": "Karnataka",
@@ -39,13 +39,16 @@ POST  http://localhost:5000/api/users/logout
 
 GET   http://localhost:5000/api/users/profile
 
+###User details
+GET http://localhost:5000/api/users/66634d9c7baccac40a35f7a8
+
 ###update profile
 
 PUT   http://localhost:5000/api/users/profile HTTP/1.1
 content-type: application/json
 
 {
-   "name": "Swetha Naidu"
+   "name": "Swetha Naidua"
 }
 
 ###update profile

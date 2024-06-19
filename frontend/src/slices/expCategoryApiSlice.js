@@ -30,6 +30,7 @@ export const expensesCategoryApiSlice = apiSlice.injectEndpoints({
               url: `${EC_URL}/${id}`,
               method: 'DELETE',
             }),
+            invalidatesTags: ['Expenses_Categories'],
           }),
     })
 })

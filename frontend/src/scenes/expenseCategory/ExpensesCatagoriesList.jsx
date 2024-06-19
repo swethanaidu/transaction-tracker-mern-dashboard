@@ -1,11 +1,16 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../theme";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
-import { useGetECsQuery } from "../slices/expCategoryApiSlice";
-import Loader from "../components/Loader";
+import { tokens } from "../../theme";
+ 
+import { useGetECsQuery } from "../../slices/expCategoryApiSlice";
+import Loader from "../../components/Loader";
+import Chip from '@mui/material/Chip';
+import ListIcon from '@mui/icons-material/List';
+import LoopIcon from '@mui/icons-material/Loop';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Moment from 'moment';
 
 const ExpensesCategoriesList = () => {
   const theme = useTheme();
@@ -25,19 +30,22 @@ const ExpensesCategoriesList = () => {
     },
     {
       field: "expectedBudget",
-      headerName: "Expected Budget",
+      headerName: "Planned Budget",
       flex: 1,
     },
     {
       field: "startDate",
       headerName: "Start Date",
       flex: 1,
+      renderCell: ({ row: { startDate } }) => {
+        return ( Moment(startDate).format('DD-MM-YYYY') );
+      },
     },
-    {
-      field: "endDate",
-      headerName: "End Date",
-      flex: 1,
-    },
+    // {
+    //   field: "endDate",
+    //   headerName: "End Date",
+    //   flex: 1,
+    // },
     {
       field: "workStatus",
       headerName: "Progress Level",
@@ -46,25 +54,59 @@ const ExpensesCategoriesList = () => {
         return (
           <Box
             width="100px"
-            m="10px 0"
+            m="5px 0"
             p="5px"
             display="flex"
             justifyContent="start"
-            backgroundColor={
-                workStatus === "To Do"
-                ? colors.greenAccent[600]
-                : workStatus === "In progress"
-                ? colors.greenAccent[700]
-                : colors.greenAccent[700]
-            }
             borderRadius="4px"
           >
-            {workStatus === "To Do" && <AdminPanelSettingsOutlinedIcon />}
-            {workStatus === "In progress" && <SecurityOutlinedIcon />}
-            {workStatus === "Completed" && <LockOpenOutlinedIcon />}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {workStatus}
-            </Typography>
+            
+            <Chip
+              variant="outlined"
+              label={workStatus}
+              color={
+                workStatus === "To do"
+                  ? "info"
+                  : workStatus === "In progress"
+                  ? "warning"
+                  : "success"
+              }
+               
+              icon={
+                workStatus === "To do" ? (
+                  <ListIcon />
+                ) : workStatus === "In progress" ? (
+                  <LoopIcon />
+                ) : (
+                  <TaskAltIcon />
+                )
+              }
+            />
+          </Box>
+        );
+      },
+    },
+    {
+      field: "_id",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: ({ row: { _id } }) => {
+        return (
+          <Box   display="flex" justifyContent="start">
+            <IconButton
+              type="button"
+              onClick={() => {}}
+              sx={{ p: 1 }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              type="button"
+              sx={{ p: 1 }}
+              onClick={() => {}}
+            >
+              <DeleteIcon />
+            </IconButton>
           </Box>
         );
       },

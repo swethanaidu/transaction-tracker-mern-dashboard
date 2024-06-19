@@ -33,3 +33,12 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.MuiFormLabel-root.Mui-focused.MuiInputLabel-root {
+  color: #fff;
+}
+.MuiInputBase-root.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #fff;
+  border-width: 1px;
+    
+}

@@ -1,15 +1,15 @@
 import { useMediaQuery, Box ,  useTheme, Typography} from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import UsersList from "../../components/UsersList";
-import ExpensesCategoriesList from "../expenseCategory/ExpensesCatagoriesList";
-const Team = () => {
+import ExpensesCategoriesList from "./ExpensesCatagoriesList";
+
+const ExpenseCategoryPage = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   return (
     <Box m="20px">
-      <Header title="TEAM" subtitle="Managing the Team Members" />
+      <Header title="EXPENSE CATEGORY" subtitle="Managing the Expense Category data" />
       <Box 
         mt="40px"
         display="grid"
@@ -20,22 +20,17 @@ const Team = () => {
           "& > div": { gridColumn: isNonMobile ? undefined : "span 12" },
         }}
       >
+        
         <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
-           <Typography  variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
-              Users List
-          </Typography>
-          <UsersList />
-        </Box>
-        {/* <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 6" }}>
            <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
             Expenses Categories List
           </Typography>
           <ExpensesCategoriesList />
-        </Box> */}
+        </Box>
        
        </Box>
     </Box>
   );
 };
 
-export default Team;
+export default ExpenseCategoryPage;

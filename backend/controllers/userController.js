@@ -117,8 +117,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // route      PUT /api/users/profile
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
+  // console.log("hi");
   const user = await User.findById(req.user._id);
-
+  // console.log(req.user._id);
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
@@ -162,9 +163,22 @@ const getAllUserDetails = asyncHandler(async (req, res) => {
 // route      GET /api/users/:id
 // @access    Private/Admin
 const getUserByID = asyncHandler(async (req, res) => {
+  //console.log(req.params.id);
   const user = await User.findById(req.params.id);
   // console.log(user);
-  res.status(200).json(user);
+  res.status(200).json(
+    {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      city: user.city,
+      state: user.state,
+      country: user.country,
+      occupation: user.occupation,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+    }
+  );
 });
 
 // @desc    Update user
