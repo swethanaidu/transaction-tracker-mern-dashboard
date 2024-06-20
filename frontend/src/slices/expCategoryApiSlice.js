@@ -8,7 +8,8 @@ export const expensesCategoryApiSlice = apiSlice.injectEndpoints({
                 url: `${EC_URL}`,
                 method: 'POST',
                 body: data
-            })
+            }),
+            invalidatesTags: ['Expenses_Categories'],
         }),
         getECs: builder.query({
             query: () => ({

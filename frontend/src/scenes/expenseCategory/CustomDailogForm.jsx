@@ -1,5 +1,6 @@
+import { useState } from "react";
+import { tokens } from "../../theme"
 import { styled } from "@mui/material/styles";
-import { tokens } from "../theme";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Typography, useTheme, IconButton, Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
@@ -7,19 +8,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Form from "./Form";
-import { useGetUserDetailsQuery } from "../slices/userApiSlice";
-import Loader from "./Loader";
+import Loader from "../../components/Loader";
 
-const CustomDailogUserForm = ({ open, handleClose, id, title }) => {
+const CustomDailogForm = ({ open, handleClose, ecData, title , isLoading}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const {
-    data: ecInfo,
-    refetch,
-    isLoading,
-    error,
-  } = useGetUserDetailsQuery(id);
-  // console.log(ecInfo);
+  // const {
+  //   data: ecInfo,
+  //   refetch,
+  //   isLoading,
+  //   error,
+  // } = useGetUserDetailsQuery(id);
+  // console.log(ecData);
   const BootstrapDialog = styled(Dialog)(() => ({
     "& .MuiPaper-root": {
       background: colors.primary[400],
@@ -36,7 +36,7 @@ const CustomDailogUserForm = ({ open, handleClose, id, title }) => {
       background: colors.primary[400],
     },
   }));
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
   return (
     <>
       <BootstrapDialog
@@ -64,9 +64,10 @@ const CustomDailogUserForm = ({ open, handleClose, id, title }) => {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
+           
           {isLoading ? <Loader /> : 
 
-          (ecInfo &&   <Form ecInfo={ecInfo} handleClose={handleClose}/>   )
+          ( <Form ecInfo={ecData} handleClose={handleClose}/>   )
           }
         </DialogContent>
         {/* <DialogActions>
@@ -79,4 +80,4 @@ const CustomDailogUserForm = ({ open, handleClose, id, title }) => {
   );
 };
 
-export default CustomDailogUserForm;
+export default CustomDailogForm;

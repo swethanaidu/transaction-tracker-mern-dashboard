@@ -22,9 +22,7 @@ const ExpenseCategoryPage = () => {
       >
         
         <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
-           <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
-            Expenses Categories List
-          </Typography>
+           
           <ExpensesCategoriesList />
         </Box>
        

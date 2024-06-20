@@ -7,8 +7,9 @@ import {
   Typography,
   InputLabel,
   FormControl,
-  NativeSelect,
+  Select,
   useTheme,
+  MenuItem,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -20,13 +21,19 @@ import CustomSnackbar from "../../components/CustomSnackbar";
 import { useUpdateECMutation } from "../../slices/expCategoryApiSlice";
 import { useDeleteECMutation } from "../../slices/expCategoryApiSlice";
 import { useSetECsMutation } from "../../slices/expCategoryApiSlice";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import moment from "moment";
 
 const expensesCategorySchema = yup.object().shape({
   name: yup.string().required("required"),
   description: yup.string().required("required"),
-  expectedBudget: yup.string().required("required"),
-  startDate: yup.string().required("required"),
-  endDate: yup.string().required("required"),
+  expectedBudget: yup.number().required("required"),
+  //   startDate: yup.string().required("required"),
+  //   endDate: yup.string().required("required"),
   workStatus: yup.string().required("required"),
 });
 
@@ -34,7 +41,7 @@ const initialValuesExpensesCategory = {
   name: "",
   description: "",
   expectedBudget: 0,
-  startDate: "",
+  startDate: dayjs(Date.now()),
   endDate: "",
   workStatus: "To do",
 };
@@ -52,27 +59,37 @@ const Form = ({ ecInfo, handleClose }) => {
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isAddNew, setIsAddNew] = useState(false);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [isSnackBarMessage, setIsSnackBarMessage] = useState(
     initialValuesCustomSnackBar
   );
-
-  const [updateECDetails, { isLoading: userLoading }] = useUpdateECMutation(
+  const [addECDetails] = useSetECsMutation();
+  const [updateECDetails, { isLoading: ecLoading }] = useUpdateECMutation(
     ecInfo?._id
   );
   const [eCategory, setECategory] = useState(initialValuesExpensesCategory);
 
   useEffect(() => {
-    setECategory(ecInfo);
+    if (ecInfo !== null) setECategory(ecInfo);
+    else {
+      setIsAddNew(true);
+      setECategory(initialValuesExpensesCategory);
+    }
+
     //    console.log(ecInfo);
   }, [ecInfo, eCategory]);
 
-  const submitProfileForm = async (values) => {
+  const submitECForm = async (values) => {
     //    console.log(values);
     let res,
       obj1 = null;
     try {
-      res = await updateECDetails(values).unwrap();
+      if (isAddNew) {
+        res = await addECDetails(values).unwrap();
+      } else {
+        res = await updateECDetails(values).unwrap();
+      }
       handleClose();
     } catch (err) {
       console.log(err);
@@ -98,13 +115,13 @@ const Form = ({ ecInfo, handleClose }) => {
       }));
       // setIsSnackBarMessage(obj1);
       // setTest("Test")
-      // console.log(res);
+      console.log(res);
       // console.log(obj1);
       // console.log(isSnackBarMessage);
       // console.log(test);
     }
   };
-  if (isLoading) return <Loader />;
+  if (ecLoading) return <Loader />;
   return (
     <>
       <Box
@@ -114,8 +131,8 @@ const Form = ({ ecInfo, handleClose }) => {
         mt="40px"
       >
         <Formik
-          onSubmit={submitProfileForm}
-          initialValues={user}
+          onSubmit={submitECForm}
+          initialValues={eCategory}
           enableReinitialize
           validationSchema={expensesCategorySchema}
         >
@@ -132,7 +149,7 @@ const Form = ({ ecInfo, handleClose }) => {
             <form onSubmit={handleSubmit}>
               <Box
                 display="grid"
-                gap="10px"
+                gap="20px 10px"
                 gridTemplateColumns="repeat(12, minmax(0, 1fr))"
                 // gridTemplateColumns="repeat(4, minmax(0, 1fr))"
                 sx={{
@@ -165,6 +182,72 @@ const Form = ({ ecInfo, handleClose }) => {
                   sx={{ gridColumn: "span 6" }}
                   focused
                 />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer
+                    sx={{ gridColumn: "span 6", mt: "-8px " }}
+                    components={["DatePicker"]}
+                  >
+                    <DatePicker
+                      label="Start Date"
+                      onBlur={handleBlur}
+                      //   onChange={handleChange}
+                      onChange={(value) => {
+                        setFieldValue("startDate", Date.parse(value));
+                      }}
+                      closeOnSelect={true}
+                      // disableCloseOnSelect={false}
+                      value={dayjs(values.startDate) || dayjs(moment())}
+                      name="startDate"
+                      sx={{ width: "100% " }}
+                      slotProps={{
+                        textField: { fullWidth: true },
+                        day: {
+                          sx: {
+                            "&.MuiPickersDay-root.Mui-selected": {
+                              backgroundColor: colors.greenAccent[700],
+                            },
+                          },
+                        },
+                        desktopPaper: {
+                          sx: {
+                            ".MuiPickersYear-yearButton.Mui-selected": {
+                              backgroundColor: colors.greenAccent[700],
+                            },
+                          },
+                        },
+                      }}
+                      error={
+                        Boolean(touched.startDate) && Boolean(errors.startDate)
+                      }
+                      helperText={touched.startDate && errors.startDate}
+                      focused
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+                {/* <TextField
+                  label="startDate"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.startDate || ""}
+                  name="startDate"
+                  error={
+                    Boolean(touched.startDate) && Boolean(errors.startDate)
+                  }
+                  helperText={touched.startDate && errors.startDate}
+                  sx={{ gridColumn: "span 6" }}
+                  focused
+                /> */}
+                {/* <TextField
+                  label="endDate"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.endDate || ""}
+                  name="endDate"
+                  error={Boolean(touched.endDate) && Boolean(errors.endDate)}
+                  helperText={touched.endDate && errors.endDate}
+                  sx={{ gridColumn: "span 6" }}
+                  focused
+                /> */}
                 <TextField
                   label="Planned Budget"
                   onBlur={handleBlur}
@@ -176,53 +259,75 @@ const Form = ({ ecInfo, handleClose }) => {
                     Boolean(errors.expectedBudget)
                   }
                   helperText={touched.expectedBudget && errors.expectedBudget}
-                  sx={{ gridColumn: "span 4" }}
+                  sx={{ gridColumn: "span 6" }}
                   focused
                 />
-                <TextField
-                  label="startDate"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.startDate || ""}
-                  name="startDate"
-                  error={
-                    Boolean(touched.startDate) && Boolean(errors.startDate)
-                  }
-                  helperText={touched.startDate && errors.startDate}
-                  sx={{ gridColumn: "span 4" }}
-                  focused
-                />
-                <TextField
-                  label="endDate"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.endDate || ""}
-                  name="endDate"
-                  error={Boolean(touched.endDate) && Boolean(errors.endDate)}
-                  helperText={touched.endDate && errors.endDate}
-                  sx={{ gridColumn: "span 4" }}
-                  focused
-                />
-                <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
-                  <InputLabel variant="standard" htmlFor="workStatus">
+                <FormControl fullWidth sx={{ gridColumn: "span 6" }}>
+                  <InputLabel
+                    variant="outlined"
+                    id="workStatus"
+                    htmlFor="workStatusSelect"
+                  >
                     Work Status
                   </InputLabel>
-                  <NativeSelect
-                    onBlur={handleBlur}
+                  <Select
+                    labelId="workStatus"
+                    name="workStatus"
+                    id="workStatusSelect"
+                    value={values.workStatus || "To do"}
+                    label="Work Status"
                     onChange={handleChange}
-                    defaultValue="To do"
-                    inputProps={{
-                      name: "workStatus",
-                      id: "workStatus",
-                    }}
                   >
-                    <option value="To do">To do</option>
-                    <option value="In progress">In progress</option>
-                    <option value="In review">In review</option>
-                    <option value="Completed">Completed</option>
-                  </NativeSelect>
+                    <MenuItem value="To do">To do</MenuItem>
+                    <MenuItem value="In progress">In progress</MenuItem>
+                    <MenuItem value="In review">In review</MenuItem>
+                    <MenuItem value="Completed">Completed</MenuItem>
+                  </Select>
                 </FormControl>
-
+                {values.workStatus === "Completed" && (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer
+                      sx={{ gridColumn: "span 6", mt: "-8px " }}
+                      components={["DatePicker"]}
+                    >
+                      <DatePicker
+                        label="End Date"
+                        onBlur={handleBlur}
+                        //   onChange={handleChange}
+                        onChange={(value) => {
+                          setFieldValue("endDate", Date.parse(value));
+                        }}
+                        closeOnSelect={true}
+                        // disableCloseOnSelect={false}
+                        value={dayjs(values.endDate) || dayjs(moment())}
+                        name="endDate"
+                        sx={{ width: "100% " }}
+                        slotProps={{
+                          textField: { fullWidth: true },
+                          day: {
+                            sx: {
+                              "&.MuiPickersDay-root.Mui-selected": {
+                                backgroundColor: colors.greenAccent[700],
+                              },
+                            },
+                          },
+                          desktopPaper: {
+                            sx: {
+                              ".MuiPickersYear-yearButton.Mui-selected": {
+                                backgroundColor: colors.greenAccent[700],
+                              },
+                            },
+                          },
+                        }}
+                        error={
+                          Boolean(touched.endDate) && Boolean(errors.endDate)
+                        }
+                        helperText={touched.endDate && errors.endDate}
+                        focused
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                )}
                 {/* BUTTONS */}
                 {isSnackBarMessage && (
                   <CustomSnackbar
@@ -243,16 +348,18 @@ const Form = ({ ecInfo, handleClose }) => {
                   <Button
                     fullWidth
                     type="submit"
+                    variant="outlined"
+                    color="secondary"
                     sx={{
-                      m: "10px 0 0",
-                      p: "1rem",
-                      backgroundColor: colors.greenAccent[700],
-                      color: colors.grey[100],
-                      "&:hover": { color: colors.primary.main },
+                      //   m: "10px 0 0",
+                      p: "10px",
+                      //   backgroundColor: colors.greenAccent[700],
+                      //   color: colors.grey[100],
+                      //   "&:hover": { color: colors.primary.main },
                       width: "150px",
                     }}
                   >
-                    Update
+                    {isAddNew ? "Add New" : "Update"}
                   </Button>
                 </Box>
               </Box>

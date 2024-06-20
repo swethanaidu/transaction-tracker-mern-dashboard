@@ -34,11 +34,14 @@ body,
   background: #555;
 }
 
-.MuiFormLabel-root.Mui-focused.MuiInputLabel-root {
+.MuiFormLabel-root.Mui-focused.MuiInputLabel-root,
+.MuiFormControl-root .MuiFormLabel-root {
   color: #fff;
 }
-.MuiInputBase-root.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+
+.MuiInputBase-root.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline,
+.MuiInputBase-root.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
   border-color: #fff;
   border-width: 1px;
-    
+
 }

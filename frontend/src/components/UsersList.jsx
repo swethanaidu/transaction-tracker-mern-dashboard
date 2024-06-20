@@ -8,10 +8,11 @@ import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import { useGetUsersQuery } from "../slices/userApiSlice";
 import Loader from "../components/Loader";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CustomDailogUserForm from "./CustomDailogUserForm";
 import CustomDeleteDailog from "./CustomDeleteDailog";
 import { useDeleteUserMutation } from "../slices/userApiSlice";
+import AvatarNames from "./AvatarNames";
 
 const UsersList = () => {
   const theme = useTheme();
@@ -21,8 +22,10 @@ const UsersList = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [id, setID] = useState("");
   const [name, setname] = useState("");
+  const [title, setTitle] = useState("");
   const [deleteUser, { isLoading: userLoading }] = useDeleteUserMutation(id);
   const handleClickOpen = (_id) => {
+    setTitle("Edit User Detials");
     setOpen(true);
     setID(_id);
   };
@@ -32,6 +35,7 @@ const UsersList = () => {
   };
 
   const handleDeleteClickOpen = (_id, name) => {
+    setTitle(`Are you sure you want to delete ${name}?`);
     setOpenDelete(true);
     setID(_id);
     setname(name);
@@ -58,6 +62,13 @@ const UsersList = () => {
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: ({ row: row }) => {
+        return (
+          <Box m="5px 0"  display="flex" justifyContent="start" alignItems="center"  >
+             <AvatarNames  name={row.name} /> <Typography sx={{ marginLeft: "10px"}}> {row.name}</Typography>
+          </Box>
+        );
+      },
     },
     {
       field: "email",
@@ -129,7 +140,7 @@ const UsersList = () => {
               sx={{ p: 1 }}
               onClick={() => handleDeleteClickOpen(_id, name)}
             >
-              <DeleteIcon />
+              <DeleteOutlineOutlinedIcon />
             </IconButton>
           </Box>
         );
@@ -177,20 +188,20 @@ const UsersList = () => {
         },
       }}
     >
-      <DataGrid getRowId={(row) => row._id} rows={users} columns={columns} />
+      <DataGrid hideFooter={true} getRowId={(row) => row._id} rows={users} columns={columns} />
 
       <CustomDailogUserForm
         open={open}
         id={id}
         handleClose={handleClose}
-        title="Edit User Detials"
+        title={title}
       />
       <CustomDeleteDailog
         open={openDelete}
         id={id}
         handleDeleteClose={handleDeleteClose}
         handleDelete={() => handleDelete(id)}
-        message={`Are you sure you want to delete?`}
+        message={title}
       />
     </Box>
   );

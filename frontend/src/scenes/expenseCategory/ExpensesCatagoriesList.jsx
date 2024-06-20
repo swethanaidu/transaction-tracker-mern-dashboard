@@ -1,7 +1,7 @@
-import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import { Box, Typography, useTheme, IconButton, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
- 
+import { useState } from "react";
 import { useGetECsQuery } from "../../slices/expCategoryApiSlice";
 import Loader from "../../components/Loader";
 import Chip from '@mui/material/Chip';
@@ -9,13 +9,59 @@ import ListIcon from '@mui/icons-material/List';
 import LoopIcon from '@mui/icons-material/Loop';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import Moment from 'moment';
+import CustomDailogForm from "./CustomDailogForm";
+import GradingIcon from '@mui/icons-material/Grading';
+import Grading from "@mui/icons-material/Grading";
+import CustomDeleteDailog from "../../components/CustomDeleteDailog";
+import { useDeleteECMutation } from "../../slices/expCategoryApiSlice";
+import AddIcon from '@mui/icons-material/Add';
 
 const ExpensesCategoriesList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { data: ecList, refetch, isLoading, error } = useGetECsQuery();
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [openDelete, setOpenDelete] = useState(false);
+  const [ecData, setecData] = useState([])
+  const [name, setname] = useState("");
+  const [id, setID] = useState("");
+  const [deleteEC] = useDeleteECMutation(id);
+  const handleClickOpen = (data) => {
+    setTitle(data? "Edit Expenses Category Detials" : "Add New Expenses Category Detials")
+    setOpen(true);
+    setecData(data);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    // setID("");
+  };
+
+  const handleDeleteClickOpen = (row) => {
+    setTitle(`Are you sure you want to delete ${row.name}?`)
+    setOpenDelete(true);
+    setID(row._id);
+    setname(row.name);
+  };
+
+  const handleDelete = async (id) => {
+    let res = null;
+    try {
+      res = await deleteEC(id).unwrap();
+      handleDeleteClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteClose = () => {
+    setOpenDelete(false);
+    // setID("");
+  };
+
+  
   const columns = [
     {
       field: "name",
@@ -53,11 +99,12 @@ const ExpensesCategoriesList = () => {
       renderCell: ({ row: { workStatus } }) => {
         return (
           <Box
-            width="100px"
+            width="120px"
             m="5px 0"
             p="5px"
             display="flex"
             justifyContent="start"
+          
             borderRadius="4px"
           >
             
@@ -66,10 +113,11 @@ const ExpensesCategoriesList = () => {
               label={workStatus}
               color={
                 workStatus === "To do"
-                  ? "info"
+                  ? "default"
                   : workStatus === "In progress"
                   ? "warning"
-                  : "success"
+                  : workStatus === "In review"
+                  ?  "info" : "success"
               }
                
               icon={
@@ -77,8 +125,8 @@ const ExpensesCategoriesList = () => {
                   <ListIcon />
                 ) : workStatus === "In progress" ? (
                   <LoopIcon />
-                ) : (
-                  <TaskAltIcon />
+                ) : workStatus === "In review" ? (
+                  <Grading /> ) : (<TaskAltIcon />
                 )
               }
             />
@@ -90,22 +138,23 @@ const ExpensesCategoriesList = () => {
       field: "_id",
       headerName: "Actions",
       flex: 1,
-      renderCell: ({ row: { _id } }) => {
+      renderCell: ({ row: row }) => {
         return (
-          <Box   display="flex" justifyContent="start">
+          <Box   m="5px 0" display="flex" justifyContent="start">
+           
             <IconButton
               type="button"
-              onClick={() => {}}
-              sx={{ p: 1 }}
+              onClick={() => handleClickOpen(row)}
+              // sx={{ p: 1 }}
             >
               <EditIcon />
             </IconButton>
             <IconButton
               type="button"
-              sx={{ p: 1 }}
-              onClick={() => {}}
+              // sx={{ p: 1 }}
+              onClick={() => handleDeleteClickOpen(row)}
             >
-              <DeleteIcon />
+              <DeleteOutlineOutlinedIcon />
             </IconButton>
           </Box>
         );
@@ -114,7 +163,30 @@ const ExpensesCategoriesList = () => {
   ];
   if(isLoading) return (<Loader />)
   return (
-     
+     <>
+     <Box display="flex" justifyContent="space-between" alignItems="center">
+              <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
+                Expenses Categories List
+              </Typography>
+              <Button
+                    fullWidth
+                    type="button"
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleClickOpen(null)}
+                    sx={{
+                        m: "0 0 10px",
+                      p: "10px",
+                      //   backgroundColor: colors.greenAccent[700],
+                      //   color: colors.grey[100],
+                      //   "&:hover": { color: colors.primary.main },
+                      width: "150px",
+                    }}
+                  >
+                    <AddIcon /> Add New
+                  </Button>
+            </Box>
+    
       <Box
         m=" 0 0 0"
         height="100%"
@@ -149,12 +221,28 @@ const ExpensesCategoriesList = () => {
           },
         }}
       >
+         
         {/* <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px", fontWeight: "bold" }}>
             Expenses Categories List
         </Typography> */}
-        <DataGrid getRowId={(row) => row._id}  rows={ecList} columns={columns} />
+        <DataGrid hideFooter={true} getRowId={(row) => row._id}  rows={ecList} columns={columns} />
+        <CustomDailogForm
+          open={open}
+          ecData={ecData}
+          handleClose={handleClose}
+          isLoading={isLoading}
+          title={title}
+        />
+        <CustomDeleteDailog
+          open={openDelete}
+          id={id}
+          handleDeleteClose={handleDeleteClose}
+          handleDelete={() => handleDelete(id)}
+          message={title}
+        />
+  
       </Box>
-     
+      </>
   );
 };
 

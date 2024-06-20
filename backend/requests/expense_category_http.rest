@@ -6,8 +6,8 @@ POST http://localhost:5000/api/expensesCategories  HTTP/1.1
 content-type: application/json
 
 {
-   "name": "Test",
-   "description": "Test",
+   "name": "Test123",
+   "description": "Test34",
    "expectedBudget": 123,
    "startDate": "06/11/2024"
 }
