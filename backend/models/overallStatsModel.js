@@ -24,7 +24,6 @@ const OverallStatSchema = new mongoose.Schema(
         ebc: [
             {
                 name: String,
-                bname: String,
                 totalSpent: Number,
                 totalbudget: Number
             }

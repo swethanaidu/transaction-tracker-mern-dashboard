@@ -13,7 +13,6 @@ content-type: application/json
 }
 
 ###Get all EC
-
 GET   http://localhost:5000/api/expensesCategories
 
  
@@ -31,7 +30,6 @@ content-type: application/json
    "description": "TestDescription"
 }
 
-###delete ID
-
-DELETE    http://localhost:5000/api/expensesCategories/6668928a1196d7fa8dd0ca78 HTTP/1.1
+###delete ID 
+DELETE    http://localhost:5000/api/expensesCategories/6674670acae4d208bcdb0d9f HTTP/1.1
  

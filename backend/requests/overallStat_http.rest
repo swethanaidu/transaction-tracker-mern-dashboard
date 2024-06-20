@@ -19,8 +19,7 @@ content-type: application/json
    
 }
 
-###Get all EC
-
+###Get all EC 
 GET   http://localhost:5000/api/dashboard
 
  
