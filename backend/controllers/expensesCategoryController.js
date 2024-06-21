@@ -82,6 +82,28 @@ const getExpensesCategoryByID = asyncHandler(async (req, res) => {
 // @access    Private/admin
 const updateExpensesCategoryByID = asyncHandler(async (req, res) => {
   const expensesCategory = await ExpensesCategory.findById(req.params.id);
+  /***********Dashboard update***************/
+  const year = 2024;
+  const overallStat = await OverallStat.findOne({ year });
+  if (overallStat) {
+    const ecbExist = overallStat.ebc.find(
+      (r) => r.name.toString() === expensesCategory.name.toString()
+    );
+    if (ecbExist) {
+      await OverallStat.updateOne(
+        { _id: overallStat._id, "ebc._id": ecbExist._id },
+        {
+          $set: {
+            "ebc.$.name": req.body.name || ecbExist.name,
+            "ebc.$.totalbudget":
+              req.body.expectedBudget || ecbExist.totalbudget,
+          },
+        },
+        { new: true, }
+      );
+    }
+  }
+  /***********EC update************/
   if (expensesCategory) {
     expensesCategory.name = req.body.name || expensesCategory.name;
     expensesCategory.description =
@@ -119,7 +141,6 @@ const deleteExpensesCategoryByID = asyncHandler(async (req, res) => {
   const overallStat = await OverallStat.findOne({ year });
   const expensesCategory = await ExpensesCategory.findById(req.params.id);
   /***********Expenses Category update***************/
-
   if (expensesCategory) {
     /***********Dashboard update***************/
     if (overallStat) {
@@ -128,10 +149,11 @@ const deleteExpensesCategoryByID = asyncHandler(async (req, res) => {
       );
       if (ecbExist) {
         // await ecbExist.deleteOne({ _id: ecbExist._id });
-        await OverallStat.findByIdAndUpdate(overallStat._id,
+        await OverallStat.findByIdAndUpdate(
+          overallStat._id,
           { $pull: { ebc: { _id: ecbExist._id } } },
-          { new: true , useFindAndModify: false},
-        )
+          { new: true, useFindAndModify: false }
+        );
       }
     }
     await ExpensesCategory.deleteOne({ _id: expensesCategory._id });

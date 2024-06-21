@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/useRoutes.js'
 import overallStatRoutes from './routes/overallStatRoutes.js';
 import expensesCategoryRoutes from './routes/expensesCategoryRoutes.js'
+import transactionRoutes from './routes/transactionRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
@@ -23,6 +24,8 @@ app.use(cookieParser());
 app.use('/api/users', userRoutes);
 app.use('/api/expensesCategories', expensesCategoryRoutes);
 app.use('/api/dashboard',  overallStatRoutes);
+app.use('/api/transactions',  transactionRoutes);
+
 app.get('/', (req,res) => res.send("Server is ready"));
 
 app.use(notFound);

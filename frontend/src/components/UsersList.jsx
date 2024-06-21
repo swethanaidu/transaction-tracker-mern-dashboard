@@ -13,6 +13,7 @@ import CustomDailogUserForm from "./CustomDailogUserForm";
 import CustomDeleteDailog from "./CustomDeleteDailog";
 import { useDeleteUserMutation } from "../slices/userApiSlice";
 import AvatarNames from "./AvatarNames";
+import Chip from '@mui/material/Chip';
 
 const UsersList = () => {
   const theme = useTheme();
@@ -97,26 +98,31 @@ const UsersList = () => {
       renderCell: ({ row: { role } }) => {
         return (
           <Box
-            width="100px"
-            m="10px 0"
-            p="5px"
-            display="flex"
-            justifyContent="start"
-            backgroundColor={
-              role === "admin"
-                ? colors.greenAccent[600]
+            
+          >
+            <Chip 
+              sx={{
+                backgroundColor: 
+                  role === "admin"
+                ? colors.greenAccent[800]
                 : role === "manager"
                 ? colors.greenAccent[700]
-                : colors.greenAccent[700]
-            }
-            borderRadius="4px"
-          >
-            {role === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {role === "manager" && <SecurityOutlinedIcon />}
-            {role === "user" && <LockOpenOutlinedIcon />}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {role}
-            </Typography>
+                : colors.greenAccent[600],
+                width: "90px"
+            
+              }}
+              icon={
+                role === "admin" ? (
+                  <AdminPanelSettingsOutlinedIcon />
+                ) : role === "manager" ? (
+                  <SecurityOutlinedIcon />
+                )  : (<LockOpenOutlinedIcon />
+                )
+              }
+              
+            label={role}/>
+
+           
           </Box>
         );
       },
@@ -127,11 +133,12 @@ const UsersList = () => {
       flex: 1,
       renderCell: ({ row: { _id } }) => {
         return (
-          <Box m="5px 0" p="5px" display="flex" justifyContent="start">
+          <Box m="5px 0"  display="flex" justifyContent="start">
             <IconButton
               type="button"
               onClick={() => handleClickOpen(_id)}
               sx={{ p: 1 }}
+              // color="info"
             >
               <EditIcon />
             </IconButton>
@@ -139,6 +146,7 @@ const UsersList = () => {
               type="button"
               sx={{ p: 1 }}
               onClick={() => handleDeleteClickOpen(_id, name)}
+              // color="error"
             >
               <DeleteOutlineOutlinedIcon />
             </IconButton>
@@ -166,7 +174,8 @@ const UsersList = () => {
           borderBottom: "none",
         },
         "& .name-column--cell": {
-          color: colors.greenAccent[500],
+          color: colors.grey[100],
+          fontWeight: 700,
         },
         "& .MuiDataGrid-withBorderColor": {
           backgroundColor: colors.blueAccent[700],

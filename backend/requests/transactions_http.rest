@@ -1,0 +1,37 @@
+ 
+
+###set transaction
+
+POST http://localhost:5000/api/transactions  HTTP/1.1
+content-type: application/json
+
+{
+   "title": "Test123",
+   "description": "Test34",
+   "userId": "66634d9c7baccac40a35f7a8",
+   "ecId": "6675127226fee1cb20ef53d8",
+   "cost": 123,
+   "paidDate": "06/11/2024"
+}
+
+###Get all transactions
+GET   http://localhost:5000/api/transactions
+
+ 
+###get transaction by id
+
+GET   http://localhost:5000/api/transactions/667547e1628e3b8928ae53ae
+
+###update transaction by id 
+
+PUT   http://localhost:5000/api/transactions/667547e1628e3b8928ae53ae HTTP/1.1
+content-type: application/json
+
+{
+   "title": "Test1235",
+   "cost": 2330199
+}
+
+###delete transaction ID 
+DELETE    http://localhost:5000/api/transactions/667547e1628e3b8928ae53ae HTTP/1.1
+ 

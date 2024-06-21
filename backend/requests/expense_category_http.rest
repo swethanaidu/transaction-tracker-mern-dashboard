@@ -20,14 +20,14 @@ GET   http://localhost:5000/api/expensesCategories
 
 GET   http://localhost:5000/api/expensesCategories/666891c8334739cc0ca3f247
 
-###update EC by id
+###update EC by id 
 
-PUT   http://localhost:5000/api/expensesCategories/666891c8334739cc0ca3f247 HTTP/1.1
+PUT   http://localhost:5000/api/expensesCategories/6675127226fee1cb20ef53d8 HTTP/1.1
 content-type: application/json
 
 {
-   "name": "TestName",
-   "description": "TestDescription"
+   "name": "TestNameaa1",
+   "expectedBudget": 2330199
 }
 
 ###delete ID 
