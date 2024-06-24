@@ -13,6 +13,8 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import ProfilePage from './scenes/profilePage/index.jsx';
 import Bar from './scenes/bar/index.jsx';
 import ExpenseCategoryPage from './scenes/expenseCategory/index.jsx';
+import TransactionsPage from './scenes/transactions/index.jsx';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
      <Route path='/' element={<App />} >
@@ -21,6 +23,7 @@ const router = createBrowserRouter(
         <Route  path='/admin' element={<Dashboard />} />
         <Route path='/team' element={<Team />} />
         <Route path='/expenseCategory' element={<ExpenseCategoryPage />} />
+        <Route path='/transactions' element={<TransactionsPage />} />
         
         {/* Private Routes */}
         <Route path='' element={<PrivateRoute />} >

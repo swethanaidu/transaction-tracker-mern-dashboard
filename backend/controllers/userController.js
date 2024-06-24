@@ -155,7 +155,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @access    Private/Admin
 const getAllUserDetails = asyncHandler(async (req, res) => {
   const users = await User.find().select("-password");
-  // console.log(users);
   res.status(200).json(users);
 });
 

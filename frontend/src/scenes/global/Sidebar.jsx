@@ -145,6 +145,13 @@ const SidebarMenu = () => {
               Data
             </Typography>
             <Item
+              title="Manage Transactions"
+              to="/transactions"
+              icon={<ReceiptOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Expense Category"
               to="/expenseCategory"
               icon={<ContactsOutlinedIcon />}
@@ -159,13 +166,7 @@ const SidebarMenu = () => {
               setSelected={setSelected}
             />
             
-            <Item
-              title="Invoices Balances"
-              to="/invoices"
-              icon={<ReceiptOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            
 
             <Typography
               variant="h6"
