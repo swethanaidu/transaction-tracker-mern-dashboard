@@ -309,43 +309,8 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
                     <MenuItem value="Canceled">Canceled</MenuItem>
                   </Select>
                 </FormControl>
-                {/* <Typography>
-                  {typeof(values.userId)} <br />
-
-                  {userData?.map((user, i) => (
-                    <MenuItem >{ (values.userId === user._id ) ? "yes " + values.userId : "no"}</MenuItem>
-                    ))};
-                </Typography> */}
-                <FormControl fullWidth sx={{ gridColumn: "span 6" }}>
-                  <InputLabel
-                    variant="outlined"
-                    id="userIdVal"
-                    htmlFor="userSelect"
-                  >
-                    Payment by
-                  </InputLabel>
-                  <Select
-                    labelId="userIdVal"
-                    name="userIdVal"
-                    id="userSelect"
-                    value={values.userId || loggedUSer?._id }
-                    label=" Payment by"
-                    onChange={handleChange}
-                  
-                  >
-                    {/* <MenuItem value="66634d9c7baccac40a35f7a8">Swetha Naidu</MenuItem>
-                    <MenuItem value="6666fbac567a18df136636ef">Aryan</MenuItem>
-                    <MenuItem value="66684ee8c65f9e4c4159ee6c">ABCA</MenuItem> */}
-
-                    {resUser?.map((user, i) => (
-                    <MenuItem  key={`${user._id}-${i}`} value={(user._id).toString()}>{user.name}</MenuItem>
-                    ))};
-                  </Select>
-                </FormControl>
-
-
-{/*           
-                <FormControl fullWidth sx={{ gridColumn: "span 6" }}>
+                
+                 <FormControl fullWidth sx={{ gridColumn: "span 6" }}>
                   <InputLabel
                     variant="outlined"
                     id="userId"
@@ -353,23 +318,21 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
                   >
                     Payment By
                   </InputLabel>
-                  
-
                   <Select
                     labelId="userId"
                     name="userId"
                     id="userSelect"
-                    value={values.userId.toString() ||  "" }
-                    defaultValue={transaction?.userId.toString()}
+                    value={values.userId || loggedUSer?._id}
                     label="Payment By"
                     onChange={handleChange}
                     
                   >
-                    {userData && userData?.map((user, i) => (
-                    <MenuItem  key={`${user._id}-${i}`} value={(user._id).toString()}>{user.name}</MenuItem>
+                    {resUser?.map((ec, i) => (
+                    <MenuItem  key={`${ec._id}-${i}`} value={(ec._id).toString()}>{ec.name}</MenuItem>
                     ))};
                   </Select>
-                </FormControl> */}
+                </FormControl>
+               
  
                 {/* BUTTONS */}
                 {/* {isSnackBarMessage && (

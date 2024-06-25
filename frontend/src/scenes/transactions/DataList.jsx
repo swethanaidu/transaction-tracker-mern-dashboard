@@ -13,6 +13,7 @@ import Moment from 'moment';
 import CustomDailogForm from "./CustomDailogForm";
 import GradingIcon from '@mui/icons-material/Grading';
 import Grading from "@mui/icons-material/Grading";
+import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 import CustomDeleteDailog from "../../components/CustomDeleteDailog";
 import { useGetTransactionsQuery } from "../../slices/transactionApiSlice";
 import { useDeleteTransactionMutation } from "../../slices/transactionApiSlice";
@@ -76,19 +77,19 @@ const DataList = () => {
       flex: 1,
       cellClassName: "name-column--cell",
     },
+    // {
+    //   field: "description",
+    //   headerName: "Description",
+    //   flex: 1,
+    // },
     {
-      field: "description",
-      headerName: "Description",
+      field: "userName",
+      headerName: "Payment by",
       flex: 1,
     },
     {
-      field: "userId",
-      headerName: "user Id",
-      flex: 1,
-    },
-    {
-      field: "ecId",
-      headerName: "EC Id",
+      field: "ecName",
+      headerName: "Category",
       flex: 1,
     },
     {
@@ -139,7 +140,7 @@ const DataList = () => {
                 ) : status === "Pending" ? (
                   <LoopIcon />
                 ) : status === "Canceled" ? (
-                  <Grading /> ) : (<ListIcon />
+                  <NotInterestedOutlinedIcon /> ) : (<ListIcon />
                 )
               }
             />

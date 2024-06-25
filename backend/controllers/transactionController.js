@@ -47,9 +47,50 @@ const setTransaction = asyncHandler(async (req, res) => {
 // route      GET /api/transactions
 // @access    Private/admin
 const getTransactions = asyncHandler(async(req, res) => {
-    const transactions = await Transaction.find();
-    res.status(200).json(transactions);
-    
+    // const transactions = await Transaction.find();
+    // res.status(200).json(transactions);
+    const transactions = await Transaction.aggregate([
+
+      // Join with user_info table
+      {
+          $lookup:{
+              from: "users",       // other table name
+              localField: "userId",   // name of users table field
+              foreignField: "_id", // name of userinfo table field
+              as: "user_info"         // alias for userinfo table
+          }
+      },
+      {   $unwind:"$user_info" },     // $unwind used for getting data in object or for one record only
+  
+      // Join with user_role table
+      {
+          $lookup:{
+              from: "expensescategories", 
+              localField: "ecId", 
+              foreignField: "_id",
+              as: "ec_data"
+          }
+      },
+      {   $unwind:"$ec_data" },
+  
+      // define which fields are you want to fetch
+      {   
+          $project:{
+              _id : 1,
+              title : 1,
+              userId : 1,
+              description : 1,
+              ecId : 1,
+              cost : 1,
+              paidDate : 1,
+              status : 1,
+              userName : "$user_info.name",
+              ecName : "$ec_data.name",
+          } 
+      }
+  ]);
+  res.status(200).json(transactions);
+  // console.log(transactions);
 });
 
 // @desc      Get transaction by ID
@@ -58,6 +99,8 @@ const getTransactions = asyncHandler(async(req, res) => {
 const getTransactionByID = asyncHandler(async(req, res) => {
     const transaction = await Transaction.findById(req.params.id);
     res.status(200).json(transaction);
+
+    
 });
 
 

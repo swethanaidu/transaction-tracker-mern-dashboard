@@ -13,7 +13,7 @@ content-type: application/json
    "cost": 123,
    "paidDate": "06/11/2024"
 }
-
+ 
 ###Get all transactions
 GET   http://localhost:5000/api/transactions
 
