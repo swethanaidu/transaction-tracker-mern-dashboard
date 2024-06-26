@@ -27,6 +27,9 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 import { useSetTransactionMutation } from "../../slices/transactionApiSlice";
 import { useUpdateTransactionMutation } from "../../slices/transactionApiSlice";
+
+import { restructuredList, getFormatedCurrency } from "../../components/common/Utils";
+
 // import { useGetUsersQuery } from "../../slices/userApiSlice";
 // import { useGetECsQuery } from "../../slices/expCategoryApiSlice";
 
@@ -96,14 +99,14 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
    
   }, [transactionInfo, transaction, loggedUSer, ecList, usersList, ecData, userData]);
 
-  const restructuredList = (data) => {
-    return data.map(item => {
-      return {
-            _id: item._id,
-            name: item.name,
-      };
-    });
-  };
+  // const restructuredList = (data) => {
+  //   return data.map(item => {
+  //     return {
+  //           _id: item._id,
+  //           name: item.name,
+  //     };
+  //   });
+  // };
   const resUser = restructuredList(usersList);
   const resEC = restructuredList(ecList);
   

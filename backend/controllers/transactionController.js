@@ -1,7 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import OverallStat from '../models/overAllStatsModel.js';
 import Transaction from '../models/transactionModel.js';
- 
+import ExpensesCategory from '../models/expensesCategoryModel.js';
+
 // @desc      create a new Transaction
 // route      POST /api/transactions
 // @access    Private/admin
@@ -16,6 +17,7 @@ const setTransaction = asyncHandler(async (req, res) => {
     paidDate,
     status 
    } = req.body; 
+   
    const transaction =  await Transaction.create({
         title,
         description,

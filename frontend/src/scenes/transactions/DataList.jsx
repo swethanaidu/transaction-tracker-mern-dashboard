@@ -1,44 +1,93 @@
-import { Box, Typography, useTheme, IconButton, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useTheme,
+  IconButton,
+  Button,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
-import Chip from '@mui/material/Chip';
-import ListIcon from '@mui/icons-material/List';
-import LoopIcon from '@mui/icons-material/Loop';
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import Chip from "@mui/material/Chip";
+import ListIcon from "@mui/icons-material/List";
+import LoopIcon from "@mui/icons-material/Loop";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import Moment from 'moment';
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import Moment from "moment";
 import CustomDailogForm from "./CustomDailogForm";
-import GradingIcon from '@mui/icons-material/Grading';
-import Grading from "@mui/icons-material/Grading";
-import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
+import NotInterestedOutlinedIcon from "@mui/icons-material/NotInterestedOutlined";
 import CustomDeleteDailog from "../../components/CustomDeleteDailog";
 import { useGetTransactionsQuery } from "../../slices/transactionApiSlice";
 import { useDeleteTransactionMutation } from "../../slices/transactionApiSlice";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import { useGetUsersQuery } from "../../slices/userApiSlice";
 import { useGetECsQuery } from "../../slices/expCategoryApiSlice";
-
-const DataList = () => {
+import {
+  restructuredList,
+  getFormatedCurrency,
+} from "../../components/common/Utils";
+const DataList = ({ handleCurrencydata }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { data: transactionsList, refetch, isLoading, error } = useGetTransactionsQuery();
+  const {
+    data: transactionsList,
+    refetch,
+    isLoading,
+    error,
+  } = useGetTransactionsQuery();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [openDelete, setOpenDelete] = useState(false);
-  const [transactionData, setTransactionData] = useState([])
+  const [isTotalAll, setIsTotalAll] = useState(true);
+  const [transactionData, setTransactionData] = useState([]);
   const [name, setname] = useState("");
   const [id, setID] = useState("");
   const [deleteTransaction] = useDeleteTransactionMutation(id);
 
+  const [ecVal, setecVal] = useState("");
 
   const { data: ecList } = useGetECsQuery();
   const { data: usersList } = useGetUsersQuery();
 
+  const [total, setTotal] = useState(0);
+  const [transListState, settransListState] = useState([]);
+  const tot1 = transactionsList?.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.cost,
+    0
+  );
+
+  // console.log(tot1);
+
+  // console.log(transListState);
+  let resEC = restructuredList(ecList);
+
+  useEffect(() => {
+    if (isTotalAll) {
+      setTotal(tot1);
+      handleCurrencydata(tot1, "");
+    }
+    // console.log(isTotalAll);
+    // console.log(tot1);
+    // console.log(total);
+    // if(transListState === undefined)
+    // settransListState(transactionsList)
+
+    // setTotal(getFormatedCurrency(tot1));
+  }, [isTotalAll, total, tot1]);
+
+  //console.log(resEC);
   const handleClickOpen = (data) => {
-    setTitle(data? "Edit Expenses Category Detials" : "Add New Expenses Category Detials")
+    setTitle(
+      data
+        ? "Edit Expenses Category Detials"
+        : "Add New Expenses Category Detials"
+    );
     setOpen(true);
     setTransactionData(data);
   };
@@ -48,7 +97,7 @@ const DataList = () => {
   };
 
   const handleDeleteClickOpen = (row) => {
-    setTitle(`Are you sure you want to delete ${row.title}?`)
+    setTitle(`Are you sure you want to delete ${row.title}?`);
     setOpenDelete(true);
     setID(row._id);
     setname(row.name);
@@ -63,13 +112,34 @@ const DataList = () => {
       console.log(err);
     }
   };
-
+  const handleFilterChange = (e) => {
+    if (e.target.value === "") {
+      setecVal("");
+      setTotal(tot1);
+      setIsTotalAll(true);
+    } else {
+      setecVal(e.target.value);
+      setIsTotalAll(false);
+      console.log(e.target.label);
+      const filteredVal = transactionsList.filter(
+        (data) => data.ecId === e.target.value
+      );
+      const tot = filteredVal.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.cost,
+        0
+      );
+      setTotal(tot);
+      settransListState(filteredVal);
+      handleCurrencydata(tot, filteredVal[0]?.ecName);
+      console.log(filteredVal);
+    }
+   
+  };
   const handleDeleteClose = () => {
     setOpenDelete(false);
     // setID("");
   };
 
-  
   const columns = [
     {
       field: "title",
@@ -77,11 +147,7 @@ const DataList = () => {
       flex: 1,
       cellClassName: "name-column--cell",
     },
-    // {
-    //   field: "description",
-    //   headerName: "Description",
-    //   flex: 1,
-    // },
+
     {
       field: "userName",
       headerName: "Payment by",
@@ -96,16 +162,21 @@ const DataList = () => {
       field: "cost",
       headerName: "Cost",
       flex: 1,
+      renderCell: ({ row: { cost } }) => {
+        return getFormatedCurrency(cost);
+      },
     },
     {
       field: "paidDate",
       headerName: "Date",
       flex: 1,
-      renderCell: ({ row: { startDate } }) => {
-        return ( Moment(startDate).format('DD-MM-YYYY') );
+      renderCell: ({ row: { paidDate } }) => {
+        const dateFromDB = paidDate;
+        const formattedDate = Moment(dateFromDB).utc().format("DD/MM/YY");
+        return formattedDate;
       },
     },
-    
+
     {
       field: "status",
       headerName: "Status",
@@ -118,10 +189,8 @@ const DataList = () => {
             p="5px"
             display="flex"
             justifyContent="start"
-          
             borderRadius="4px"
           >
-            
             <Chip
               variant="outlined"
               label={status}
@@ -131,16 +200,18 @@ const DataList = () => {
                   : status === "Pending"
                   ? "warning"
                   : status === "Canceled"
-                  ?  "error" : "info"
+                  ? "error"
+                  : "info"
               }
-               
               icon={
                 status === "Completed" ? (
-                  <TaskAltIcon  />
+                  <TaskAltIcon />
                 ) : status === "Pending" ? (
                   <LoopIcon />
                 ) : status === "Canceled" ? (
-                  <NotInterestedOutlinedIcon /> ) : (<ListIcon />
+                  <NotInterestedOutlinedIcon />
+                ) : (
+                  <ListIcon />
                 )
               }
             />
@@ -154,8 +225,7 @@ const DataList = () => {
       flex: 1,
       renderCell: ({ row: row }) => {
         return (
-          <Box    m="5px 0" display="flex" justifyContent="start">
-           
+          <Box m="5px 0" display="flex" justifyContent="start">
             <IconButton
               type="button"
               onClick={() => handleClickOpen(row)}
@@ -175,35 +245,63 @@ const DataList = () => {
       },
     },
   ];
-  if(isLoading) return (<Loader />)
+  if (isLoading) return <Loader />;
   return (
-     <>
-     <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
-                Transactions List
-              </Typography>
-              <Button
-                    fullWidth
-                    type="button"
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => handleClickOpen(null)}
-                    sx={{
-                        m: "0 0 10px",
-                      p: "10px",
-                      //   backgroundColor: colors.greenAccent[700],
-                      //   color: colors.grey[100],
-                      //   "&:hover": { color: colors.primary.main },
-                      width: "150px",
-                    }}
-                  >
-                    <AddIcon /> Add New
-                  </Button>
-            </Box>
-    
+    <>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
+          Transactions List
+        </Typography>
+        
+        <Box>
+          <FormControl
+            fullWidth
+            sx={{ width: "160px", marginRight: "15px" }}
+            size="small"
+          >
+            <InputLabel variant="outlined" id="ecId" htmlFor="ecSelect">
+              Expense Category
+            </InputLabel>
+            <Select
+              labelId="ecId"
+              name="ecId"
+              id="ecSelect"
+              value={ecVal || ""}
+              label="Expense Category"
+              onChange={handleFilterChange}
+            >
+              <MenuItem value=""> Select </MenuItem>
+              {resEC?.map((ec, i) => (
+                <MenuItem key={`${ec._id}-${i}`} value={ec._id.toString()}>
+                  {ec.name}
+                </MenuItem>
+              ))}
+              ;
+            </Select>
+          </FormControl>
+          <Button
+            fullWidth
+            type="button"
+            variant="outlined"
+            color="secondary"
+            onClick={() => handleClickOpen(null)}
+            sx={{
+              m: "0 0 10px",
+              p: "10px",
+              //   backgroundColor: colors.greenAccent[700],
+              //   color: colors.grey[100],
+              //   "&:hover": { color: colors.primary.main },
+              width: "150px",
+            }}
+          >
+            <AddIcon /> Add New
+          </Button>
+        </Box>
+      </Box>
+
       <Box
         m=" 0 0 0"
-        height="100%"
+        height="60vh"
         minHeight="200px"
         sx={{
           "& .MuiDataGrid-root": {
@@ -235,11 +333,18 @@ const DataList = () => {
           },
         }}
       >
-         
         {/* <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px", fontWeight: "bold" }}>
             Expenses Categories List
         </Typography> */}
-        <DataGrid  hideFooter={true} getRowId={(row) => row._id}  rows={transactionsList} columns={columns} />
+        {transListState ? (
+          <DataGrid
+            getRowId={(row) => row._id}
+            rows={ecVal ? transListState : transactionsList}
+            columns={columns}
+          />
+        ) : (
+          <Loader />
+        )}
         <CustomDailogForm
           open={open}
           transactionData={transactionData}
@@ -256,9 +361,8 @@ const DataList = () => {
           handleDelete={() => handleDelete(id)}
           message={title}
         />
-  
       </Box>
-      </>
+    </>
   );
 };
 

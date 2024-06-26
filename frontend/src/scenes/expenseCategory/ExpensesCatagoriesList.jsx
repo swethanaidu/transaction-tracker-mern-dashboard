@@ -78,6 +78,9 @@ const ExpensesCategoriesList = () => {
       field: "expectedBudget",
       headerName: "Planned Budget",
       flex: 1,
+      renderCell: ({ row: { expectedBudget } }) => {
+        return (new Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" }).format(expectedBudget) );
+      },
     },
     {
       field: "startDate",
