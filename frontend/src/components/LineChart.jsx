@@ -1,16 +1,57 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { mockLineData as data } from "../data/mockData";
+import Loader from "./Loader";
+import { mockLineData as Linedata } from "../data/mockData";
+import { useGetMonthlyStatsDataQuery } from "../slices/statsSlice";
+import { useGetBarChartStatsDataQuery } from "../slices/statsSlice";
+import { useMemo } from "react";
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { data, isLoading } = useGetMonthlyStatsDataQuery();
+  // console.log(data);
+  const [totalMonthlyExpensesLine] = useMemo(() => {
+    if (!data) return [];
+
+    const { monthlyData } = data;
+    const totalMonthlyExpensesLine = {
+      id: "2024",
+      color: colors.greenAccent[500],
+      data: [],
+    };
+    totalMonthlyExpensesLine.data = Object.entries(data).map(
+      ([_id, data ], i) => ({
+        x: data.Month,
+        y: data.totalCost/100000,
+      })
+    );
+    // Object.values(monthlyData).reduce(
+    //   (acc, { Month, totalCost }) => {
+    //     // const curSales = acc.sales + totalSales;
+    //     // const curUnits = acc.units + totalUnits;
+
+    //     totalMonthlyExpensesLine.data = [
+    //       ...totalMonthlyExpensesLine.data,
+    //       { x: Month, y: totalCost },
+    //     ];
+         
+
+    //     return { Month: Month, totalCost: totalCost };
+    //   },
+    //   { Month: "", totalCost: 0 }
+    // );
+   
+    return [[totalMonthlyExpensesLine]];
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+  // console.log(totalMonthlyExpensesLine);
+  if (!data || isLoading) return <Loader />;
 
   return (
     <div style={{ height: isDashboard? "100% " : "70vh", width: "100%" }}>
     <ResponsiveLine
-      data={data}
+      data={totalMonthlyExpensesLine}
       theme={{
         axis: {
           domain: {
@@ -63,7 +104,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "transportation", // added
+        legend: isDashboard ? undefined : "Monthly report for the year - 2024", // added
         legendOffset: 36,
         legendPosition: "middle",
       }}
@@ -73,7 +114,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 3,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "count", // added
+        legend: isDashboard ? undefined : "Expenses in lakhs", // added
         legendOffset: -40,
         legendPosition: "middle",
       }}

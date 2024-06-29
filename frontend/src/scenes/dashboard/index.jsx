@@ -12,11 +12,14 @@ import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import { useGetOverallStatsQuery } from "../../slices/overallStatsApiSlice";
+import Loader from "../../components/Loader";
+import { getFormatedCurrency } from "../../components/common/Utils";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const { data, isLoading } = useGetOverallStatsQuery();
   return (
     <Box m="20px">
       {/* HEADER */}

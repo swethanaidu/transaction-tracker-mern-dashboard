@@ -1,6 +1,11 @@
 import React from "react";
+import { tokens } from "../theme";
 import { ResponsivePie } from "@nivo/pie";
-var data = [
+import { useGetOverallStatsQuery } from "../slices/overallStatsApiSlice";
+import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import Loader from "./Loader";
+import { getFormatedCurrency } from "./common/Utils";
+var mockdata = [
   {
     id: "Borewell work",
     label: "Borewell work",
@@ -33,10 +38,37 @@ var data = [
   },
 ];
 const PieChart = ({ isDashboard = false }) => {
+  const { data, isLoading } = useGetOverallStatsQuery();
+  // console.log(data);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  if (!data || isLoading) return <Loader />;
+
+  const pieColors = [
+   colors.greenAccent[500],
+   colors.greenAccent[900],
+   colors.greenAccent[300],
+   colors.greenAccent[500],
+  ];
+  const formattedData = Object.entries(data?.mappedPieData).map(
+    ([category, cost], i) => ({
+      id: category,
+      label: category,
+      value: cost,
+      color: pieColors[i],
+    })
+  );
+  // console.log(formattedData);
   return (
-    <div style={{ height: isDashboard? "100% " : "70vh", width: "100%" }}>
+    <Box
+    height={isDashboard ? "400px" : "100%"}
+    width={undefined}
+    minHeight={isDashboard ? "325px" : undefined}
+    minWidth={isDashboard ? "325px" : undefined}
+    position="relative">
       <ResponsivePie
-        data={data}
+        data={formattedData}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
         innerRadius={0.5}
         padAngle={0.7}
@@ -90,7 +122,24 @@ const PieChart = ({ isDashboard = false }) => {
           },
         ]}
       />
-    </div>
+      <Box
+        position="absolute"
+        top="50%"
+        left="50%"
+        color={theme.palette.secondary[400]}
+        textAlign="center"
+        pointerEvents="none"
+        sx={{
+          transform: isDashboard
+            ? "translate(-75%, -170%)"
+            : "translate(-50%, -100%)",
+        }}
+      >
+        <Typography variant="h4">
+          {!isDashboard && "Total:"} {getFormatedCurrency(data.yearlyExpenseTotal)}
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 

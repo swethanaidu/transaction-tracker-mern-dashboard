@@ -23,6 +23,11 @@ content-type: application/json
 GET   http://localhost:5000/api/dashboard
 
  
+###Get all EC  
+GET   http://localhost:5000/api/getMonthlyData
+
+###Get all EC  
+GET   http://localhost:5000/api/dashboard/getBarChartData
 ###get by id
 
 GET   http://localhost:5000/api/expensesCategories/666891c8334739cc0ca3f247

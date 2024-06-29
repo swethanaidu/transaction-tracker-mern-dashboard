@@ -131,7 +131,7 @@ const DataList = ({ handleCurrencydata }) => {
       setTotal(tot);
       settransListState(filteredVal);
       handleCurrencydata(tot, filteredVal[0]?.ecName);
-      console.log(filteredVal);
+      // console.log(filteredVal);
     }
    
   };

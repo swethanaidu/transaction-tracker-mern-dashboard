@@ -14,7 +14,9 @@ import ProfilePage from './scenes/profilePage/index.jsx';
 import Bar from './scenes/bar/index.jsx';
 import ExpenseCategoryPage from './scenes/expenseCategory/index.jsx';
 import TransactionsPage from './scenes/transactions/index.jsx';
-
+import Breakdown from './scenes/breakdown/index.jsx';
+import MonthlyOverview from './scenes/monthly/index.jsx';
+ 
 const router = createBrowserRouter(
   createRoutesFromElements(
      <Route path='/' element={<App />} >
@@ -24,11 +26,15 @@ const router = createBrowserRouter(
         <Route path='/team' element={<Team />} />
         <Route path='/expenseCategory' element={<ExpenseCategoryPage />} />
         <Route path='/transactions' element={<TransactionsPage />} />
+        <Route path='/breakdown' element={<Breakdown />} />
+        <Route path='/monthlyOverview' element={<MonthlyOverview />} />
+
+        
         
         {/* Private Routes */}
         <Route path='' element={<PrivateRoute />} >
           <Route path='/profile' element={<ProfilePage />} />
-          <Route path='/bar' element={<Bar />} />
+          <Route path='/overview' element={<Bar />} />
         </Route>
       </Route>
   )

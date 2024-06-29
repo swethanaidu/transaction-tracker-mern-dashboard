@@ -1,16 +1,84 @@
-import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { mockBarData as data } from "../data/mockData";
+import { mockBarData as bardata } from "../data/mockData";
+import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import Loader from "./Loader";
+import { getFormatedCurrency } from "./common/Utils";
+import { useGetBarChartStatsDataQuery } from "../slices/statsSlice";
 
 const BarChart = ({ isDashboard = false }) => {
+  const { data, isLoading } = useGetBarChartStatsDataQuery();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  // console.log(data);
+  if (!data || isLoading) return <Loader />;
+   const pieColors = [
+      colors.greenAccent[500],
+      colors.greenAccent[900],
+      colors.greenAccent[300],
+      colors.greenAccent[500],
+     ];
+     
+    const formattedData =  Object.entries(data).map(
+      ([_id, data, totalExpenseAmount ], i) => ({
+        category: data._id,
+        "Expected Budget": data.plannedBudget/100000,
+        "Expected BudgetColor": pieColors[0],
+        "Total Paid": data.totalExpenseAmount/100000,
+        "Total PaidColor": pieColors[1],
+      })
+    );
+  // console.log(formattedData);
+  //  var c = data?.transactions,
+  //  g=data?.formattedData,
+  //  arrayList = [], obj_c_processed = [];
 
+  //   for (var i in g) {
+  //       var obj = {category: g[i].category, ecbudget: c[i].ecbudget, cost: g[i]["Total cost"]};
+    
+  //       for (var j in c) {
+  //           if (g[i].ecName == c[j].category) {
+  //               obj.ecbudget = c[i].ecbudget;
+  //               obj.cost = g[i]["Total cost"];
+  //               obj_c_processed[c[j].category] = true;
+  //           }
+  //       }
+    
+  //       obj.ecbudget = obj.ecbudget || 0;
+  //       arrayList.push(obj);
+  //   }
+    
+  //   for (var j in c){
+  //       if (typeof obj_c_processed[c[j].category] == 'undefined') {
+  //           arrayList.push({category: c[j].category, cost: c[j].cost,   ecbudget: c[j].ecbudget});
+  //       }
+  //   }
+    
+    // console.log(arrayList);
+    // const pieColors = [
+    //   colors.greenAccent[500],
+    //   colors.greenAccent[900],
+    //   colors.greenAccent[300],
+    //   colors.greenAccent[500],
+    //  ];
+     
+    // const formattedData = (data?.mappedBarData  || {} ).map(
+    //   ([_id, plannedBudget, totalExpenseAmount ], i) => ({
+    //     category: _id,
+    //     "Expected Budget": plannedBudget/100000,
+    //     "Expected BudgetColor": pieColors[0],
+    //     "Total Paid": totalExpenseAmount/100000,
+    //     "Total PaidColor": pieColors[1],
+    //   })
+    // );
+    // console.log(formattedData);
+    // console.log(bardata);
+  // console.log(res);
+  
   return (
-    <div style={{ height: isDashboard? "100% " : "70vh", width: "100%" }}>
+    <Box style={{ height: isDashboard? "100% " : "70vh", width: "100%" }}>
     <ResponsiveBar
-      data={data}
+      data={formattedData}
       theme={{
         // added
         tooltip: {
@@ -50,13 +118,12 @@ const BarChart = ({ isDashboard = false }) => {
       }}
       groupMode="grouped"
       keys={["Expected Budget", "Total Paid"]}
-      // keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-      indexBy="expenseCategories"
+      indexBy="category"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={{ scheme: "nivo" }}
+      colors={{ scheme: 'nivo' }}
       defs={[
         {
           id: "dots",
@@ -135,7 +202,7 @@ const BarChart = ({ isDashboard = false }) => {
         return e.id + ": " + e.formattedValue + " in country: " + e.indexValue;
       }}
     />
-    </div>
+    </Box>
   );
 };
 

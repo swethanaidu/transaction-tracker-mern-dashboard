@@ -1,0 +1,5 @@
+###Get all EC  
+GET   http://localhost:5000/api/stats/getMonthlyData
+
+###Get all EC  
+GET   http://localhost:5000/api/stats/getBarChartData
