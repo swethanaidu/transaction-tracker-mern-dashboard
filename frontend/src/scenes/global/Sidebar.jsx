@@ -189,18 +189,18 @@ const SidebarMenu = () => {
             />
             <Item
               title="Monthly Overview"
-              to="/monthlyOverview"
+              to="/monthly"
               icon={<TimelineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            {/* <Item
               title="Geography Chart"
               to="/geography"
               icon={<MapOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
           </Box>
 
             <Typography
@@ -212,7 +212,7 @@ const SidebarMenu = () => {
             </Typography>
             <Item
               title="Profile Form"
-              to="/form"
+              to="/profile"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

@@ -28,52 +28,7 @@ const BarChart = ({ isDashboard = false }) => {
         "Total PaidColor": pieColors[1],
       })
     );
-  // console.log(formattedData);
-  //  var c = data?.transactions,
-  //  g=data?.formattedData,
-  //  arrayList = [], obj_c_processed = [];
-
-  //   for (var i in g) {
-  //       var obj = {category: g[i].category, ecbudget: c[i].ecbudget, cost: g[i]["Total cost"]};
-    
-  //       for (var j in c) {
-  //           if (g[i].ecName == c[j].category) {
-  //               obj.ecbudget = c[i].ecbudget;
-  //               obj.cost = g[i]["Total cost"];
-  //               obj_c_processed[c[j].category] = true;
-  //           }
-  //       }
-    
-  //       obj.ecbudget = obj.ecbudget || 0;
-  //       arrayList.push(obj);
-  //   }
-    
-  //   for (var j in c){
-  //       if (typeof obj_c_processed[c[j].category] == 'undefined') {
-  //           arrayList.push({category: c[j].category, cost: c[j].cost,   ecbudget: c[j].ecbudget});
-  //       }
-  //   }
-    
-    // console.log(arrayList);
-    // const pieColors = [
-    //   colors.greenAccent[500],
-    //   colors.greenAccent[900],
-    //   colors.greenAccent[300],
-    //   colors.greenAccent[500],
-    //  ];
-     
-    // const formattedData = (data?.mappedBarData  || {} ).map(
-    //   ([_id, plannedBudget, totalExpenseAmount ], i) => ({
-    //     category: _id,
-    //     "Expected Budget": plannedBudget/100000,
-    //     "Expected BudgetColor": pieColors[0],
-    //     "Total Paid": totalExpenseAmount/100000,
-    //     "Total PaidColor": pieColors[1],
-    //   })
-    // );
-    // console.log(formattedData);
-    // console.log(bardata);
-  // console.log(res);
+  
   
   return (
     <Box style={{ height: isDashboard? "100% " : "70vh", width: "100%" }}>

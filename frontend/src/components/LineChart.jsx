@@ -49,7 +49,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   if (!data || isLoading) return <Loader />;
 
   return (
-    <div style={{ height: isDashboard? "100% " : "70vh", width: "100%" }}>
+    <div style={{ height: isDashboard? "100% " : "100%", width: "100%" }}>
     <ResponsiveLine
       data={totalMonthlyExpensesLine}
       theme={{
@@ -85,7 +85,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
           },
         },
       }}
-      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // added
+      colors={isDashboard ? { datum: "color" } : { datum: "color"  }} // added
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
@@ -97,24 +97,31 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       }}
       yFormat=" >-.2f"
       curve="catmullRom"
+      enableArea={isDashboard}
       axisTop={null}
       axisRight={null}
       axisBottom={{
+        format: (v) => {
+          if (isDashboard) return v.slice(0, 3);
+          return v;
+        },
         orient: "bottom",
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "Monthly report for the year - 2024", // added
+        legend: isDashboard ? "" : "Monthly report for the year - 2024",
         legendOffset: 36,
         legendPosition: "middle",
       }}
       axisLeft={{
         orient: "left",
-        tickValues: 5, // added
-        tickSize: 3,
+        tickValues: 5,
+        tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "Expenses in lakhs", // added
+        legend: isDashboard
+          ? ""
+          : `Total Expenses for Year`,
         legendOffset: -40,
         legendPosition: "middle",
       }}
@@ -126,32 +133,36 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       pointBorderColor={{ from: "serieColor" }}
       pointLabelYOffset={-12}
       useMesh={true}
-      legends={[
-        {
-          anchor: "bottom-right",
-          direction: "column",
-          justify: false,
-          translateX: 100,
-          translateY: 0,
-          itemsSpacing: 0,
-          itemDirection: "left-to-right",
-          itemWidth: 80,
-          itemHeight: 20,
-          itemOpacity: 0.75,
-          symbolSize: 12,
-          symbolShape: "circle",
-          symbolBorderColor: "rgba(0, 0, 0, .5)",
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemBackground: "rgba(0, 0, 0, .03)",
-                itemOpacity: 1,
+      legends={
+        !isDashboard
+          ? [
+              {
+                anchor: "bottom-right",
+                direction: "column",
+                justify: false,
+                translateX: 100,
+                translateY: 0,
+                itemsSpacing: 0,
+                itemDirection: "left-to-right",
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                symbolSize: 12,
+                symbolShape: "circle",
+                symbolBorderColor: "rgba(0, 0, 0, .5)",
+                effects: [
+                  {
+                    on: "hover",
+                    style: {
+                      itemBackground: "rgba(0, 0, 0, .03)",
+                      itemOpacity: 1,
+                    },
+                  },
+                ],
               },
-            },
-          ],
-        },
-      ]}
+            ]
+          : undefined
+      }
     />
     </div>
   );

@@ -11,9 +11,9 @@ const MonthlyOverview = () => {
         <Box display="flex" justifyContent="space-between" alignItems="center">
             <Header title="Monthly Overview Transactions" subtitle="we can see difference between planned budget and totol expense amount" />
         </Box>
-        <Box>
-          <LineChart />
-        </Box>
+        <Box height="400px" m="40px 0 0 0">
+            <LineChart isDashboard={false} />
+          </Box>
     </Box>
   )
 }

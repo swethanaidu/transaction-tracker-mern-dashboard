@@ -15,7 +15,7 @@ import Bar from './scenes/bar/index.jsx';
 import ExpenseCategoryPage from './scenes/expenseCategory/index.jsx';
 import TransactionsPage from './scenes/transactions/index.jsx';
 import Breakdown from './scenes/breakdown/index.jsx';
-import MonthlyOverview from './scenes/monthly/index.jsx';
+import MonthlyOverview from './scenes/monthly/index.jsx'
  
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,8 +26,7 @@ const router = createBrowserRouter(
         <Route path='/team' element={<Team />} />
         <Route path='/expenseCategory' element={<ExpenseCategoryPage />} />
         <Route path='/transactions' element={<TransactionsPage />} />
-        <Route path='/breakdown' element={<Breakdown />} />
-        <Route path='/monthlyOverview' element={<MonthlyOverview />} />
+        
 
         
         
@@ -35,6 +34,8 @@ const router = createBrowserRouter(
         <Route path='' element={<PrivateRoute />} >
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/overview' element={<Bar />} />
+          <Route path='/breakdown' element={<Breakdown />} />
+          <Route path='/monthly' element={<MonthlyOverview />} />
         </Route>
       </Route>
   )

@@ -66,6 +66,7 @@ const getOverallStats = asyncHandler(async(req, res) => {
     //const overallStats = await OverallStat.find();
     // console.log(overallStat);
    // res.status(200).json(overallStats);
+   const ecs = await ExpensesCategory.find();
    const transactions = await Transaction.aggregate([
     // Join with user_info table
     {
@@ -119,125 +120,54 @@ const getOverallStats = asyncHandler(async(req, res) => {
       (accumulator, currentValue) => accumulator + currentValue.cost,
       0
     );
+ 
 
-    // const mappedBarData = transactions.reduce((acc, curr) => {
-    //   if (curr.ecName !== "") {
-    //     if (!acc[curr.ecName]) {
-    //       acc[curr.ecName] = 0;
-    //       acc["budget"] = curr.ecbudget;
-    //     }
-    //     acc[curr.ecName] = acc[curr.ecName] + curr.cost;
-        
-    //   }
-    //   return acc;
-    // }, {});
-
-    // const formattedData = Object.entries(mappedPieData).map(
-    //   ([ecName, count]) => {
-    //     return { "category": ecName, "Total cost": count};
-    //   }
-    // );
-
+    let sortedTranscationData = [...transactions].sort((a, b) => {
+      return b.paidDate - a.paidDate;
+    });
     
-
-    // let sortedData = [...formattedTopics].sort((a, b) => {
-    //   return b.value - a.value;
-    // });
-    // console.log(yearlyExpenseTotal);
-    // console.log( );
-    // let slicedData = sortedData.slice(0, 10);
-
-    // res.status(200).json(slicedData);
-    // const mappedBarData = await Transaction.aggregate(
-    //   [
-    //     {
-    //       $lookup:{
-    //           from: "users",        
-    //           localField: "userId",   
-    //           foreignField: "_id",  
-    //           as: "user_info"          
-    //       }
-    //   },
-    //   {   $unwind:"$user_info" },     
-    //   {
-    //       $lookup:{
-    //           from: "expensescategories", 
-    //           localField: "ecId", 
-    //           foreignField: "_id",
-    //           as: "ec_data"
-    //       }
-    //   },
-    //   {   $unwind:"$ec_data" },
-
-    //     // First Stage
-    //     {
-    //       $group :
-    //         {
-    //           _id : "$ec_data.name",
-    //           "plannedBudget":{"$first": "$ec_data.expectedBudget" },
-    //           totalExpenseAmount: {  $sum: {
-    //             $toInt: "$cost"
-    //           } }
-    //         }
-    //      },
-    //      // Second Stage
-    //      {
-    //        $match: { "totalExpenseAmount": { $gte: 10 } }
-    //      }
-    //    ]
-    //  );
-
-    // const formattedData = Object.entries(mappedBarData).map(
-    //   ([_id, plannedBudget]) => {
-    //     return { "category": ecName, "Total cost": plannedBudget};
-    //   }
-    // );
-
-    // const monthlyData = await Transaction.aggregate([
-    //   {
-    //     $group: {
-    //       _id: {
-             
-    //           $month: "$paidDate"
-    //       },
-    //       cost: {
-    //         $sum: {
-    //           $toInt: "$cost"
-    //         }
-    //       }
-    //     }
-    //   },
-    //   {
-    //     $project: {
-    //       totalCost: "$cost",
-    //       Month: {
-    //         $arrayElemAt: [
-    //           [
-    //             "",
-    //             "January",
-    //             "February",
-    //             "March",
-    //             "April",
-    //             "May",
-    //             "June",
-    //             "July",
-    //             "August",
-    //             "September",
-    //             "October",
-    //             "November",
-    //             "December"
-    //           ],
-    //           "$_id"
-    //         ]
-    //       }
-    //     }
-    //   }
-    // ])
-    // console.log(monthlyData);
+    let transactionsData = sortedTranscationData.slice(0, 10);
+    
+    const totalPlannedBudget = ecs.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.expectedBudget,
+      0
+    );
+    const categoryData = await Transaction.aggregate(
+      [
+      {
+          $lookup:{
+              from: "expensescategories", 
+              localField: "ecId", 
+              foreignField: "_id",
+              as: "ec_data"
+          }
+      },
+      {   $unwind:"$ec_data" },
+  
+        // First Stage
+        {
+          $group :
+            {
+              _id : "$ec_data.name",
+              "plannedBudget":{"$first": "$ec_data.expectedBudget" },
+              totalExpenseAmount: {  $sum: {
+                $toInt: "$cost"
+              } }
+            }
+         },
+         // Second Stage
+         {
+           $match: { "totalExpenseAmount": { $gte: 10 } }
+         }
+       ]
+     );
+    // console.log(categoryData);
     res.status(200).json({
+      totalPlannedBudget,
       yearlyExpenseTotal,
       mappedPieData,
-      transactions,
+      categoryData,
+      transactionsData,
   })
     
 });
@@ -246,9 +176,10 @@ const getOverallStats = asyncHandler(async(req, res) => {
 // route      GET /api/dashboard
 // @access    Private/admin
 const getMonthlyOverallStats = asyncHandler(async(req, res) => {
-  //const overallStats = await OverallStat.find();
+  // const overallStats = await OverallStat.find();
   // console.log(overallStat);
  // res.status(200).json(overallStats);
+ const ecs = await ExpensesCategory.find();
  const transactions = await Transaction.aggregate([
   // Join with user_info table
   {
@@ -300,6 +231,10 @@ const getMonthlyOverallStats = asyncHandler(async(req, res) => {
   }, {});
   const yearlyExpenseTotal = transactions.reduce(
     (accumulator, currentValue) => accumulator + currentValue.cost,
+    0
+  );
+  const totalPlannedBudget = ecs.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.expectedBudget,
     0
   );
 
@@ -416,9 +351,10 @@ const getMonthlyOverallStats = asyncHandler(async(req, res) => {
       }
     }
   ])
-  console.log(monthlyData);
+  console.log(totalPlannedBudget);
   res.status(200).json({
     yearlyExpenseTotal,
+    totalPlannedBudget,
     mappedPieData,
     transactions,
 })
