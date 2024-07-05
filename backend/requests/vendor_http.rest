@@ -1,0 +1,34 @@
+ 
+
+###set Vandor
+
+POST http://localhost:5000/api/vendor  HTTP/1.1
+content-type: application/json
+
+{
+   "name": "Test123",
+   "description": "Test34",
+   "ecId": "667ab9fa3eb2440c9be95d83"
+   
+}
+ 
+###Get all Vandor details
+GET   http://localhost:5000/api/vendor
+
+ 
+###get Vandor by id
+
+GET   http://localhost:5000/api/vendor/66877ea59514ff5439f88449
+
+###update Vandor by id 
+
+PUT   http://localhost:5000/api/vendor/66877ea59514ff5439f88449 HTTP/1.1
+content-type: application/json
+
+{
+   "description": "Test1235"
+}
+
+###delete Vandor ID 
+DELETE    http://localhost:5000/api/vendor/66877ea59514ff5439f88449 HTTP/1.1
+ 

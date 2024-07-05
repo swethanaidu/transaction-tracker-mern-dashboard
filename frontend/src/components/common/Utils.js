@@ -1,4 +1,3 @@
- 
 export const restructuredList = (data) => {
     return data?.map(item => {
         return {
@@ -14,6 +13,10 @@ export const getFormatedCurrency = (data) => {
         style: "currency",
         currency: "INR",
     }).format(data);
+}
+
+export const getDataTruncate = (str) => {
+    return str.length > 20 ? str.substring(0, 20) + "..." : str;
 }
 
  

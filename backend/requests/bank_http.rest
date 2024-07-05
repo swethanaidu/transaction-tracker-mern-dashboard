@@ -1,0 +1,34 @@
+###set bank
+POST http://localhost:5000/api/bank  HTTP/1.1
+content-type: application/json
+
+{
+   "name": "Test123",
+   "accountNumber": "Test34",
+   "userId": "66634d9c7baccac40a35f7a8",
+   "accountType": "Savings",
+   "amount": 123
+   
+}
+ 
+###Get all bank details
+GET   http://localhost:5000/api/bank
+
+ 
+###get bank by id
+
+GET   http://localhost:5000/api/bank/66877a231c1cc65676b247b3
+
+###update bank by id 
+
+PUT   http://localhost:5000/api/bank/66877a231c1cc65676b247b3 HTTP/1.1
+content-type: application/json
+
+{
+   "accountNumber": "Test1235",
+   "amount": 2330199
+}
+
+###delete bank ID 
+DELETE    http://localhost:5000/api/bank/66877a231c1cc65676b247b3 HTTP/1.1
+ 

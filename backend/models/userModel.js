@@ -22,6 +22,11 @@ const userSchema = mongoose.Schema(
         occupation: String,
         phoneNumber: String,
         transactions: [{type: mongoose.Types.ObjectId, ref: "Transaction"}],
+        gender: {
+            type: String,
+            enum: ["Male", "Female", "Others"],
+            default: "Male"
+        },
         role: {
             type: String,
             enum: ["user", "admin", "manager"],

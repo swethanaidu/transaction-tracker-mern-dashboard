@@ -7,7 +7,6 @@ import {
     updateOverallStatByID,
     // getMonthlyData,
     // getBarChartData,
-    getMonthlyOverallStats,
 } from '../controllers/overallStatsController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 

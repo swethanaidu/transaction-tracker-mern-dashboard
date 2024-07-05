@@ -21,6 +21,7 @@ const authUser = asyncHandler(async (req, res) => {
       country: userExists.country,
       occupation: userExists.occupation,
       phoneNumber: userExists.phoneNumber,
+      gender: userExists.gender,
     });
   } else {
     res.status(401);
@@ -43,6 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
     phoneNumber,
     transactions,
     role,
+    gender
   } = req.body;
 
   const year = 2024;
@@ -63,6 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
     phoneNumber,
     transactions,
     role,
+    gender
   });
   if (user) {
     if (OverallStatExists) {
@@ -76,6 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      gender: user.gender,
     });
   } else {
     res.status(400);
@@ -109,6 +113,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     occupation: req.user.occupation,
     phoneNumber: req.user.phoneNumber,
     role: req.user.role,
+    gender: req.user.gender
   };
   res.status(200).json(user);
 });
@@ -129,6 +134,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.occupation = req.body.occupation || user.occupation;
     user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
     user.role = req.body.role || user.role;
+    user.gender = req.body.gender || user.gender;
     if (req.body.password) {
       user.password = req.body.password;
     }
@@ -143,6 +149,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       occupation: updatedUser.occupation,
       phoneNumber: updatedUser.phoneNumber,
       role: updatedUser.role,
+      gender: updatedUser.gender,
     });
   } else {
     res.status(404);
@@ -176,6 +183,7 @@ const getUserByID = asyncHandler(async (req, res) => {
       occupation: user.occupation,
       phoneNumber: user.phoneNumber,
       role: user.role,
+      gender: user.gender,
     }
   );
 });
@@ -195,6 +203,7 @@ const updateUserByID = asyncHandler(async (req, res) => {
     user.occupation = req.body.occupation || user.occupation;
     user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
     user.role = req.body.role || user.role;
+    user.gender = req.body.gender || user.gender;
 
     const updatedUser = await user.save();
 
@@ -208,6 +217,7 @@ const updateUserByID = asyncHandler(async (req, res) => {
       occupation: updatedUser.occupation,
       phoneNumber: updatedUser.phoneNumber,
       role: updatedUser.role,
+      gender: updatedUser.gender,
     });
   } else {
     res.status(404);

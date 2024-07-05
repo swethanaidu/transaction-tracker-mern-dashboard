@@ -5,6 +5,8 @@ import overallStatRoutes from './routes/overallStatRoutes.js';
 import expensesCategoryRoutes from './routes/expensesCategoryRoutes.js'
 import transactionRoutes from './routes/transactionRoutes.js'
 import chartsRoutes from './routes/chartsDataRoutes.js'
+import bankRoutes from './routes/bankRoutes.js'
+import vendorRoutes from './routes/vendorRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
@@ -27,6 +29,8 @@ app.use('/api/expensesCategories', expensesCategoryRoutes);
 app.use('/api/dashboard',  overallStatRoutes);
 app.use('/api/transactions',  transactionRoutes);
 app.use('/api/stats',  chartsRoutes);
+app.use('/api/bank',  bankRoutes);
+app.use('/api/vendor',  vendorRoutes);
 
 app.get('/', (req,res) => res.send("Server is ready"));
 

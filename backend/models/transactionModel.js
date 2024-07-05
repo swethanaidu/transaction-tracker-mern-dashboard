@@ -11,6 +11,8 @@ const transactionSchema = mongoose.Schema(
         },
         userId: {type: mongoose.Types.ObjectId, ref: "User"},
         ecId: {type: mongoose.Types.ObjectId, ref: "ExpensesCategory"},
+        vendorId: {type: mongoose.Types.ObjectId, ref: "vendor"},
+        bankId: {type: mongoose.Types.ObjectId, ref: "bank"},
         cost: {
             type: Number,
             required: true
@@ -18,6 +20,19 @@ const transactionSchema = mongoose.Schema(
         paidDate: {
             type: Date,
             default: Date.now()
+        },
+        paymentMode: {
+            type: String,
+            enum: ["UPI", "Cash", "NEFT", "IMPS", "RTGS", "Transfer Within Bank", "Others"],
+            default: "NEFT"
+        },
+        vendorPaymentType: {
+            type: String,
+            enum: ["Direct", "Individual"],
+            default: "Direct"
+        },
+        vendorIndivdualName: {
+            type: String,
         },
         status: {
             type: String,
