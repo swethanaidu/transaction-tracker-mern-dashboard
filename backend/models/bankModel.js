@@ -12,7 +12,7 @@ const bankSchema = mongoose.Schema(
         },
         accountType: {
             type: String,
-            enum: ["Savings", "Loan", "FD", "RD"],
+            enum: ["Savings", "Loan", "FD", "RD", "Credit Card"],
             default: "Savings"
         },
         userId: {type: mongoose.Types.ObjectId, ref: "User"},

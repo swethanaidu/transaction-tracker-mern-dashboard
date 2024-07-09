@@ -118,7 +118,7 @@ const EditForm = ({ isProfilePage = false, userInfo, handleClose }) => {
     if(isLoading) return (<Loader />)
   return (
     <>
-        <Box backgroundColor={colors.primary[400]} borderRadius="8px" p="30px 20px 20px"  mt="40px" >
+        <Box  >
         <Formik
           onSubmit={submitProfileForm}
           initialValues={user}
