@@ -32,6 +32,8 @@ import {
   restructuredList,
   getFormatedCurrency,
 } from "../../components/common/Utils";
+import { useGetVendorsQuery } from "../../slices/vendorApiSlice";
+import { useGetBanksQuery } from "../../slices/bankApiSlice";
 const DataList = ({ handleCurrencydata }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -54,6 +56,8 @@ const DataList = ({ handleCurrencydata }) => {
 
   const { data: ecList } = useGetECsQuery();
   const { data: usersList } = useGetUsersQuery();
+  const { data: vendorsList } = useGetVendorsQuery();
+  const { data: bankList } = useGetBanksQuery();
 
   const [total, setTotal] = useState(0);
   const [transListState, settransListState] = useState([]);
@@ -353,6 +357,8 @@ const DataList = ({ handleCurrencydata }) => {
           title={title}
           usersList={usersList}
           ecList={ecList}
+          vendorsList={vendorsList}
+          bankList={bankList}
         />
         <CustomDeleteDailog
           open={openDelete}

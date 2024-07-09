@@ -10,7 +10,7 @@ import Form from "./Form";
 import Loader from "../../components/Loader";
 import {  useSelector } from "react-redux";
 
-const CustomDailogForm = ({ open, handleClose, transactionData, title , isLoading, usersList, ecList}) => {
+const CustomDailogForm = ({ open, handleClose, transactionData, title , isLoading, usersList, ecList, vendorsList, bankList}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { userInfo } = useSelector((state) => state.auth);
@@ -61,7 +61,7 @@ const CustomDailogForm = ({ open, handleClose, transactionData, title , isLoadin
           {isLoading ? <Loader /> : 
 
           ( <Form transactionInfo={transactionData} handleClose={handleClose} loggedUSer={userInfo} usersList={usersList}
-            ecList={ecList} />   )
+            ecList={ecList} vendorsList={vendorsList} bankList={bankList} />   )
           }
         </DialogContent>
       </BootstrapDialog>

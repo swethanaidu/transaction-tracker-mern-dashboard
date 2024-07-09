@@ -23,7 +23,7 @@ const transactionSchema = mongoose.Schema(
         },
         paymentMode: {
             type: String,
-            enum: ["UPI", "Cash", "NEFT", "IMPS", "RTGS", "Transfer Within Bank", "Others"],
+            enum: ["UPI", "Cash", "NEFT", "IMPS", "RTGS", "Transfer Within Bank","Credit Card", "Others"],
             default: "NEFT"
         },
         vendorPaymentType: {

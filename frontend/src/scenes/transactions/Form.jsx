@@ -9,7 +9,7 @@ import {
   FormControl,
   Select,
   useTheme,
-  MenuItem,
+  MenuItem,FormControlLabel,RadioGroup, Radio,FormLabel,
 } from "@mui/material";
 import moment from "moment";
 import * as yup from "yup";
@@ -28,7 +28,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { useSetTransactionMutation } from "../../slices/transactionApiSlice";
 import { useUpdateTransactionMutation } from "../../slices/transactionApiSlice";
 
-import { restructuredList, getFormatedCurrency } from "../../components/common/Utils";
+import { restructuredList, getFormatedCurrency, getDistinctValues, restructuredBankACList } from "../../components/common/Utils";
 
 // import { useGetUsersQuery } from "../../slices/userApiSlice";
 // import { useGetECsQuery } from "../../slices/expCategoryApiSlice";
@@ -49,7 +49,12 @@ const initialValuesExpensesCategory = {
   paidDate: dayjs(Date.now()),
   userId: "",
   ecId: "",
+  bankId:"",
+  vendorId:"",
+  paymentMode:"NEFT",
   status: "Completed",
+  vendorPaymentType: "Direct",
+  vendorIndivdualName:"",
 };
 
 const initialValuesCustomSnackBar = {
@@ -59,7 +64,7 @@ const initialValuesCustomSnackBar = {
   severity: "",
 };
 
-const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) => {
+const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, vendorsList, bankList}) => {
   // console.log(transactionInfo);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -75,7 +80,11 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
 
   const [ecData, setecData] = useState();
   const [userData, setuserData] = useState();
-
+  const [bankName, setBankName] = useState("HDFC Bank");
+  const [bankData, setBankData] = useState(bankList.filter( x => x.userId === loggedUSer._id));
+  const [userIDVal, setUserIDVal] = useState(loggedUSer._id);
+  const [accountType, setAccountType] = useState(getDistinctValues(restructuredBankACList(bankList)));
+  // const [radioValue, setradioValue] = React.useState('female');
   const [addECDetails] = useSetTransactionMutation();
   const [updateECDetails, { isLoading: ecLoading }] = useUpdateTransactionMutation(
     transactionInfo?._id
@@ -84,6 +93,7 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
 
 
   
+
   useEffect(() => {
     
     // console.log(loggedUSer);
@@ -96,7 +106,8 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
     }
     setecData(ecList);
     setuserData(usersList)
-   
+     
+      
   }, [transactionInfo, transaction, loggedUSer, ecList, usersList, ecData, userData]);
 
   // const restructuredList = (data) => {
@@ -109,8 +120,32 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
   // };
   const resUser = restructuredList(usersList);
   const resEC = restructuredList(ecList);
+  const resVendors = restructuredList(vendorsList);
+  const resBankVal = restructuredList(bankData);
+  const resBank =  getDistinctValues(resBankVal)//Removed dulpicates
+  // const resBankAcc = restructuredBankACList(bankList.filter( x => x.userId === userIDVal));
+  // console.log(resBankAcc);
+  const handleBankNameChange = (e) => {
+    
+   // console.log(e.target.value);
+    const bankAccountFilter = bankList.filter( x => x.userId === userIDVal && x.name === e.target.value);
+    //console.log(bankAccountFilter);
+    const resBankAcc = restructuredBankACList(bankAccountFilter);
+   // console.log(resBankAcc);
+    setAccountType(resBankAcc);
+    setBankName(e.target.value);
+    
+    // setAccountType()
+  }
+  const handleUserChange = (val) => {
+    const bankFilter = bankList.filter( x => x.userId === val);
+    setBankData(bankFilter)
+    setUserIDVal(val);
+    // console.log(bankFilter);
+    // setAccountType()
+  }
   
-// console.log(resUser);
+// console.log(vendorsList);
   const submitECForm = async (values) => {
     //    console.log(values);
     let res,
@@ -186,7 +221,7 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
                   },
                 }}
               >
-                <FormControl fullWidth sx={{ gridColumn: "span 6" }}>
+                <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
                   <InputLabel
                     variant="outlined"
                     id="ecId"
@@ -217,7 +252,7 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
                   name="title"
                   error={Boolean(touched.title) && Boolean(errors.title)}
                   helperText={touched.title && errors.title}
-                  sx={{ gridColumn: "span 6" }}
+                  sx={{ gridColumn: "span 4" }}
                   focused
                 />
                 <TextField
@@ -230,12 +265,12 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
                     Boolean(touched.description) && Boolean(errors.description)
                   }
                   helperText={touched.description && errors.description}
-                  sx={{ gridColumn: "span 6" }}
+                  sx={{ gridColumn: "span 4" }}
                   focused
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
-                    sx={{ gridColumn: "span 6", mt: "-8px " }}
+                    sx={{ gridColumn: "span 4", mt: "-8px " }}
                     components={["DatePicker"]}
                   >
                     <DatePicker
@@ -287,11 +322,111 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
                     Boolean(errors.cost)
                   }
                   helperText={touched.cost && errors.cost}
-                  sx={{ gridColumn: "span 6" }}
+                  sx={{ gridColumn: "span 4" }}
                   focused
                 />
+               <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
+                  <InputLabel
+                    variant="outlined"
+                    id="paymentMode"
+                    htmlFor="paymentModeSelect"
+                  >
+                    Mode of Payment
+                  </InputLabel>
+                  <Select
+                    labelId="paymentMode"
+                    name="paymentMode"
+                    id="paymentModeSelect"
+                    value={values.paymentMode || "UPI"}
+                    label="Payment paymentMode"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="UPI">UPI</MenuItem>
+                    <MenuItem value="Cash">Cash</MenuItem>
+                    <MenuItem value="NEFT">NEFT</MenuItem>
+                    <MenuItem value="IMPS">IMPS</MenuItem>
+                    <MenuItem value="RTGS">RTGS</MenuItem>
+                    <MenuItem value="Transfer Within Bank">Transfer Within Bank</MenuItem>
+                    <MenuItem value="Credit Card">Credit Card</MenuItem>
+                    <MenuItem value="Others">Others</MenuItem>
+                  </Select>
+                </FormControl>
                
-                <FormControl fullWidth sx={{ gridColumn: "span 6" }}>
+               
+                 <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
+                  <InputLabel
+                    variant="outlined"
+                    id="userId"
+                    htmlFor="userSelect"
+                  >
+                    Payment By
+                  </InputLabel>
+                  <Select
+                    labelId="userId"
+                    name="userId"
+                    id="userSelect"
+                    value={values.userId || loggedUSer?._id}
+                    label="Payment By"
+                    onChange={(e) => {
+                      handleUserChange(e.target.value);
+                      handleChange(e)
+                    }
+                      }
+                    
+                  >
+                    {resUser?.map((ec, i) => (
+                    <MenuItem  key={`${ec._id}-${i}`} value={(ec._id).toString()}>{ec.name}</MenuItem>
+                    ))};
+                  </Select>
+                </FormControl>
+                
+                <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
+                  <InputLabel
+                    variant="outlined"
+                    id="bankNameId"
+                    htmlFor="bankSelect"
+                  >
+                    Bank
+                  </InputLabel>
+                  <Select
+                    labelId="bankNameId"
+                    name="bankNameId"
+                    id="bankSelect"
+                    value={bankName || ""}
+                    label="Bank"
+                    onChange={handleBankNameChange}
+                    
+                  >
+                    {resBank?.map((ec, i) => (
+                    <MenuItem  key={`${ec._id}-${i}`} value={(ec.name).toString()}>{ec.name}</MenuItem>
+                    ))};
+                  </Select>
+                </FormControl>
+                {accountType && 
+                <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
+                  <InputLabel
+                    variant="outlined"
+                    id="bankId"
+                    htmlFor="bankIdSelect"
+                  >
+                    Type
+                  </InputLabel>
+                  <Select
+                    labelId="bankId"
+                    name="bankId"
+                    id="bankIdSelect"
+                    value={values.bankId || ""}
+                    label="Type"
+                    onChange={handleChange}
+                    
+                  >
+                    {accountType?.map((ec, i) => (
+                    <MenuItem  key={`${ec._id}-${i}`} value={(ec._id).toString()}>{ec.name}</MenuItem>
+                    ))};
+                  </Select>
+                </FormControl>
+                }
+                <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
                   <InputLabel
                     variant="outlined"
                     id="status"
@@ -312,31 +447,55 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList}) =
                     <MenuItem value="Canceled">Canceled</MenuItem>
                   </Select>
                 </FormControl>
-                
-                 <FormControl fullWidth sx={{ gridColumn: "span 6" }}>
+                <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
                   <InputLabel
                     variant="outlined"
-                    id="userId"
-                    htmlFor="userSelect"
+                    id="vendorId"
+                    htmlFor="vendorSelect"
                   >
-                    Payment By
+                    Payment To
                   </InputLabel>
                   <Select
-                    labelId="userId"
-                    name="userId"
-                    id="userSelect"
-                    value={values.userId || loggedUSer?._id}
+                    labelId="vendorId"
+                    name="vendorId"
+                    id="vendorSelect"
+                    value={values.vendorId || ""}
                     label="Payment By"
                     onChange={handleChange}
                     
                   >
-                    {resUser?.map((ec, i) => (
+                    {resVendors?.map((ec, i) => (
                     <MenuItem  key={`${ec._id}-${i}`} value={(ec._id).toString()}>{ec.name}</MenuItem>
                     ))};
                   </Select>
                 </FormControl>
-               
- 
+                <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
+                <FormLabel id="demo-vendorPaymentType" color="secondary" >Vendor Payment Type</FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-vendorPaymentType"
+                  name="vendorPaymentType"
+                  value={values.vendorPaymentType}
+                  onChange={handleChange}
+                  row
+                >
+                  <FormControlLabel value="Direct" control={<Radio color="secondary"  />} label="Direct" />
+                  <FormControlLabel value="Individual" control={<Radio color="secondary"  />} label="Individual" />
+                </RadioGroup>
+              </FormControl>
+              {values.vendorPaymentType === "Individual" && (
+                 <TextField
+                  label="vendorIndivdualName"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.vendorIndivdualName || ""}
+                  name="vendorIndivdualName"
+                  error={Boolean(touched.vendorIndivdualName) && Boolean(errors.vendorIndivdualName)}
+                  helperText={touched.vendorIndivdualName && errors.vendorIndivdualName}
+                  sx={{ gridColumn: "span 4" }}
+                  focused
+                />
+              )}
+
                 {/* BUTTONS */}
                 {/* {isSnackBarMessage && (
                   <CustomSnackbar
