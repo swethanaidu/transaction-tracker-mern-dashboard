@@ -7,6 +7,15 @@ export const restructuredList = (data) => {
       });
 }
 
+export const restructuredBankACNumList = (data) => {
+    return data?.map(item => {
+        return {
+              _id: item._id,
+              name: (item.userName).substring(0,3) + " - " + (item.name).substring(0,4) + " - " + item.accountNumber + " - " + item.accountType,
+        };
+      });
+}
+
 export const restructuredBankACList = (data) => {
     return data?.map(item => {
         return {

@@ -1,18 +1,13 @@
 import { tokens } from "../../theme";
-import { getFormatedCurrency } from "../common/Utils";
 import { Box, Typography, useTheme } from "@mui/material";
 import Loader from "../Loader";
 import StatBankBox from "../StatBankBox";
-import FoundationIcon from "@mui/icons-material/Foundation";
-import EngineeringIcon from "@mui/icons-material/Engineering";
-import WaterIcon from "@mui/icons-material/Water";
-import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
-import ConstructionIcon from "@mui/icons-material/Construction";
+ 
 
 const BankStatsWidget = (data) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-//   console.log(data);
+  // console.log(data);
   const dashboardColors = [
     "#F3797E",
     "#CE4DDB",
@@ -24,24 +19,7 @@ const BankStatsWidget = (data) => {
     "#AF1763",
     "#198754",
   ];
-  const getIconComponent = (data, colorVal) => {
-    switch (data) {
-      case "Borewell":
-        return <WaterIcon sx={{ color: colorVal, fontSize: "26px" }} />;
-      case "Construction":
-        return <FoundationIcon sx={{ color: colorVal, fontSize: "26px" }} />;
-      case "Additional civil work":
-        return <EngineeringIcon sx={{ color: colorVal, fontSize: "26px" }} />;
-      case "Misc":
-        return <ConstructionIcon sx={{ color: colorVal, fontSize: "26px" }} />;
-      default:
-        return (
-          <MiscellaneousServicesIcon
-            sx={{ color: colorVal, fontSize: "26px" }}
-          />
-        );
-    }
-  };
+
   if (!data?.data) return <Loader />;
   return (
     <>
@@ -50,7 +28,7 @@ const BankStatsWidget = (data) => {
           <Box
             key={`${category._id}-${i}`}
             backgroundColor={colors.primary[400]}
-            gridColumn="span 3"
+            gridColumn="span 6"
             alignItems="center"
             justifyContent="center"
             gap="0"
@@ -59,11 +37,9 @@ const BankStatsWidget = (data) => {
             border={"1px solid " + dashboardColors[i]}
           >
             <StatBankBox
-              title={category?.totalExpenseAmount}
-              subtitle={category?._id}
-              progress={category?.totalExpenseAmount / category?.plannedBudget}
+              data={category}
               colorVal={dashboardColors[i]}
-              icon={getIconComponent(category?._id, dashboardColors[i])}
+              // icon={getIconComponent(category?._id, dashboardColors[i])}
             />
           </Box>
         ))}

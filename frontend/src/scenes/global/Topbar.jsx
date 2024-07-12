@@ -132,7 +132,11 @@ const Topbar = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Settings" arrow>
-          <IconButton>
+          <IconButton 
+          onClick={() => {
+            navigate("/profile");
+          }}
+          >
             <SettingsOutlinedIcon />
           </IconButton>
         </Tooltip>

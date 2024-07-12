@@ -101,9 +101,149 @@ const getBarChartData = asyncHandler(async(req, res) => {
 });
  
 
+// @desc      get all OverallStat
+// route      GET /api/dashboard/getUserBankExpenses
+// @access    Private/admin
+const getUserBankExpenses = asyncHandler(async(req, res) => {
+  const mappedBankData = await Transaction.aggregate(
+    [
+      {
+        $lookup:{
+            from: "users",       // other table name
+            localField: "userId",   // name of users table field
+            foreignField: "_id", // name of userinfo table field
+            as: "user_info"         // alias for userinfo table
+        }
+    },
+    {   $unwind:"$user_info" },     // $unwind used for getting data in object or for one record only
+
+   
+    {
+        $lookup:{
+            from: "expensescategories", 
+            localField: "ecId", 
+            foreignField: "_id",
+            as: "ec_data"
+        }
+    },
+    {   $unwind:"$ec_data" },
+    {
+      $lookup:{
+          from: "banks", 
+          localField: "bankId", 
+          foreignField: "_id",
+          as: "bank_data"
+      }
+  },
+  {   $unwind:"$bank_data" },
+  {
+      $lookup:{
+          from: "vendors", 
+          localField: "vendorId", 
+          foreignField: "_id",
+          as: "vendor_data"
+      }
+  },
+  {   $unwind:"$vendor_data" },
+
+      // First Stage
+      // {
+      //   $group :
+      //     {
+      //       _id : "$user_info.name",
+      //       BankName: { "$first": "$bank_data.name" },
+      //       ACNumber: { $first: "$bank_data.accountNumber" },
+      //       ACType: "$bank_data.accountType",
+      //       "currentBalance":{"$first": "$ec_data.expectedBudget" },
+      //       totalExpenseAmount: {  $sum: {
+      //         $toInt: "$cost"
+      //       } }
+      //     }
+      //  },
+      {
+        $group: {
+          _id: {
+            userName: "$user_info.name",
+            bankName: "$bank_data.name",
+            bankACNum: "$bank_data.accountNumber",
+            bankACType: "$bank_data.accountType",
+            currentBalance: "$bank_data.amount",
+
+          },
+          count: {
+            $sum: 1
+          },
+          totalExpenseAmount: {  $sum: {
+                    $toInt: "$cost"
+                  } }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            userName: "$_id.userName",
+            bankName: "$_id.bankName",
+            // AccountNum: "$_id.bankACNum",
+          },
+          
+          Accounts: {
+            $push: {
+              AccountNum: "$_id.bankACNum",
+              AccountType: "$_id.bankACType",
+              totalTransactions: "$count",
+              currentBalance: "$_id.currentBalance",
+              totalAmountSpent: "$totalExpenseAmount",
+            }
+          }
+        }
+      },
+
+      {
+        $group: {
+          _id: "$_id.userName",
+          Bank: {
+            $push: {
+              name: "$_id.bankName",
+              Accounts: "$Accounts"
+            }
+          }
+        }
+      },
+      
+      //  {
+      //   "$project": {
+      //     "Bank": {
+      //       "name": "$BankName",
+      //       "account": {
+      //         "acNum": "$ACNumber",
+      //         "acType": {
+      //           "acCategory": "$ACType",
+      //           "currentBalance": "$currentBalance",
+      //           "totalExpenseAmount": "$totalExpenseAmount",
+      //         }
+      //       }
+            
+      //     }
+      //   }
+      // },
+       // Second Stage
+      //  {
+      //    $match: { "totalExpenseAmount": { $gte: 10 } }
+      //  }
+     ]
+   );
+
+   let sortedMappedBankData = [...mappedBankData].sort((a, b) => {
+    return b.AccountNum - a.AccountNum;
+  });
+//   console.log(mappedBankData);
+  res.status(200).json(sortedMappedBankData)
+});
+ 
+
   
 export {
     getBarChartData,
     getMonthlyOverallStats,
-    
+    getUserBankExpenses
 }

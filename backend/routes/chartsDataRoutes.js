@@ -2,6 +2,7 @@ import express from 'express';
 import { 
     getBarChartData, 
     getMonthlyOverallStats,
+    getUserBankExpenses,
 } from '../controllers/chartsDataController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -12,6 +13,7 @@ const router = express.Router();
 
 router.route('/getMonthlyData').get(protect, admin, getMonthlyOverallStats);
 router.route('/getBarChartData').get(protect, admin, getBarChartData);
+router.route('/getUserBankExpenses').get(protect, admin, getUserBankExpenses);
 
 // router.route('/getMonthlyData').get(protect, admin, getMonthlyData);
 export default router;

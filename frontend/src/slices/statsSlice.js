@@ -18,11 +18,19 @@ export const statsApiSlice = apiSlice.injectEndpoints({
             providesTags: ['Stats'],
             keepUnusedDataFor: 5,
           }),
+          getUserBankExpensesData: builder.query({
+            query: () => ({
+                url: `${STATS_URL}/getUserBankExpenses`,
+            }),
+            providesTags: ['Stats'],
+            keepUnusedDataFor: 5,
+          }),
          
     })
 })
 
 export const {
     useGetMonthlyStatsDataQuery,
-    useGetBarChartStatsDataQuery
+    useGetBarChartStatsDataQuery,
+    useGetUserBankExpensesDataQuery
 } = statsApiSlice

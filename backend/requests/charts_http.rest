@@ -3,3 +3,6 @@ GET   http://localhost:5000/api/stats/getMonthlyData
 
 ###Get all EC  
 GET   http://localhost:5000/api/stats/getBarChartData
+
+###Get all bank expenses  
+GET   http://localhost:5000/api/stats/getUserBankExpenses

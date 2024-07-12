@@ -27,11 +27,13 @@ import TotalCostWithLinearPB from "../../components/widgets/TotalCostWithLinearP
 import BankStatsWidget from "../../components/widgets/BankStatsWidget";
 import CategoryStatsWidget from "../../components/widgets/CategoryStatsWidget";
 import RecentTranscationsWidget from "../../components/widgets/RecentTranscationsWidget";
-
+import { useGetUserBankExpensesDataQuery } from "../../slices/statsSlice";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetOverallStatsQuery();
+  const { data:bankStats } = useGetUserBankExpensesDataQuery();
+  
   // const totalcompletion = Math.round((data?.yearlyExpenseTotal / data?.totalPlannedBudget) * 100).toFixed(2);
   const totalcompletion = (
     (data?.yearlyExpenseTotal / data?.totalPlannedBudget) *
@@ -102,7 +104,7 @@ const Dashboard = () => {
 
         <Box
           gridColumn="span 6"
-          gridRow="span 1"  
+          gridRow="span 2"  
           display="grid"
           gridTemplateColumns="repeat(12, 1fr)"
           // gridAutoRows="140px"
@@ -114,7 +116,7 @@ const Dashboard = () => {
             }
           }}
         >
-          <BankStatsWidget data={data?.categoryData} />
+          <BankStatsWidget data={bankStats} />
            
         </Box>
         {/* ROW 2 */}

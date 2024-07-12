@@ -28,7 +28,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { useSetTransactionMutation } from "../../slices/transactionApiSlice";
 import { useUpdateTransactionMutation } from "../../slices/transactionApiSlice";
 
-import { restructuredList, getFormatedCurrency, getDistinctValues, restructuredBankACList } from "../../components/common/Utils";
+import { restructuredList, getFormatedCurrency,restructuredBankACNumList, getDistinctValues, restructuredBankACList } from "../../components/common/Utils";
 
 // import { useGetUsersQuery } from "../../slices/userApiSlice";
 // import { useGetECsQuery } from "../../slices/expCategoryApiSlice";
@@ -80,10 +80,14 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
 
   const [ecData, setecData] = useState();
   const [userData, setuserData] = useState();
-  const [bankName, setBankName] = useState("HDFC Bank");
-  const [bankData, setBankData] = useState(bankList.filter( x => x.userId === loggedUSer._id));
-  const [userIDVal, setUserIDVal] = useState(loggedUSer._id);
-  const [accountType, setAccountType] = useState(getDistinctValues(restructuredBankACList(bankList)));
+  const [bankName, setBankName] = useState(transactionInfo?.bankName || "HDFC Bank");
+  const [bankData, setBankData] = useState(bankList.filter( x => x.userId === (transactionInfo?.userId || loggedUSer?._id)));
+  const [userIDVal, setUserIDVal] = useState(transactionInfo?.userId || loggedUSer._id);
+  const [accountType, setAccountType] = useState();
+  const [accountNumber, setAccountNumber] = useState();
+  const [bankAcNumber, setBankAcNumber] = useState( );
+
+  
   // const [radioValue, setradioValue] = React.useState('female');
   const [addECDetails] = useSetTransactionMutation();
   const [updateECDetails, { isLoading: ecLoading }] = useUpdateTransactionMutation(
@@ -95,11 +99,24 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
   
 
   useEffect(() => {
-    
+    const resBankAccNum = getDistinctValues(restructuredBankACNumList(bankList));
+    setAccountType(resBankAccNum)
     // console.log(loggedUSer);
     initialValuesExpensesCategory.userId= loggedUSer?._id;
     setTransaction(initialValuesExpensesCategory);
-    if (transactionInfo !== null) setTransaction(transactionInfo);
+    if (transactionInfo !== null){
+      setTransaction(transactionInfo);
+      // const bankAccountNumFilter = bankList.filter(x => x.accountNumber === transactionInfo?.bankACNum);
+      
+      // console.log(bankList);
+      // console.log(transactionInfo);
+      // console.log(resBankAccNum);
+      
+    //   setTransaction(prevState => ({
+    //     ...prevState,
+    //     fName: 'your updated value here'
+    //  }))
+    }
     else {
       setIsAddNew(true);
       setTransaction(initialValuesExpensesCategory);
@@ -125,15 +142,48 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
   const resBank =  getDistinctValues(resBankVal)//Removed dulpicates
   // const resBankAcc = restructuredBankACList(bankList.filter( x => x.userId === userIDVal));
   // console.log(resBankAcc);
-  const handleBankNameChange = (e) => {
+  
+  const handleAcNumberChange = (e) => {
     
-   // console.log(e.target.value);
-    const bankAccountFilter = bankList.filter( x => x.userId === userIDVal && x.name === e.target.value);
-    //console.log(bankAccountFilter);
-    const resBankAcc = restructuredBankACList(bankAccountFilter);
-   // console.log(resBankAcc);
+    //console.log(e.target.value);
+    setBankAcNumber(e.target.value);
+    
+     const bankAccountNumFilter = bankList.filter( x => x.userId === userIDVal && x.accountNumber === e.target.value);
+     // const bankAccountFilter = bankList.filter( x => x.userId === userIDVal && x.name === val);
+     //console.log(bankAccountNumFilter);
+     const resBankAcc = getDistinctValues(restructuredBankACList(bankAccountNumFilter));
+
+     const resfilter = resBankAcc.filter(x => x._id === transaction.bankId )
+  //   console.log(resfilter);
+  //   if(!resfilter){
+  //          setTransaction(prevState => ({
+  //       ...prevState,
+  //       bankId: ''
+  //    }))
+  // console.log(transaction);
+  //   }
+
+    // setAccountNumber(resBankAcc);
     setAccountType(resBankAcc);
-    setBankName(e.target.value);
+     
+     console.log(transaction);
+     
+  
+     // setAccountType()
+   }
+  const handleBankNameChange = (val) => {
+    
+   //console.log(e.target.value);
+   setBankName(val);
+   
+    const bankAccountNumFilter = bankList.filter( x => x.userId === userIDVal && x.name === val);
+    // const bankAccountFilter = bankList.filter( x => x.userId === userIDVal && x.name === val);
+    //console.log(bankAccountNumFilter);
+    const resBankAcc = getDistinctValues(restructuredBankACNumList(bankAccountNumFilter));
+   //console.log(resBankAcc);
+   setAccountNumber(resBankAcc);
+   // setAccountType(resBankAcc);
+    
     
     // setAccountType()
   }
@@ -337,7 +387,7 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
                     labelId="paymentMode"
                     name="paymentMode"
                     id="paymentModeSelect"
-                    value={values.paymentMode || "UPI"}
+                    value={values.paymentMode || "NEFT"}
                     label="Payment paymentMode"
                     onChange={handleChange}
                   >
@@ -379,7 +429,7 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
                     ))};
                   </Select>
                 </FormControl>
-                
+{/*                 
                 <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
                   <InputLabel
                     variant="outlined"
@@ -394,7 +444,7 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
                     id="bankSelect"
                     value={bankName || ""}
                     label="Bank"
-                    onChange={handleBankNameChange}
+                    onChange={(e) => handleBankNameChange(e.target.value)}
                     
                   >
                     {resBank?.map((ec, i) => (
@@ -402,20 +452,44 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
                     ))};
                   </Select>
                 </FormControl>
-                {accountType && 
+                {accountNumber  && 
+                <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
+                  <InputLabel
+                    variant="outlined"
+                    id="bankNumId"
+                    htmlFor="bankNumIdSelect"
+                  >
+                    Account Number
+                  </InputLabel>
+                  <Select
+                    labelId="bankNumId"
+                    name="bankNumId"
+                    id="bankNumIdSelect"
+                    value={bankAcNumber || ""}
+                    label="Type"
+                    onChange={handleAcNumberChange}
+                    
+                  >
+                    {accountNumber?.map((ec, i) => (
+                    <MenuItem  key={`${ec._id}-${i}`} value={(ec.name).toString()}>{ec.name}</MenuItem>
+                    ))};
+                  </Select>
+                </FormControl>
+                } */}
+                 
                 <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
                   <InputLabel
                     variant="outlined"
                     id="bankId"
                     htmlFor="bankIdSelect"
                   >
-                    Type
+                    Bank 
                   </InputLabel>
                   <Select
                     labelId="bankId"
                     name="bankId"
                     id="bankIdSelect"
-                    value={values.bankId || ""}
+                    value={values.bankId || "" }
                     label="Type"
                     onChange={handleChange}
                     
@@ -425,7 +499,7 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
                     ))};
                   </Select>
                 </FormControl>
-                }
+                
                 <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
                   <InputLabel
                     variant="outlined"
@@ -474,7 +548,7 @@ const Form = ({ transactionInfo, handleClose, loggedUSer , usersList, ecList, ve
                 <RadioGroup
                   aria-labelledby="demo-vendorPaymentType"
                   name="vendorPaymentType"
-                  value={values.vendorPaymentType}
+                  value={values.vendorPaymentType || "Direct"}
                   onChange={handleChange}
                   row
                 >
