@@ -28,6 +28,7 @@ import BankStatsWidget from "../../components/widgets/BankStatsWidget";
 import CategoryStatsWidget from "../../components/widgets/CategoryStatsWidget";
 import RecentTranscationsWidget from "../../components/widgets/RecentTranscationsWidget";
 import { useGetUserBankExpensesDataQuery } from "../../slices/statsSlice";
+import PieChart from "../../components/PieChart";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -94,17 +95,33 @@ const Dashboard = () => {
       >
         {/* ROW 1 */}
         <Box
-          gridColumn="span 6"
+          gridColumn="span 5"
           gridRow="span 1"
           backgroundColor= {colors.blueAccent[700]}
           p="10px 30px"
         >
           <TotalCostWithLinearPB  yearlyExpenseTotal={data?.yearlyExpenseTotal} totalPlannedBudget={data?.totalPlannedBudget} />
         </Box>
-
         <Box
-          gridColumn="span 6"
-          gridRow="span 2"  
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            Overview
+          </Typography>
+          <Box height="250px" mt="-20px">
+            <BarChart isDashboard={true} />
+          </Box>
+        </Box> 
+       
+        <Box
+          gridColumn="span 3"
+          // gridRow="span 2"  
           display="grid"
           gridTemplateColumns="repeat(12, 1fr)"
           // gridAutoRows="140px"
@@ -121,7 +138,7 @@ const Dashboard = () => {
         </Box>
         {/* ROW 2 */}
         <Box
-          gridColumn="span 6"
+          gridColumn="span 5"
           gridRow="span 2"  
           display="grid"
           gridTemplateColumns="repeat(12, 1fr)"
@@ -139,7 +156,7 @@ const Dashboard = () => {
         </Box>
         
         <Box
-          gridColumn="span 6"
+          gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -158,13 +175,13 @@ const Dashboard = () => {
               >
                 Monthly Transactions for the year 2024
               </Typography>
-              <Typography
-                variant="h3"
+              {/* <Typography
+                variant="h5"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
                 {getFormatedCurrency(data?.yearlyExpenseTotal)}
-              </Typography>
+              </Typography> */}
             </Box>
             
           </Box>
@@ -173,27 +190,13 @@ const Dashboard = () => {
           </Box>
         </Box>
        
-
+      
+      
         {/* ROW 3 */}
 
+       
         <Box
-          gridColumn="span 6"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Sales Quantity
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 6"
+          gridColumn="span 5"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
@@ -213,6 +216,23 @@ const Dashboard = () => {
           <RecentTranscationsWidget  data={data?.transactionsData} />
          
         </Box>
+        <Box
+          gridColumn="span 3"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            Expense Breakdown by Category
+          </Typography>
+          <Box  mt="-20px">
+            <PieChart isDashboard={true} />
+          </Box>
+        </Box> 
+
       </Box>
     </Box>
   );

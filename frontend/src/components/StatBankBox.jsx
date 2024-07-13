@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme, ListItemIcon, List, ListItem ,ListItemText} from "@mui/material";
+import { Box, Typography, useTheme, ListItemIcon, List, ListItem ,ListItemText, Avatar} from "@mui/material";
 import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
 import { getFormatedCurrency } from "./common/Utils";
@@ -10,20 +10,30 @@ import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlin
 const StatBankBox = ({ data, icon, progress, colorVal }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-console.log(data);
+// console.log(data);
 
-const getIconComponent = (data, colorVal=colors.grey[100]) => {
+const getIconComponent = (data) => {
   switch (data) {
     case "Savings":
-      return <AccountBalanceWalletOutlinedIcon sx={{ color: colorVal}} />;
+      return <AccountBalanceWalletOutlinedIcon 
+      // sx={{ color: colorVal}}  
+      />;
     case "FD":
-      return <AccountBalanceOutlinedIcon sx={{ color: colorVal}} />;
+      return <AccountBalanceOutlinedIcon 
+      // sx={{ color: colorVal}}  
+      />;
     case "RD":
-      return <AccountBalanceOutlinedIcon sx={{ color: colorVal}} />;
+      return <AccountBalanceOutlinedIcon 
+      // sx={{ color: colorVal}}  
+      />;
     case "Loan":
-      return <SavingsOutlinedIcon sx={{ color: colorVal}} />;
+      return <SavingsOutlinedIcon 
+      // sx={{ color: colorVal}}  
+      />;
     case "Credit Card":
-        return <CreditCardOutlinedIcon sx={{ color: colorVal}} />;
+        return <CreditCardOutlinedIcon 
+        // sx={{ color: colorVal}}  
+        />;
     default:
       return (
         <MiscellaneousServicesIcon
@@ -82,7 +92,11 @@ const getIconComponent = (data, colorVal=colors.grey[100]) => {
               
                 <ListItem>
                   <ListItemIcon>
+                  <Avatar 
+                  sx={{ bgcolor: colorVal }}
+                  >
                     {getIconComponent(ac.AccountType)}
+                    </Avatar>
                   </ListItemIcon>
                   <ListItemText
                     primary= {ac.AccountType + " - " + getFormatedCurrency(ac.totalAmountSpent) }

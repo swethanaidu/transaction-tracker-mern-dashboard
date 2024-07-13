@@ -5,41 +5,41 @@ import { useGetOverallStatsQuery } from "../slices/overallStatsApiSlice";
 import { Box, Typography, useTheme, IconButton } from "@mui/material";
 import Loader from "./Loader";
 import { getFormatedCurrency } from "./common/Utils";
-var mockdata = [
-  {
-    id: "Borewell work",
-    label: "Borewell work",
-    value: 415,
-    color: "hsl(122, 70%, 50%)",
-  },
-  {
-    id: "Construction work",
-    label: "Construction work",
-    value: 588,
-    color: "hsl(325, 70%, 50%)",
-  },
-  {
-    id: "Interiors",
-    label: "Interiors",
-    value: 307,
-    color: "hsl(60, 70%, 50%)",
-  },
-  {
-    id: "Additional Construction",
-    label: "Additional Construction",
-    value: 316,
-    color: "hsl(51, 70%, 50%)",
-  },
-  {
-    id: "Misc",
-    label: "Misc",
-    value: 420,
-    color: "hsl(258, 70%, 50%)",
-  },
-];
+// var mockdata = [
+//   {
+//     id: "Borewell work",
+//     label: "Borewell work",
+//     value: 415,
+//     color: "hsl(122, 70%, 50%)",
+//   },
+//   {
+//     id: "Construction work",
+//     label: "Construction work",
+//     value: 588,
+//     color: "hsl(325, 70%, 50%)",
+//   },
+//   {
+//     id: "Interiors",
+//     label: "Interiors",
+//     value: 307,
+//     color: "hsl(60, 70%, 50%)",
+//   },
+//   {
+//     id: "Additional Construction",
+//     label: "Additional Construction",
+//     value: 316,
+//     color: "hsl(51, 70%, 50%)",
+//   },
+//   {
+//     id: "Misc",
+//     label: "Misc",
+//     value: 420,
+//     color: "hsl(258, 70%, 50%)",
+//   },
+// ];
 const PieChart = ({ isDashboard = false }) => {
   const { data, isLoading } = useGetOverallStatsQuery();
-  // console.log(data);
+  // console.log(isDashboard);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -62,10 +62,10 @@ const PieChart = ({ isDashboard = false }) => {
   // console.log(formattedData);
   return (
     <Box
-    height={isDashboard ? "400px" : "100%"}
+    height={isDashboard ? "220px" : "100%"}
     width={undefined}
-    minHeight={isDashboard ? "325px" : undefined}
-    minWidth={isDashboard ? "325px" : undefined}
+    minHeight={isDashboard ? "225px" : undefined}
+    minWidth={isDashboard ? "225px" : undefined}
     position="relative">
       <ResponsivePie
         data={formattedData}
@@ -81,9 +81,15 @@ const PieChart = ({ isDashboard = false }) => {
         arcLinkLabelsThickness={2}
         arcLinkLabelsColor={{ from: "color" }}
         arcLabelsSkipAngle={10}
+        enableArcLabels={isDashboard? false: true}
         arcLabelsTextColor={{
           from: "color",
           modifiers: [["darker", 2]],
+        }}
+        tooltip={ point => {
+          return <div className="container" style={ {
+            fontSize: '12px',
+            }}>{point.datum.label}  - {getFormatedCurrency(point.datum.value)}</div>;
         }}
         theme={{
           tooltip: {
@@ -99,17 +105,17 @@ const PieChart = ({ isDashboard = false }) => {
         legends={[
           {
             anchor: "bottom",
-            direction: "row",
+            direction: "column",
             justify: false,
             translateX: 0,
-            translateY: 56,
+            translateY: 82,
             itemsSpacing: 0,
             itemWidth: 100,
-            itemHeight: 18,
+            itemHeight: 20,
             itemTextColor: "#FFF",
             itemDirection: "left-to-right",
             itemOpacity: 1,
-            symbolSize: 18,
+            symbolSize: 16,
             symbolShape: "circle",
             effects: [
               {
@@ -135,9 +141,11 @@ const PieChart = ({ isDashboard = false }) => {
             : "translate(-50%, -100%)",
         }}
       >
+        {!isDashboard && 
         <Typography variant="h4">
           {!isDashboard && "Total:"} {getFormatedCurrency(data.yearlyExpenseTotal)}
         </Typography>
+}
       </Box>
     </Box>
   );

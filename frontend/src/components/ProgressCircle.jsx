@@ -1,6 +1,6 @@
 import { Box, useTheme, Typography } from "@mui/material";
 import { tokens } from "../theme";
-const ProgressCircle = ({ progress = "0.75", size = "85", colorVal }) => {
+const ProgressCircle = ({ progress = "0.75", size = "75", colorVal }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const angle = progress * 360;
@@ -22,8 +22,8 @@ const ProgressCircle = ({ progress = "0.75", size = "85", colorVal }) => {
         left="0"
         right="0"
         bottom="0"
-        width="55px"
-        height="55px"
+        width="50px"
+        height="50px"
         borderRadius="50%"
         backgroundColor={colorVal}
         textAlign="center"
@@ -47,7 +47,7 @@ const ProgressCircle = ({ progress = "0.75", size = "85", colorVal }) => {
       >
         <Typography variant="h6"
           fontStyle="italic"
-          sx={{ color: colorVal }}>{(progress * 100).toFixed(2)}%</Typography>
+          sx={{ color: colorVal, fontSize: "13px" }}>{(progress * 100).toFixed(2)}%</Typography>
       </Box>
     </Box>
   );

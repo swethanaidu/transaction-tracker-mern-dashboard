@@ -24,14 +24,14 @@ const BarChart = ({ isDashboard = false }) => {
         category: data._id,
         "Expected Budget": data.plannedBudget/100000,
         "Expected BudgetColor": pieColors[0],
-        "Total Paid": data.totalExpenseAmount/100000,
-        "Total PaidColor": pieColors[1],
+        "Total Spent": data.totalExpenseAmount/100000,
+        "Total SpentColor": pieColors[1],
       })
     );
   
   
   return (
-    <Box style={{ height: isDashboard? "100% " : "70vh", width: "100%" }}>
+    <Box style={{ height: isDashboard? "100% " : "70vh", width: isDashboard? "100% " : "100%"}}>
     <ResponsiveBar
       data={formattedData}
       theme={{
@@ -72,13 +72,13 @@ const BarChart = ({ isDashboard = false }) => {
         },
       }}
       groupMode="grouped"
-      keys={["Expected Budget", "Total Paid"]}
+      keys={["Expected Budget", "Total Spent"]}
       indexBy="category"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={{ scheme: 'nivo' }}
+      colors={{ scheme: 'set3' }}
       defs={[
         {
           id: "dots",
@@ -103,9 +103,10 @@ const BarChart = ({ isDashboard = false }) => {
         from: "color",
         modifiers: [["darker", "1.6"]],
       }}
+      // enableTotals={true}
       axisTop={null}
       axisRight={null}
-      axisBottom={{
+      axisBottom={isDashboard ? null : {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
@@ -113,6 +114,8 @@ const BarChart = ({ isDashboard = false }) => {
         legendPosition: "middle",
         legendOffset: 32,
       }}
+
+     
       axisLeft={{
         tickSize: 5,
         tickPadding: 5,
@@ -132,12 +135,12 @@ const BarChart = ({ isDashboard = false }) => {
         {
           dataFrom: "keys",
           anchor: "bottom-right",
-          direction: "column",
+          direction: "row",
           justify: false,
-          translateX: 120,
-          translateY: 0,
-          itemsSpacing: 2,
-          itemWidth: 100,
+          translateX: 30,
+          translateY: 54,
+          itemsSpacing: 10,
+          itemWidth: 120,
           itemHeight: 20,
           itemDirection: "left-to-right",
           itemOpacity: 0.85,

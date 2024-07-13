@@ -28,7 +28,7 @@ const BankStatsWidget = (data) => {
           <Box
             key={`${category._id}-${i}`}
             backgroundColor={colors.primary[400]}
-            gridColumn="span 6"
+            gridColumn="span 12"
             alignItems="center"
             justifyContent="center"
             gap="0"

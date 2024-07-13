@@ -14,7 +14,7 @@ content-type: application/json
    "paidDate": "06/11/2024"
 }
   
-###Get all transactions
+###Get all transactions 
 GET   http://localhost:5000/api/transactions
 
  

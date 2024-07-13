@@ -13,7 +13,7 @@ const StatBox = ({ title, subtitle, icon, progress, colorVal }) => {
         <Box>
           {icon}
           <Typography
-            variant="h4"
+            variant="h5"
             fontWeight="bold"
             sx={{ color: colors.grey[100] }}
           >
@@ -25,7 +25,7 @@ const StatBox = ({ title, subtitle, icon, progress, colorVal }) => {
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between" mt="2px">
-        <Typography variant="h5" sx={{ color: colorVal }}>
+        <Typography variant="h6" sx={{ color: colorVal }}>
           {subtitle}
         </Typography>
         {/* <Typography
