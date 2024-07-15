@@ -7,7 +7,7 @@ import {
   FormControl,
   Select,
   InputLabel,
-  MenuItem,
+  MenuItem,ListItemText, ListItem, List
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -68,7 +68,7 @@ const DataList = ({ handleCurrencydata }) => {
 
   // console.log(tot1);
 
-  // console.log(transListState);
+  // console.log(transactionsList);
   let resEC = restructuredList(ecList);
 
   useEffect(() => {
@@ -150,22 +150,99 @@ const DataList = ({ handleCurrencydata }) => {
       headerName: "Title",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: ({ row: { title, ecName } }) => {
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={title}
+                secondary={ecName}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
     },
 
     {
       field: "userName",
       headerName: "Payment by",
       flex: 1,
+       renderCell: ({ row: { userName, paidDate } }) => {
+        const dateFromDB = paidDate;
+        const formattedDate = Moment(dateFromDB).utc().format("DD-MMM-YYYY");
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={userName}
+                secondary={formattedDate}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
     },
     {
-      field: "ecName",
-      headerName: "Category",
+      field: "bankName",
+      headerName: "Payment from",
       flex: 1,
+      renderCell: ({ row: { bankName, bankACType, bankACNum } }) => {
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={bankName}
+                secondary={bankACType + " - " + bankACNum}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
     },
+    {
+      field: "vendorName",
+      headerName: "Payment To",
+      flex: 1,
+      renderCell: ({ row: { vendorName, vendorPaymentType, vendorIndivdualName } }) => {
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={vendorName}
+                secondary={vendorPaymentType === "Direct" ? vendorPaymentType : vendorPaymentType+" - "+ vendorIndivdualName}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
+    },
+    // {
+    //   field: "ecName",
+    //   headerName: "Category",
+    //   flex: 1,
+    // },
     {
       field: "cost",
       headerName: "Cost",
       flex: 1,
+      cellClassName: "cost-column--cell",
       renderCell: ({ row: { cost } }) => {
         return getFormatedCurrency(cost);
       },
@@ -316,6 +393,10 @@ const DataList = ({ handleCurrencydata }) => {
           },
           "& .name-column--cell": {
             color: colors.greenAccent[500],
+          },
+          "& .cost-column--cell": {
+            fontWeight: "500",
+            color: colors.greenAccent[300],
           },
           "& .MuiDataGrid-withBorderColor": {
             backgroundColor: colors.blueAccent[700],

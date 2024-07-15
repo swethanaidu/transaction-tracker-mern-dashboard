@@ -86,11 +86,24 @@ const PieChart = ({ isDashboard = false }) => {
           from: "color",
           modifiers: [["darker", 2]],
         }}
-        tooltip={ point => {
-          return <div className="container" style={ {
-            fontSize: '12px',
-            }}>{point.datum.label}  - {getFormatedCurrency(point.datum.value)}</div>;
-        }}
+        tooltip={({ datum }) => (
+          <div className="Pietooltip">
+            <div
+              className="Piebox"
+              style={{ backgroundColor: datum.color }}
+            />
+            <span className="Pietitle">{datum.label.toString()}:</span>
+            <span>
+               {getFormatedCurrency(datum.value)}
+            </span>
+          </div>
+        )}
+     
+        // tooltip={ point => {
+        //   return <div className="container" style={ {
+        //     fontSize: '12px',
+        //     }}>{point.datum.label}  - {getFormatedCurrency(point.datum.value)}</div>;
+        // }}
         theme={{
           tooltip: {
             wrapper: {},
@@ -105,7 +118,7 @@ const PieChart = ({ isDashboard = false }) => {
         legends={[
           {
             anchor: "bottom",
-            direction: "column",
+            direction: !isDashboard? "row": "column",
             justify: false,
             translateX: 0,
             translateY: 82,

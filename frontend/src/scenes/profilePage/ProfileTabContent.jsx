@@ -6,6 +6,8 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import BankPage from "../bank";
 import VendorPage from "../vendor";
+import Team from "../team";
+import ExpenseCategoryPage from "../expenseCategory";
 const ProfileTabContent = (currentTabIndex) => {
   // console.log(currentTabIndex);
   const theme = useTheme();
@@ -36,6 +38,19 @@ const ProfileTabContent = (currentTabIndex) => {
         {TabVal === 2 && (
           <Box sx={{ p: 0 }}>
              <VendorPage />
+          </Box>
+        )}
+
+         {/* TAB 4 Contents */}
+         {TabVal === 3 && (
+          <Box sx={{ p: 0 }}>
+             <Team />
+          </Box>
+        )}
+         {/* TAB 5 Contents */}
+         {TabVal === 4 && (
+          <Box sx={{ p: 0 }}>
+             <ExpenseCategoryPage />
           </Box>
         )}
 

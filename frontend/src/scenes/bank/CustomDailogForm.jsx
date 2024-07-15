@@ -19,7 +19,7 @@ const CustomDailogForm = ({ open, handleClose, bankData, title , isLoading, user
   //   isLoading,
   //   error,
   // } = useGetUserDetailsQuery(id);
-  console.log(bankData);
+  // console.log(bankData);
   const BootstrapDialog = styled(Dialog)(() => ({
     "& .MuiPaper-root": {
       background: colors.primary[400],

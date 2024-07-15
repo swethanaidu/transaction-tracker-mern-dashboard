@@ -17,6 +17,7 @@ import Grading from "@mui/icons-material/Grading";
 import CustomDeleteDailog from "../../components/CustomDeleteDailog";
 import { useDeleteECMutation } from "../../slices/expCategoryApiSlice";
 import AddIcon from '@mui/icons-material/Add';
+import CategoryIcon from '@mui/icons-material/Category';
 
 const ExpensesCategoriesList = () => {
   const theme = useTheme();
@@ -168,10 +169,8 @@ const ExpensesCategoriesList = () => {
   return (
      <>
      <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
-                Expenses Categories List
-              </Typography>
-              <Button
+      <Typography variant="h4" mb="20px" sx={{ display:"flex", alignItems:"center"}}><CategoryIcon sx={{mr: "10px"}} />Expenses Categories List</Typography>
+      <Button
                     fullWidth
                     type="button"
                     variant="outlined"
@@ -180,15 +179,14 @@ const ExpensesCategoriesList = () => {
                     sx={{
                         m: "0 0 10px",
                       p: "10px",
-                      //   backgroundColor: colors.greenAccent[700],
-                      //   color: colors.grey[100],
-                      //   "&:hover": { color: colors.primary.main },
+                       
                       width: "150px",
                     }}
                   >
                     <AddIcon /> Add New
                   </Button>
             </Box>
+   
     
       <Box
         m=" 0 0 0"

@@ -3,15 +3,16 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import UsersList from "../../components/UsersList";
 import ExpensesCategoriesList from "../expenseCategory/ExpensesCatagoriesList";
+import ContactsOutlinedIcon from '@mui/icons-material/ContactsOutlined';
 const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   return (
-    <Box m="20px">
-      <Header title="TEAM" subtitle="Managing the Team Members" />
+    <Box m="0">
+      {/* <Header title="TEAM" subtitle="Managing the Team Members" /> */}
       <Box 
-        mt="40px"
+        mt="0"
         display="grid"
         gap="10px"
         gridTemplateColumns="repeat(12, minmax(0, 1fr))"
@@ -21,9 +22,10 @@ const Team = () => {
         }}
       >
         <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
-           <Typography  variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
-              Users List
-          </Typography>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Typography variant="h4" mb="20px" sx={{ display:"flex", alignItems:"center"}}><ContactsOutlinedIcon sx={{mr: "10px"}} />Users List</Typography>
+               
+            </Box>
           <UsersList />
         </Box>
         {/* <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 6" }}>

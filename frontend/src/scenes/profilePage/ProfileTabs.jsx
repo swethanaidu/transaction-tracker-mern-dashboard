@@ -3,6 +3,8 @@ import { useState } from "react";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import ContactsOutlinedIcon from '@mui/icons-material/ContactsOutlined';
+import CategoryIcon from '@mui/icons-material/Category';
 
 const ProfileTabs = ({handleTabChange}) => {
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
@@ -22,7 +24,8 @@ const ProfileTabs = ({handleTabChange}) => {
           <Tab icon={<PermIdentityIcon />} label="Profile Update" />
           <Tab icon={<AccountBalanceOutlinedIcon />} label="Bank  Details" />
           <Tab icon={<PeopleAltOutlinedIcon />} label="Vendors Details" />
-          {/* <Tab icon={<PermIdentityIcon />} label="Tab 4" /> */}
+          <Tab icon={<ContactsOutlinedIcon />} label="Users Details" />
+          <Tab icon={<CategoryIcon />} label="Expense Category" />
         </Tabs>
 
          

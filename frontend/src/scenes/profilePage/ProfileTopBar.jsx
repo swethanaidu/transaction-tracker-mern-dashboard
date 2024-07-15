@@ -56,11 +56,13 @@ const ProfileTopBar = ({handleTabChange}) => {
     <>
       <Card sx={{ mt: "10px", backgroundColor: `${colors.primary[400]}`, }}>
         <CardMedia
-          sx={{ height: 230 }}
+          sx={{ height: 180 }}
           image={wallpaper}
           title="Profile"
         />
-        <CardContent>
+        <CardContent
+          sx={{pb: "0"}}
+        >
           <StyledBadge
             sx={{
               mt: "-55px",

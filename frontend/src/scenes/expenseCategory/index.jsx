@@ -8,10 +8,10 @@ const ExpenseCategoryPage = () => {
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   return (
-    <Box m="20px">
-      <Header title="EXPENSE CATEGORY" subtitle="Managing the Expense Category data" />
+    <Box m="0">
+      {/* <Header title="EXPENSE CATEGORY" subtitle="Managing the Expense Category data" /> */}
       <Box 
-        mt="40px"
+        mt="0"
         display="grid"
         gap="10px"
         gridTemplateColumns="repeat(12, minmax(0, 1fr))"

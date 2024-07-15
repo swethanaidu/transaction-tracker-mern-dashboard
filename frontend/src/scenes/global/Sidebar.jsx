@@ -14,7 +14,9 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import CategoryIcon from '@mui/icons-material/Category';
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useSelector, useDispatch } from "react-redux";
 import profileImage from '../../assets/user.png'
 // import "react-pro-sidebar/dist/css/styles.css";
@@ -137,34 +139,34 @@ const SidebarMenu = () => {
               setSelected={setSelected}
             />
 
-            <Typography
+            {/* <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Data
-            </Typography>
+            </Typography> */}
             <Item
               title="Manage Transactions"
               to="/transactions"
-              icon={<ReceiptOutlinedIcon />}
+              icon={<PointOfSaleIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            {/* <Item
               title="Expense Category"
               to="/expenseCategory"
-              icon={<ContactsOutlinedIcon />}
+              icon={<CategoryIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
-            <Item
+            /> */}
+            {/* <Item
               title="Manage Team"
               to="/team"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
             
             <Typography
               variant="h6"
