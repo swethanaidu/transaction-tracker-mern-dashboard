@@ -7,7 +7,7 @@ import {
   FormControl,
   Select,
   InputLabel,
-  MenuItem,ListItemText, ListItem, List
+  MenuItem,ListItemText, ListItem, List, useMediaQuery
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -51,7 +51,7 @@ const DataList = ({ handleCurrencydata }) => {
   const [name, setname] = useState("");
   const [id, setID] = useState("");
   const [deleteTransaction] = useDeleteTransactionMutation(id);
-
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   const [ecVal, setecVal] = useState("");
 
   const { data: ecList } = useGetECsQuery();
@@ -329,7 +329,7 @@ const DataList = ({ handleCurrencydata }) => {
   if (isLoading) return <Loader />;
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display={isNonMobile? "flex" :  "block"} justifyContent="space-between" alignItems="center">
         <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
           Transactions List
         </Typography>
@@ -426,6 +426,12 @@ const DataList = ({ handleCurrencydata }) => {
             getRowId={(row) => row._id}
             rows={ecVal ? transListState : transactionsList}
             columns={columns}
+            initialState={{
+              pinnedColumns: {
+                // left: [GRID_CHECKBOX_SELECTION_COL_DEF.field],
+                right: ['actions'],
+              },
+            }}
           />
         ) : (
           <Loader />

@@ -20,6 +20,8 @@ const ProfileTabs = ({handleTabChange}) => {
         <Tabs value={currentTabIndex} onChange={handleTabChange1}
             textColor="secondary"
             indicatorColor="secondary"
+            variant="scrollable"
+            scrollButtons="auto"
         >
           <Tab icon={<PermIdentityIcon />} label="Profile Update" />
           <Tab icon={<AccountBalanceOutlinedIcon />} label="Bank  Details" />

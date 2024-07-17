@@ -21,7 +21,7 @@ const TransactionsPage = () => {
 
   return (
     <Box m="20px">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box  display={isNonMobile? "flex" :  "block"} justifyContent="space-between" alignItems="center">
         <Header title="TRANSCATIONS" subtitle="Managing the Transactions data" />
         <Box m="0" textAlign="right">
         <Typography variant="h2" color={colors.grey[100]} sx={{ mb: "0px", fontWeight: "bold" }}>
@@ -34,7 +34,7 @@ const TransactionsPage = () => {
       </Box>
       <Box 
         mt="40px"
-        display="grid"
+        display={isNonMobile? "flex" :  "block"}
         gap="10px"
         gridTemplateColumns="repeat(12, minmax(0, 1fr))"
         // gridTemplateColumns="repeat(4, minmax(0, 1fr))"
@@ -43,7 +43,7 @@ const TransactionsPage = () => {
         }}
       >
         
-        <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
+        <Box  display={isNonMobile? "flex" :  "block"} backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
            
           <DataList handleCurrencydata={handleCurrencydata} />
         </Box>

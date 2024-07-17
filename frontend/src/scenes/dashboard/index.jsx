@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme,useMediaQuery } from "@mui/material";
 import { tokens } from "../../theme";
 import Moment from "moment";
 import { mockTransactions } from "../../data/mockData";
@@ -34,7 +34,7 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetOverallStatsQuery();
   const { data:bankStats } = useGetUserBankExpensesDataQuery();
-  
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   // const totalcompletion = Math.round((data?.yearlyExpenseTotal / data?.totalPlannedBudget) * 100).toFixed(2);
   const totalcompletion = (
     (data?.yearlyExpenseTotal / data?.totalPlannedBudget) *
@@ -88,22 +88,35 @@ const Dashboard = () => {
 
       {/* GRID & CHARTS */}
       <Box
-        display="grid"
+        display={isNonMobile ? "grid" : "block"}
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
+        sx={!isNonMobile && { 
+          "& .MuiBox-root": {
+            // display: "block",
+            marginBottom: "20px",
+          }
+        }}
       >
         {/* ROW 1 */}
         <Box
-          gridColumn="span 5"
+          gridColumn= {isNonMobile ?  "span 5" : "span 12" }
+          // gridColumn="span 5"
           gridRow="span 1"
           backgroundColor= {colors.blueAccent[700]}
           p="10px 30px"
+          sx={!isNonMobile && { 
+            "& .MuiBox-root": {
+              // display: "block",
+              marginBottom: "0",
+            }
+          }}
         >
           <TotalCostWithLinearPB  yearlyExpenseTotal={data?.yearlyExpenseTotal} totalPlannedBudget={data?.totalPlannedBudget} />
         </Box>
         <Box
-          gridColumn="span 4"
+          gridColumn= {isNonMobile ?  "span 4" : "span 12" }
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -120,7 +133,7 @@ const Dashboard = () => {
         </Box> 
        
         <Box
-          gridColumn="span 3"
+          gridColumn= {isNonMobile ?  "span 3" : "span 12" }
           // gridRow="span 2"  
           display="grid"
           gridTemplateColumns="repeat(12, 1fr)"
@@ -138,9 +151,9 @@ const Dashboard = () => {
         </Box>
         {/* ROW 2 */}
         <Box
-          gridColumn="span 5"
+          gridColumn= {isNonMobile ?  "span 5" : "span 12" }
           gridRow="span 2"  
-          display="grid"
+          display={isNonMobile ? "grid" : "block"}
           gridTemplateColumns="repeat(12, 1fr)"
           // gridAutoRows="140px"
           gap="20px"
@@ -148,6 +161,9 @@ const Dashboard = () => {
           sx={{
             "& .MuiBox-root" : {
               margin: 0
+            },
+            "& > .MuiBox-root" : {
+              margin: isNonMobile ? "0" : "0 0 20px"
             }
           }}
         >
@@ -156,7 +172,7 @@ const Dashboard = () => {
         </Box>
         
         <Box
-          gridColumn="span 4"
+          gridColumn= {isNonMobile ?  "span 4" : "span 12" }
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -196,10 +212,11 @@ const Dashboard = () => {
 
        
         <Box
-          gridColumn="span 5"
+          gridColumn= {isNonMobile ?  "span 5" : "span 12" }
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
+          height={!isNonMobile ? "228px" : "auto"}
         >
           <Box
             display="flex"
@@ -217,7 +234,7 @@ const Dashboard = () => {
          
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn= {isNonMobile ?  "span 3" : "span 12" }
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >

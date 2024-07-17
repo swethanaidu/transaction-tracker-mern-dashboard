@@ -1,11 +1,12 @@
 import { tokens } from '../../theme';
 import { getFormatedCurrency } from '../common/Utils';
 import LinearProgressWithLabel from '../LinearProgressWithLabel';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 import Loader from '../Loader';
 const TotalCostWithLinearPB = (data) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const isNonMobile = useMediaQuery("(min-width:600px)");
     // console.log(data?.yearlyExpenseTotal);
     const totalcompletion = (
         (data?.yearlyExpenseTotal / data?.totalPlannedBudget) *
@@ -26,8 +27,8 @@ const TotalCostWithLinearPB = (data) => {
             <Box>
               <span>
                 <svg
-                  width="80"
-                  height="80"
+                  width={isNonMobile? "80" : "50" }
+                  height={isNonMobile? "80" : "60" }
                   viewBox="0 0 80 80"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"

@@ -66,7 +66,7 @@ const setTransaction = asyncHandler(async (req, res) => {
 const getTransactions = asyncHandler(async(req, res) => {
     // const transactions = await Transaction.find();
     // res.status(200).json(transactions);
-    const transactions = await Transaction.aggregate([
+    const transactionsData = await Transaction.aggregate([
 
       // Join with user_info table
       {
@@ -133,6 +133,10 @@ const getTransactions = asyncHandler(async(req, res) => {
           } 
       }
   ]);
+  let transactions = [...transactionsData].sort((a, b) => {
+    return b.paidDate - a.paidDate;
+  });
+  
   res.status(200).json(transactions);
 //   console.log(transactions);
 });

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -19,6 +19,8 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useSelector, useDispatch } from "react-redux";
 import profileImage from '../../assets/user.png'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+
 // import "react-pro-sidebar/dist/css/styles.css";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -44,8 +46,10 @@ const SidebarMenu = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [toggled, setToggled] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const { userInfo } = useSelector((state) => state.auth)
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   // console.log(userInfo);
   if (!userInfo) return(<></>);
   return (
@@ -54,9 +58,11 @@ const SidebarMenu = () => {
         "& .ps-sidebar-root": {
           background: `${colors.primary[400]} !important`,
           borderColor: `${colors.primary[400]} !important`,
+          height: "100%",
         },
         "& .ps-sidebar-container": {
           backgroundColor: "transparent !important",
+          
         },
         "& .ps-menu-root .ps-menu-button": {
           padding: "5px 35px 5px 20px !important",
@@ -72,12 +78,36 @@ const SidebarMenu = () => {
         },
       }}
     >
+      {!isNonMobile && 
+      <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      ml="15px"
+      mt="20px"
+      position="absolute"
+    >
+      <IconButton onClick={() => setToggled(!toggled)}>
+                  <MenuOutlinedIcon />
+                </IconButton>
+      <Typography variant="h3" color={colors.grey[100]}>
+        ADMINIS
+      </Typography>
+       
+    </Box>
       
-      <Sidebar collapsed={isCollapsed}>
+}
+      <Sidebar collapsed={isCollapsed}
+      // sx={{ height: "100vh" }}
+      breakPoint="md"
+      toggled={toggled}
+      // transitionDuration={800}
+        // onBackdropClick={() => setIsCollapsed(false)}  breakPoint={isNonMobile && "always"}
+      >
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
+            onClick={() => setToggled(!toggled)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
@@ -94,15 +124,23 @@ const SidebarMenu = () => {
                 <Typography variant="h3" color={colors.grey[100]}>
                   ADMINIS
                 </Typography>
+                {isNonMobile && 
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
                 </IconButton>
+                }
+                {!isNonMobile && 
+                  <IconButton onClick={() => setToggled(!toggled)}>
+                  <CloseOutlinedIcon />
+                </IconButton>
+                }
               </Box>
             )}
           </MenuItem>
 
           {!isCollapsed && (
             <Box mb="25px">
+              {isNonMobile && 
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
                   alt="profile-user"
@@ -112,9 +150,10 @@ const SidebarMenu = () => {
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
-              <Box textAlign="center">
+              }
+              <Box textAlign={isNonMobile ? "center" : "left"} ml={!isNonMobile && "30px"}>
                 <Typography
-                  variant="h2"
+                  variant={isNonMobile ? "h2" : "h5"}
                   color={colors.grey[100]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0", textTransform: "capitalize" }}

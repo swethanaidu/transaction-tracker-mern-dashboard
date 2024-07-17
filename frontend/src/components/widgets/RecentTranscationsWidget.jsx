@@ -1,12 +1,13 @@
 import { tokens } from "../../theme";
 import { getFormatedCurrency, getDataTruncate } from "../common/Utils";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import Loader from "../Loader";
 import Moment from "moment";
 
 const RecentTranscationsWidget = (data) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const isNonMobile = useMediaQuery("(min-width:600px)");
     // console.log(data);
   if (!data?.data) return <Loader />;
   return (
@@ -16,14 +17,22 @@ const RecentTranscationsWidget = (data) => {
               key={`${transaction._id}-${i}`}
               display="grid"
               gridTemplateColumns="repeat(12, 1fr)"
-              gap="20px"
+              gap={isNonMobile? "20px": "5px"}
               borderBottom={`4px solid ${colors.primary[500]}`}
               p="15px"
+              mb="0 !important"
+              
+              sx={!isNonMobile &&  { 
+                "& .MuiBox-root": {
+                  marginBottom: 0
+                 }
+                  
+              }}
             >
-              <Box gridColumn="span 6">
+              <Box gridColumn={isNonMobile? "span 6" : "span 5" }>
                 <Typography
                   color={colors.greenAccent[500]}
-                  variant="h5"
+                  variant={isNonMobile? "h5": "h6"}
                   fontWeight="600"
                 >
                   {getDataTruncate(transaction.title)}
@@ -32,7 +41,7 @@ const RecentTranscationsWidget = (data) => {
                   {transaction.ecName}
                 </Typography>
               </Box>
-              <Box gridColumn="span 2" color={colors.grey[100]}>
+              <Box gridColumn={isNonMobile? "span 2" : "span 3" } color={colors.grey[100]}>
                 {Moment(transaction.paidDate).utc().format("DD/MM/YY")}
               </Box>
               <Box gridColumn="span 4">
