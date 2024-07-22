@@ -34,7 +34,7 @@ const TransactionsPage = () => {
       </Box>
       <Box 
         mt="40px"
-        display={isNonMobile? "flex" :  "block"}
+        display={isNonMobile? "grid" :  "block"} 
         gap="10px"
         gridTemplateColumns="repeat(12, minmax(0, 1fr))"
         // gridTemplateColumns="repeat(4, minmax(0, 1fr))"
@@ -43,7 +43,7 @@ const TransactionsPage = () => {
         }}
       >
         
-        <Box  display={isNonMobile? "flex" :  "block"} backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
+        <Box display={isNonMobile? "grid" :  "block"}  backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
            
           <DataList handleCurrencydata={handleCurrencydata} />
         </Box>
