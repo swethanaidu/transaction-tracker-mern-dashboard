@@ -47,8 +47,8 @@ const registerUser = asyncHandler(async (req, res) => {
     gender
   } = req.body;
 
-  const year = 2024;
-  const OverallStatExists = await OverallStat.findOne({ year });
+  //const year = 2024;
+//const OverallStatExists = await OverallStat.findOne({ year });
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
@@ -68,10 +68,10 @@ const registerUser = asyncHandler(async (req, res) => {
     gender
   });
   if (user) {
-    if (OverallStatExists) {
-      OverallStatExists.totalUsers = OverallStatExists.totalUsers + 1;
-      await OverallStatExists.save();
-    }
+    // if (OverallStatExists) {
+    //   OverallStatExists.totalUsers = OverallStatExists.totalUsers + 1;
+    //   await OverallStatExists.save();
+    // }
 
     generateToken(res, user._id);
     res.status(200).json({
@@ -230,14 +230,14 @@ const updateUserByID = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const deleteUserByID = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
-  const year = 2024;
-  const OverallStatExists = await OverallStat.findOne({ year });
+  ///const year = 2024;
+ // const OverallStatExists = await OverallStat.findOne({ year });
 
   if (user) {
-    if (OverallStatExists) {
-        OverallStatExists.totalUsers = OverallStatExists.totalUsers - 1;
-        await OverallStatExists.save();
-    }
+    // if (OverallStatExists) {
+    //     OverallStatExists.totalUsers = OverallStatExists.totalUsers - 1;
+    //     await OverallStatExists.save();
+    // }
     if (user.isAdmin) {
     
       res.status(400);
