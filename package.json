@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/server.js",
-    "server": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon backend/server.js",
+    "server": "NODE_OPTIONS='--experimental-specifier-resolution=node --trace-warnings' nodemon backend/server.js",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1",
