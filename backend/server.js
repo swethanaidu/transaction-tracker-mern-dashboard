@@ -10,8 +10,10 @@ import vendorRoutes from './routes/vendorRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 dotenv.config();
+
 
 connectDB();
 const app = express();
@@ -32,7 +34,21 @@ app.use('/api/stats',  chartsRoutes);
 app.use('/api/bank',  bankRoutes);
 app.use('/api/vendor',  vendorRoutes);
 
-app.get('/', (req,res) => res.send("Server is ready"));
+// app.get('/', (req,res) => res.send("Server is ready"));
+
+
+if (process.env.NODE_ENV === 'production') {
+    const __dirname = path.resolve();
+    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+  
+    app.get('*', (req, res) =>
+      res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+    );
+  } else {
+    app.get('/', (req, res) => {
+      res.send('API is running....');
+    });
+  }
 
 app.use(notFound);
 app.use(errorHandler);
