@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import OverallStat from '../models/overallStatsModel.js'
+import OverallStat from '../models/overallStatsModel.js';
 import Transaction from '../models/transactionModel.js';
 import ExpensesCategory from "../models/expensesCategoryModel.js";
 
