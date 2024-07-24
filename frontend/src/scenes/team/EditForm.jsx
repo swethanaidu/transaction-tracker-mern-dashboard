@@ -118,7 +118,7 @@ const EditForm = ({ isProfilePage = false, userInfo, handleClose }) => {
     if(isLoading) return (<Loader />)
   return (
     <>
-        <Box  >
+        <Box p={isProfilePage? "0" : "25px 15px " } >
         <Formik
           onSubmit={submitProfileForm}
           initialValues={user}
@@ -246,29 +246,30 @@ const EditForm = ({ isProfilePage = false, userInfo, handleClose }) => {
               
 
               {/* BUTTONS */}
-              { isSnackBarMessage && (
+              {/* { isSnackBarMessage && (
                   <CustomSnackbar
                     title={isSnackBarMessage.title}
                     message={isSnackBarMessage.message}
                     openBar={isSnackBarMessage.openBar}
                     severity={isSnackBarMessage.severity}
                   />
-                )}
+                )} */}
 
               <Box  sx={{ gridColumn: "span 12", display: "flex", justifyContent: "flex-end" }}>
-                <Button
-                  fullWidth
-                  type="submit" 
-                  sx={{
-                    m: "10px 0 0",
-                    p: "1rem",
-                    backgroundColor: colors.greenAccent[700],
-                    color: colors.grey[100],
-                    "&:hover": { color: colors.primary.main },
-                    width: "150px",
-                    
-                  }}
-                >
+              <Button
+                    fullWidth
+                    type="submit"
+                    variant="outlined"
+                    color="secondary"
+                    sx={{
+                      //   m: "10px 0 0",
+                      p: "10px",
+                      //   backgroundColor: colors.greenAccent[700],
+                      //   color: colors.grey[100],
+                      //   "&:hover": { color: colors.primary.main },
+                      width: "150px",
+                    }}
+                  >
                   Update
                 </Button>
                 </Box>

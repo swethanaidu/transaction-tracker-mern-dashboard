@@ -20,14 +20,14 @@ const LoginPage = () => {
       </Box>
 
       <Box
-        width={isNonMobileScreens ? "50%" : "93%"}
+        width={isNonMobileScreens ? "55%" : "93%"}
         p="2rem"
         m="2rem auto"
-        borderRadius="1.5rem"
+        // borderRadius="1.5rem"
         backgroundColor={colors.greenAccent[700]}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to T&E Tracker, tack your expense in a easy way!
+          Welcome to T&E Tracker, tack your transactions & expense in a easy way!
         </Typography>
         <Form />
       </Box>

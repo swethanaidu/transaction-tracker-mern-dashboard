@@ -93,7 +93,7 @@ const PieChart = ({ isDashboard = false }) => {
             direction: (isNonMobile && !isDashboard)? "row": "column",
             justify: false,
             translateX: 0,
-            translateY: isNonMobile ? 82 : 20,
+            translateY: (!isNonMobile || isDashboard) ? 82 : 30,
             itemsSpacing: 0,
             itemWidth: 100,
             itemHeight: 20,
