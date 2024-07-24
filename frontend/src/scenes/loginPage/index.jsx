@@ -15,7 +15,7 @@ const LoginPage = () => {
         textAlign="center"
       >
         <Typography fontWeight="bold" fontSize="32px" color="primary">
-          ADMINIS
+          T&E Tracker
         </Typography>
       </Box>
 
@@ -27,7 +27,7 @@ const LoginPage = () => {
         backgroundColor={colors.greenAccent[700]}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to ADMINIS, tack your expense in a easy way!
+          Welcome to T&E Tracker, tack your expense in a easy way!
         </Typography>
         <Form />
       </Box>

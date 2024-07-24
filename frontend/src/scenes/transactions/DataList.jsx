@@ -89,8 +89,8 @@ const DataList = ({ handleCurrencydata }) => {
   const handleClickOpen = (data) => {
     setTitle(
       data
-        ? "Edit Expenses Category Detials"
-        : "Add New Expenses Category Detials"
+        ? "Edit Transcation Detials"
+        : "Add a New Transcation Detials"
     );
     setOpen(true);
     setTransactionData(data);
@@ -143,6 +143,93 @@ const DataList = ({ handleCurrencydata }) => {
     setOpenDelete(false);
     // setID("");
   };
+
+  const mobileColumns = [
+    {
+      field: "title",
+      headerName: "Title",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      renderCell: ({ row: { title, ecName } }) => {
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={title}
+                secondary={ecName}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
+    },
+
+   
+    {
+      field: "bankName",
+      headerName: "Payment from",
+      flex: 1,
+      renderCell: ({ row: { bankName, bankACType, bankACNum } }) => {
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={bankName}
+                secondary={bankACType + " - " + bankACNum}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
+    },
+  
+    
+    {
+      field: "cost",
+      headerName: "Cost",
+      flex: 1,
+      cellClassName: "cost-column--cell",
+      renderCell: ({ row: { cost } }) => {
+        return getFormatedCurrency(cost);
+      },
+    },
+   
+
+    
+    {
+      field: "_id",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: ({ row: row }) => {
+        return (
+          <Box m="5px 0" display="flex" justifyContent="start">
+            <IconButton
+              type="button"
+              onClick={() => handleClickOpen(row)}
+              // sx={{ p: 1 }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              type="button"
+              // sx={{ p: 1 }}
+              onClick={() => handleDeleteClickOpen(row)}
+            >
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
+  ];
 
   const columns = [
     {
@@ -212,7 +299,8 @@ const DataList = ({ handleCurrencydata }) => {
         );
       },
     },
-    {
+   
+    { 
       field: "vendorName",
       headerName: "Payment To",
       flex: 1,
@@ -247,16 +335,16 @@ const DataList = ({ handleCurrencydata }) => {
         return getFormatedCurrency(cost);
       },
     },
-    {
-      field: "paidDate",
-      headerName: "Date",
-      flex: 1,
-      renderCell: ({ row: { paidDate } }) => {
-        const dateFromDB = paidDate;
-        const formattedDate = Moment(dateFromDB).utc().format("DD/MM/YY");
-        return formattedDate;
-      },
-    },
+    // {
+    //   field: "paidDate",
+    //   headerName: "Date",
+    //   flex: 1,
+    //   renderCell: ({ row: { paidDate } }) => {
+    //     const dateFromDB = paidDate;
+    //     const formattedDate = Moment(dateFromDB).utc().format("DD/MM/YY");
+    //     return formattedDate;
+    //   },
+    // },
 
     {
       field: "status",
@@ -265,7 +353,7 @@ const DataList = ({ handleCurrencydata }) => {
       renderCell: ({ row: { status } }) => {
         return (
           <Box
-            width="120px"
+            width={isNonMobile? "120px": "50px" }
             m="5px 0"
             p="5px"
             display="flex"
@@ -273,8 +361,8 @@ const DataList = ({ handleCurrencydata }) => {
             borderRadius="4px"
           >
             <Chip
-              variant="outlined"
-              label={status}
+              variant={isNonMobile? "outlined" : "outlined" }
+              label={isNonMobile? status : ""}
               color={
                 status === "Completed"
                   ? "success"
@@ -334,7 +422,10 @@ const DataList = ({ handleCurrencydata }) => {
           Transactions List
         </Typography>
         
-        <Box>
+        <Box sx={{
+          display: isNonMobile ? "" : "flex",
+          justifyContent: isNonMobile ? "" : "space-between"
+        }}>
           <FormControl
             fullWidth
             sx={{ width: "160px", marginRight: "15px" }}
@@ -357,7 +448,7 @@ const DataList = ({ handleCurrencydata }) => {
                   {ec.name}
                 </MenuItem>
               ))}
-              ;
+              
             </Select>
           </FormControl>
           <Button
@@ -366,13 +457,12 @@ const DataList = ({ handleCurrencydata }) => {
             variant="outlined"
             color="secondary"
             onClick={() => handleClickOpen(null)}
+            size={isNonMobile? "medium": "small"}
             sx={{
               m: "0 0 10px",
-              p: "10px",
-              //   backgroundColor: colors.greenAccent[700],
-              //   color: colors.grey[100],
-              //   "&:hover": { color: colors.primary.main },
-              width: "150px",
+              p:  isNonMobile? "10px" : "8px",
+              
+              width: isNonMobile? "150px" : "100px",
             }}
           >
             <AddIcon /> Add New
@@ -425,7 +515,7 @@ const DataList = ({ handleCurrencydata }) => {
           <DataGrid
             getRowId={(row) => row._id}
             rows={ecVal ? transListState : transactionsList}
-            columns={columns}
+            columns={isNonMobile? columns : mobileColumns}
             initialState={{
               pinnedColumns: {
                 // left: [GRID_CHECKBOX_SELECTION_COL_DEF.field],

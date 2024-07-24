@@ -21,13 +21,13 @@ const TransactionsPage = () => {
 
   return (
     <Box m="20px">
-      <Box  display={isNonMobile? "flex" :  "block"} justifyContent="space-between" alignItems="center">
+      <Box  display={isNonMobile? "flex" :  "flex"} justifyContent="space-between" alignItems="center">
         <Header title="TRANSCATIONS" subtitle="Managing the Transactions data" />
         <Box m="0" textAlign="right">
-        <Typography variant="h2" color={colors.grey[100]} sx={{ mb: "0px", fontWeight: "bold" }}>
+        <Typography variant={isNonMobile? "h2" : "h5"} color={colors.grey[100]} sx={{ mb: "0px", fontWeight: "bold" }}>
           Total  
         </Typography>
-        <Typography variant="h3" color={colors.grey[100]} sx={{ mb: "20px" }}>
+        <Typography variant={isNonMobile? "h3" : "h5"} color={colors.grey[100]} sx={{ mb: isNonMobile ? "20px" : "0" }}>
         {category && category + " - "} { total ? getFormatedCurrency(total) : getFormatedCurrency(0)}  
         </Typography>
         </Box>
@@ -43,7 +43,7 @@ const TransactionsPage = () => {
         }}
       >
         
-        <Box display={isNonMobile? "grid" :  "block"}  backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
+        <Box display={isNonMobile? "grid" :  "block"}  backgroundColor={colors.primary[400]} borderRadius="8px" p={isNonMobile? "20px 20px": "15px 10px"}  sx={{ gridColumn: "span 12" }}>
            
           <DataList handleCurrencydata={handleCurrencydata} />
         </Box>

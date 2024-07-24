@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme, IconButton, Button } from "@mui/material";
+import { Box, Typography, useTheme, IconButton, Button, ListItemText, ListItem, List, useMediaQuery  } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { useState } from "react";
@@ -22,6 +22,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 const ExpensesCategoriesList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   const { data: ecList, refetch, isLoading, error } = useGetECsQuery();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -62,7 +63,133 @@ const ExpensesCategoriesList = () => {
     // setID("");
   };
 
-  
+  const mobileColumns = [
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      renderCell: ({ row: { name, description } }) => {
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={name}
+                secondary={description}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
+    },
+   
+    {
+      field: "expectedBudget",
+      headerName: "Planned Budget",
+      flex: 1,
+      renderCell: ({ row: { expectedBudget, startDate } }) => {
+        return (
+        <List dense={true} sx={{ mt: "0", p:"0", 
+          "& li ": {
+            padding:"0"
+          }
+        }}>
+          <ListItem>
+            <ListItemText
+              primary={new Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" }).format(expectedBudget) }
+              secondary={Moment(startDate).format('DD-MMM-YYYY')}
+            />
+          </ListItem>,
+      </List>
+      );
+      },
+    },
+    // {
+    //   field: "startDate",
+    //   headerName: "Start Date",
+    //   flex: 1,
+    //   renderCell: ({ row: { startDate } }) => {
+    //     return ( Moment(startDate).format('DD-MM-YYYY') );
+    //   },
+    // },
+    // {
+    //   field: "endDate",
+    //   headerName: "End Date",
+    //   flex: 1,
+    // },
+    {
+      field: "workStatus",
+      headerName: "Progress Level",
+      flex: 1,
+      renderCell: ({ row: { workStatus } }) => {
+        return (
+          <Box
+            width="120px"
+            m="5px 0"
+            p="5px"
+            display="flex"
+            justifyContent="start"
+          
+            borderRadius="4px"
+          >
+            
+            <Chip
+              variant="outlined"
+              label={workStatus}
+              color={
+                workStatus === "To do"
+                  ? "default"
+                  : workStatus === "In progress"
+                  ? "warning"
+                  : workStatus === "In review"
+                  ?  "info" : "success"
+              }
+               
+              icon={
+                workStatus === "To do" ? (
+                  <ListIcon />
+                ) : workStatus === "In progress" ? (
+                  <LoopIcon />
+                ) : workStatus === "In review" ? (
+                  <Grading /> ) : (<TaskAltIcon />
+                )
+              }
+            />
+          </Box>
+        );
+      },
+    },
+    {
+      field: "_id",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: ({ row: row }) => {
+        return (
+          <Box   m="5px 0" display="flex" justifyContent="start">
+           
+            <IconButton
+              type="button"
+              onClick={() => handleClickOpen(row)}
+              // sx={{ p: 1 }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              type="button"
+              // sx={{ p: 1 }}
+              onClick={() => handleDeleteClickOpen(row)}
+            >
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
+  ];
   const columns = [
     {
       field: "name",
@@ -169,18 +296,19 @@ const ExpensesCategoriesList = () => {
   return (
      <>
      <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Typography variant="h4" mb="20px" sx={{ display:"flex", alignItems:"center"}}><CategoryIcon sx={{mr: "10px"}} />Expenses Categories List</Typography>
+      <Typography variant={isNonMobile? "h4": "h6"} mb={isNonMobile?"20px": "10px"} sx={{ display:"flex", alignItems:"center"}}><CategoryIcon sx={{mr: "10px"}} />Expenses Categories List</Typography>
       <Button
                     fullWidth
                     type="button"
                     variant="outlined"
                     color="secondary"
+                    size={isNonMobile? "medium": "small"}
                     onClick={() => handleClickOpen(null)}
                     sx={{
                         m: "0 0 10px",
-                      p: "10px",
+                        p:  isNonMobile? "10px" : "5px",
                        
-                      width: "150px",
+                        width: isNonMobile? "150px" : "100px",
                     }}
                   >
                     <AddIcon /> Add New
@@ -226,7 +354,7 @@ const ExpensesCategoriesList = () => {
         {/* <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px", fontWeight: "bold" }}>
             Expenses Categories List
         </Typography> */}
-        <DataGrid hideFooter={true} getRowId={(row) => row._id}  rows={ecList} columns={columns} />
+        <DataGrid hideFooter={true} getRowId={(row) => row._id}  rows={ecList} columns={isNonMobile? columns: mobileColumns}/>
         <CustomDailogForm
           open={open}
           ecData={ecData}

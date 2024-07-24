@@ -2,9 +2,7 @@ import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import Loader from "./Loader";
-import { mockLineData as Linedata } from "../data/mockData";
 import { useGetMonthlyStatsDataQuery } from "../slices/statsSlice";
-import { useGetBarChartStatsDataQuery } from "../slices/statsSlice";
 import { useMemo } from "react";
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
@@ -23,25 +21,11 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
     };
     totalMonthlyExpensesLine.data = Object.entries(data).map(
       ([_id, data ], i) => ({
-        x: data.Month,
+        x: data.Month.substring(0,3),
         y: data.totalCost/100000,
       })
     );
-    // Object.values(monthlyData).reduce(
-    //   (acc, { Month, totalCost }) => {
-    //     // const curSales = acc.sales + totalSales;
-    //     // const curUnits = acc.units + totalUnits;
-
-    //     totalMonthlyExpensesLine.data = [
-    //       ...totalMonthlyExpensesLine.data,
-    //       { x: Month, y: totalCost },
-    //     ];
-         
-
-    //     return { Month: Month, totalCost: totalCost };
-    //   },
-    //   { Month: "", totalCost: 0 }
-    // );
+   
    
     return [[totalMonthlyExpensesLine]];
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps

@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import { Box, Typography, useTheme, IconButton, ListItemText, ListItem, List,ListItemAvatar, useMediaQuery  } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import { tokens } from "../theme";
@@ -18,6 +18,7 @@ import Chip from '@mui/material/Chip';
 const UsersList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   const { data: users, refetch, isLoading, error } = useGetUsersQuery({}, { refetchOnMountOrArgChange: true });
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -56,7 +57,122 @@ const UsersList = () => {
     setOpenDelete(false);
     // setID("");
   };
+  const mobileColumns = [
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      renderCell: ({ row: row }) => {
+        return (
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }}}>
+            <ListItem>
+              <ListItemAvatar>
+                <AvatarNames  name={row.name} />
+              </ListItemAvatar>
+              <ListItemText
+                primary={row.name}
+                secondary={row.occupation}
+              />
+            </ListItem>
+        </List>
+        );
+      },
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      renderCell: ({ row: { email, phoneNumber } }) => {
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={email}
+                secondary={phoneNumber}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
+    },
+    // {
+    //   field: "city",
+    //   headerName: "City",
+    //   flex: 1,
+    // },
+    
+     
+    {
+      field: "role",
+      headerName: "Access Level",
+      flex: 1,
+      renderCell: ({ row: { role } }) => {
+        return (
+          <Box
+          >
+            <Chip 
+              sx={{
+                backgroundColor: 
+                  role === "admin"
+                ? colors.greenAccent[800]
+                : role === "manager"
+                ? colors.greenAccent[700]
+                : colors.greenAccent[600],
+                width: "90px"
+            
+              }}
+              icon={
+                role === "admin" ? (
+                  <AdminPanelSettingsOutlinedIcon />
+                ) : role === "manager" ? (
+                  <SecurityOutlinedIcon />
+                )  : (<LockOpenOutlinedIcon />
+                )
+              }
+              
+            label={role}/>
 
+           
+          </Box>
+        );
+      },
+    },
+    {
+      field: "_id",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: ({ row: { _id } }) => {
+        return (
+          <Box m="5px 0"  display="flex" justifyContent="start">
+            <IconButton
+              type="button"
+              onClick={() => handleClickOpen(_id)}
+              sx={{ p: 1 }}
+              // color="info"
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              type="button"
+              sx={{ p: 1 }}
+              onClick={() => handleDeleteClickOpen(_id, name)}
+              // color="error"
+            >
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
+  ];
   const columns = [
     {
       field: "name",
@@ -197,7 +313,7 @@ const UsersList = () => {
         },
       }}
     >
-      <DataGrid hideFooter={true} getRowId={(row) => row._id} rows={users} columns={columns} />
+      <DataGrid hideFooter={true} getRowId={(row) => row._id} rows={users} columns={isNonMobile? columns: mobileColumns}/>
 
       <CustomDailogUserForm
         open={open}

@@ -2,46 +2,16 @@ import React from "react";
 import { tokens } from "../theme";
 import { ResponsivePie } from "@nivo/pie";
 import { useGetOverallStatsQuery } from "../slices/overallStatsApiSlice";
-import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import { Box, Typography, useTheme, IconButton , useMediaQuery} from "@mui/material";
 import Loader from "./Loader";
 import { getFormatedCurrency } from "./common/Utils";
-// var mockdata = [
-//   {
-//     id: "Borewell work",
-//     label: "Borewell work",
-//     value: 415,
-//     color: "hsl(122, 70%, 50%)",
-//   },
-//   {
-//     id: "Construction work",
-//     label: "Construction work",
-//     value: 588,
-//     color: "hsl(325, 70%, 50%)",
-//   },
-//   {
-//     id: "Interiors",
-//     label: "Interiors",
-//     value: 307,
-//     color: "hsl(60, 70%, 50%)",
-//   },
-//   {
-//     id: "Additional Construction",
-//     label: "Additional Construction",
-//     value: 316,
-//     color: "hsl(51, 70%, 50%)",
-//   },
-//   {
-//     id: "Misc",
-//     label: "Misc",
-//     value: 420,
-//     color: "hsl(258, 70%, 50%)",
-//   },
-// ];
+ 
 const PieChart = ({ isDashboard = false }) => {
   const { data, isLoading } = useGetOverallStatsQuery();
   // console.log(isDashboard);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
 
   if (!data || isLoading) return <Loader />;
 
@@ -62,11 +32,13 @@ const PieChart = ({ isDashboard = false }) => {
   // console.log(formattedData);
   return (
     <Box
-    height={isDashboard ? "220px" : "100%"}
+    height={isDashboard ? "220px" : isNonMobile? "100%" : "400px"}
     width={undefined}
     minHeight={isDashboard ? "225px" : undefined}
     minWidth={isDashboard ? "225px" : undefined}
-    position="relative">
+    position="relative"
+    
+    >
       <ResponsivePie
         data={formattedData}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -118,10 +90,10 @@ const PieChart = ({ isDashboard = false }) => {
         legends={[
           {
             anchor: "bottom",
-            direction: !isDashboard? "row": "column",
+            direction: (isNonMobile && !isDashboard)? "row": "column",
             justify: false,
             translateX: 0,
-            translateY: 82,
+            translateY: isNonMobile ? 82 : 20,
             itemsSpacing: 0,
             itemWidth: 100,
             itemHeight: 20,
@@ -142,14 +114,15 @@ const PieChart = ({ isDashboard = false }) => {
         ]}
       />
       <Box
-        position="absolute"
+        position={isNonMobile ? "absolute" : "static"}
         top="50%"
         left="50%"
         color={theme.palette.secondary[400]}
         textAlign="center"
         pointerEvents="none"
+        pb={isNonMobile? 0 : "20px"}
         sx={{
-          transform: isDashboard
+          transform: !isNonMobile? "none" : isDashboard
             ? "translate(-75%, -170%)"
             : "translate(-50%, -100%)",
         }}

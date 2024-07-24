@@ -1,18 +1,14 @@
-import { Box, Typography, useTheme, IconButton, Button } from "@mui/material";
+import { Box, Typography, useTheme, IconButton, Button, ListItemText, ListItem, List, useMediaQuery } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { useState } from "react";
 import Loader from "../../components/Loader";
 import Chip from '@mui/material/Chip';
-import ListIcon from '@mui/icons-material/List';
 import LoopIcon from '@mui/icons-material/Loop';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import Moment from 'moment';
 import CustomDailogForm from "./CustomDailogForm";
-import GradingIcon from '@mui/icons-material/Grading';
-import Grading from "@mui/icons-material/Grading";
 import CustomDeleteDailog from "../../components/CustomDeleteDailog";
 import AddIcon from '@mui/icons-material/Add';
 import { useGetVendorsQuery } from "../../slices/vendorApiSlice";
@@ -24,6 +20,7 @@ const VendorList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { data: vendorList, refetch, isLoading, error } = useGetVendorsQuery();
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   // console.log(vendorList);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -66,7 +63,85 @@ const VendorList = () => {
     // setID("");
   };
 
-  
+  const mobileColumns = [
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      renderCell: ({ row: { name, ecName } }) => {
+        return(
+          <List dense={true} sx={{ mt: "0", p:"0", 
+            "& li ": {
+              padding:"0"
+            }
+          }}>
+            <ListItem>
+              <ListItemText
+                primary={name}
+                secondary={ecName}
+              />
+            </ListItem>,
+        </List>
+        );
+      },
+    },
+    {
+      field: "description",
+      headerName: "description",
+      flex: 1,
+    },
+     
+    // {
+    //   field: "vendorStatus",
+    //   headerName: "Status",
+    //   flex: 1,
+    //   renderCell: ({ row: { vendorStatus } }) => {
+    //     return (
+    //            <Box
+            
+    //                 m="5px 0"
+    //                 p="5px"
+    //                 display="flex"
+    //                 justifyContent="start"
+    //                 borderRadius="4px"
+    //               >
+    //                { vendorStatus === "Inactive" ? 
+    //                 <LoopIcon color="error" /> : <TaskAltIcon color="success" />}
+        
+                     
+    //               </Box>
+            
+    //     );
+    //   },
+    // },
+    {
+      field: "_id",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: ({ row: row }) => {
+        return (
+          <Box   m="5px 0" display="flex" justifyContent="start">
+           
+            <IconButton
+              type="button"
+              onClick={() => handleClickOpen(row)}
+              // sx={{ p: 1 }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              type="button"
+              // sx={{ p: 1 }}
+              onClick={() => handleDeleteClickOpen(row)}
+            >
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
+  ];
   const columns = [
     {
       field: "name",
@@ -148,20 +223,19 @@ const VendorList = () => {
   return (
      <>
      <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Typography variant="h4" mb="20px" sx={{ display:"flex", alignItems:"center"}}><PeopleAltOutlinedIcon sx={{mr: "10px"}} />Vendor List</Typography>
+      <Typography variant={isNonMobile? "h4": "h6"} mb={isNonMobile?"20px": "10px"} sx={{ display:"flex", alignItems:"center"}}><PeopleAltOutlinedIcon sx={{mr: "10px"}} />Vendor List</Typography>
               <Button
                     fullWidth
                     type="button"
                     variant="outlined"
                     color="secondary"
                     onClick={() => handleClickOpen(null)}
+                    size={isNonMobile? "medium": "small"}
                     sx={{
                         m: "0 0 10px",
-                      p: "10px",
-                      //   backgroundColor: colors.greenAccent[700],
-                      //   color: colors.grey[100],
-                      //   "&:hover": { color: colors.primary.main },
-                      width: "150px",
+                        p:  isNonMobile? "10px" : "5px",
+                        
+                        width: isNonMobile? "150px" : "100px",
                     }}
                   >
                     <AddIcon /> Add New
@@ -203,7 +277,7 @@ const VendorList = () => {
         }}
       >
          
-        <DataGrid hideFooter={true} getRowId={(row) => row._id}  rows={vendorList} columns={columns} />
+        <DataGrid hideFooter={true} getRowId={(row) => row._id}  rows={vendorList} columns={isNonMobile? columns: mobileColumns} />
         <CustomDailogForm
           open={open}
           vendorData={vendorData}

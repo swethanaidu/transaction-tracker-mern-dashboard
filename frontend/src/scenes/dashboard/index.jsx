@@ -179,7 +179,7 @@ const Dashboard = () => {
           <Box
             mt="25px"
             p="0 30px"
-            display="flex "
+            display={isNonMobile ? "flex " : "block"}
             justifyContent="space-between"
             alignItems="center"
           >
@@ -188,16 +188,11 @@ const Dashboard = () => {
                 variant="h5"
                 fontWeight="600"
                 color={colors.grey[100]}
+                sx={{pt: isNonMobile ? 0 : "20px"}}
               >
                 Monthly Transactions for the year 2024
               </Typography>
-              {/* <Typography
-                variant="h5"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                {getFormatedCurrency(data?.yearlyExpenseTotal)}
-              </Typography> */}
+              
             </Box>
             
           </Box>
@@ -225,8 +220,9 @@ const Dashboard = () => {
             borderBottom={`4px solid ${colors.primary[500]}`}
             colors={colors.grey[100]}
             p="15px"
+            mb="0 !important"
           >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+            <Typography color={colors.grey[100]} variant="h5" fontWeight="600" >
               Recent Transactions
             </Typography>
           </Box>

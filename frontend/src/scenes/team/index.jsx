@@ -21,19 +21,14 @@ const Team = () => {
           "& > div": { gridColumn: isNonMobile ? undefined : "span 12" },
         }}
       >
-        <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
+        <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p={isNonMobile? "20px 20px": "15px 10px"}  sx={{ gridColumn: "span 12" }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Typography variant="h4" mb="20px" sx={{ display:"flex", alignItems:"center"}}><ContactsOutlinedIcon sx={{mr: "10px"}} />Users List</Typography>
+      <Typography variant={isNonMobile? "h4": "h6"} mb="20px" sx={{ display:"flex", alignItems:"center"}}><ContactsOutlinedIcon sx={{mr: "10px"}} />Users List</Typography>
                
             </Box>
           <UsersList />
         </Box>
-        {/* <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 6" }}>
-           <Typography variant="h4" color={colors.grey[100]} sx={{ mb: "20px" }}>
-            Expenses Categories List
-          </Typography>
-          <ExpensesCategoriesList />
-        </Box> */}
+        
        
        </Box>
     </Box>

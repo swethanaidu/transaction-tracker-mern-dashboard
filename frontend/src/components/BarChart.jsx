@@ -1,7 +1,7 @@
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
 import { mockBarData as bardata } from "../data/mockData";
-import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import { Box, Typography, useTheme, IconButton , useMediaQuery} from "@mui/material";
 import Loader from "./Loader";
 import { getFormatedCurrency } from "./common/Utils";
 import { useGetBarChartStatsDataQuery } from "../slices/statsSlice";
@@ -10,6 +10,7 @@ const BarChart = ({ isDashboard = false }) => {
   const { data, isLoading } = useGetBarChartStatsDataQuery();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   // console.log(data);
   if (!data || isLoading) return <Loader />;
    const pieColors = [
@@ -31,7 +32,7 @@ const BarChart = ({ isDashboard = false }) => {
   
   
   return (
-    <Box style={{ height: isDashboard? "100% " : "70vh", width: isDashboard? "100% " : "100%"}}>
+    <Box style={{ height: isDashboard? "100% " : isNonMobile? "70vh" : "400px" , width: isDashboard? "100% " : "100%"}}>
     <ResponsiveBar
       data={formattedData}
       theme={{
@@ -106,7 +107,7 @@ const BarChart = ({ isDashboard = false }) => {
       // enableTotals={true}
       axisTop={null}
       axisRight={null}
-      axisBottom={isDashboard ? null : {
+      axisBottom={isDashboard || !isNonMobile ? null : {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
@@ -138,7 +139,7 @@ const BarChart = ({ isDashboard = false }) => {
           direction: "row",
           justify: false,
           translateX: 70,
-          translateY: 34,
+          translateY:isNonMobile? 50 : 40,
           itemsSpacing: 10,
           itemWidth: 120,
           itemHeight: 20,

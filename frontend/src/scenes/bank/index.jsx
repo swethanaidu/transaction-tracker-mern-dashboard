@@ -20,7 +20,7 @@ const BankPage = () => {
         }}
       >
         
-        <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p="20px 20px"  sx={{ gridColumn: "span 12" }}>
+        <Box display="grid" backgroundColor={colors.primary[400]} borderRadius="8px" p={isNonMobile? "20px 20px": "15px 10px"}  sx={{ gridColumn: "span 12" }}>
            
           <BankList />
         </Box>

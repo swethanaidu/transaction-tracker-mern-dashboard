@@ -91,7 +91,7 @@ const SidebarMenu = () => {
                   <MenuOutlinedIcon />
                 </IconButton>
       <Typography variant="h3" color={colors.grey[100]}>
-        ADMINIS
+      T&E Tracker
       </Typography>
        
     </Box>
@@ -110,7 +110,7 @@ const SidebarMenu = () => {
             onClick={() => setToggled(!toggled)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
-              margin: "10px 0 20px 0",
+              margin: "10px 0 10px 0",
               color: colors.grey[100],
             }}
           >
@@ -122,7 +122,7 @@ const SidebarMenu = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
+                T&E Tracker
                 </Typography>
                 {isNonMobile && 
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -139,24 +139,30 @@ const SidebarMenu = () => {
           </MenuItem>
 
           {!isCollapsed && (
-            <Box mb="25px">
-              {isNonMobile && 
+            <Box mb="25px"
+            sx={!isNonMobile&& {
+              display: "flex",
+              marginLeft: "30px",
+              alignItems: "center"
+            }}  
+            >
+              
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
                   alt="profile-user"
-                  width="100px"
-                  height="100px"
+                  width={isNonMobile ? "100px": "40px" }
+                  height={isNonMobile ? "100px": "40px" }
                   src={profileImage}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
-              }
-              <Box textAlign={isNonMobile ? "center" : "left"} ml={!isNonMobile && "30px"}>
+             
+              <Box textAlign={isNonMobile ? "center" : "left"} ml={!isNonMobile && "20px"}>
                 <Typography
                   variant={isNonMobile ? "h2" : "h5"}
                   color={colors.grey[100]}
                   fontWeight="bold"
-                  sx={{ m: "10px 0 0 0", textTransform: "capitalize" }}
+                  sx={{ m: isNonMobile ? "10px 0 0 0" : "0", textTransform: "capitalize" }}
                 >
                   {userInfo ?  userInfo.name : "Aryan"}
                 </Typography>

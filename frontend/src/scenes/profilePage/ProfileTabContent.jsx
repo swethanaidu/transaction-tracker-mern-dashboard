@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Typography, useTheme } from "@mui/material";
+import { Box, Tab, Tabs, Typography, useTheme , useMediaQuery} from "@mui/material";
 import { useState } from "react";
 import ProfileFormPage from "./Form";
 import { tokens } from "../../theme";
@@ -13,6 +13,7 @@ const ProfileTabContent = (currentTabIndex) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const TabVal = currentTabIndex.currentTabIndex;
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   // console.log(TabVal);
 
   return (
@@ -22,7 +23,7 @@ const ProfileTabContent = (currentTabIndex) => {
         {/* TAB 1 Contents */}
         {TabVal === 0 && (
           <Box sx={{ p: 3 }}>
-            <Typography variant="h4" mb="20px" sx={{ display:"flex", alignItems:"center"}}><PermIdentityIcon sx={{mr: "10px"}} /> Profile Update</Typography>
+            <Typography variant={isNonMobile? "h4": "h6"} mb="20px" sx={{ display:"flex", alignItems:"center"}}><PermIdentityIcon sx={{mr: "10px"}} /> Profile Update</Typography>
             <ProfileFormPage />
           </Box>
         )}
