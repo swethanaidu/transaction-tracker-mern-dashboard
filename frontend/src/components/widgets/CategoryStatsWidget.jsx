@@ -70,6 +70,7 @@ const CategoryStatsWidget = (data) => {
                 100
               ).toFixed(2) + "%"
             }
+            budget = {category?.plannedBudget}
             icon={ getIconComponent(category?._id, dashboardColors[i]) }
           />
         </Box>

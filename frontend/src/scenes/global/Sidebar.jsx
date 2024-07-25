@@ -3,19 +3,14 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"; 
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import CategoryIcon from '@mui/icons-material/Category';
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined"; 
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useSelector, useDispatch } from "react-redux";
 import profileImage from '../../assets/user.png'
@@ -51,6 +46,14 @@ const SidebarMenu = () => {
   const { userInfo } = useSelector((state) => state.auth)
   const isNonMobile = useMediaQuery("(min-width:600px)");
   // console.log(userInfo);
+  // console.log("toggled " + toggled);
+  // console.log("isCollapsed " + isCollapsed);
+  const handleCollapse = () => { 
+   
+    setIsCollapsed(!isCollapsed);
+    // setToggled("false")
+    
+  }
   if (!userInfo) return(<></>);
   return (
     <Box
@@ -87,7 +90,7 @@ const SidebarMenu = () => {
       mt="20px"
       position="absolute"
     >
-      <IconButton onClick={() => setToggled(!toggled)}>
+      <IconButton onClick={() => {setToggled(!toggled);  }}>
                   <MenuOutlinedIcon />
                 </IconButton>
       <Typography variant="h3" color={colors.grey[100]}>
@@ -102,12 +105,13 @@ const SidebarMenu = () => {
       breakPoint="md"
       toggled={toggled}
       // transitionDuration={800}
-        // onBackdropClick={() => setIsCollapsed(false)}  breakPoint={isNonMobile && "always"}
+         onBackdropClick={() =>{  !isNonMobile && setToggled(!toggled)}}  
+        // breakPoint={isNonMobile && "always"}
       >
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
-            onClick={() => setToggled(!toggled)}
+            onClick={() => isNonMobile ? setIsCollapsed(!isCollapsed) : setToggled(!toggled)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 10px 0",
@@ -125,12 +129,12 @@ const SidebarMenu = () => {
                 T&E Tracker
                 </Typography>
                 {isNonMobile && 
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon />
+                <IconButton onClick={() => handleCollapse()}>
+                  <MenuOutlinedIcon  />
                 </IconButton>
                 }
                 {!isNonMobile && 
-                  <IconButton onClick={() => setToggled(!toggled)}>
+                  <IconButton onClick={() =>{ setToggled(!toggled)}}>
                   <CloseOutlinedIcon />
                 </IconButton>
                 }
@@ -140,9 +144,9 @@ const SidebarMenu = () => {
 
           {!isCollapsed && (
             <Box mb="25px"
-            sx={!isNonMobile&& {
-              display: "flex",
-              marginLeft: "30px",
+            sx= { {
+              display: !isNonMobile ? "flex" : "block",
+              marginLeft: !isNonMobile ? "30px" : "0",
               alignItems: "center"
             }}  
             >

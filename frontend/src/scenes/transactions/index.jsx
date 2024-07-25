@@ -43,7 +43,7 @@ const TransactionsPage = () => {
         }}
       >
         
-        <Box display={isNonMobile? "grid" :  "block"}  backgroundColor={colors.primary[400]} borderRadius="8px" p={isNonMobile? "20px 20px": "15px 10px"}  sx={{ gridColumn: "span 12" }}>
+        <Box display={isNonMobile? "grid" :  "block"}  backgroundColor={colors.primary[400]}  p={isNonMobile? "20px 20px": "15px 10px"}  sx={{ gridColumn: "span 12" }}>
            
           <DataList handleCurrencydata={handleCurrencydata} />
         </Box>

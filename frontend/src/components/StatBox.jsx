@@ -3,13 +3,13 @@ import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
 import { getFormatedCurrency } from "./common/Utils";
 
-const StatBox = ({ title, subtitle, icon, progress, colorVal }) => {
+const StatBox = ({ title, subtitle, icon, progress, colorVal, budget }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   return (
     <Box width="100%" m="0 30px">
-      <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box>
           {icon}
           <Typography
@@ -19,8 +19,16 @@ const StatBox = ({ title, subtitle, icon, progress, colorVal }) => {
           >
             {getFormatedCurrency(title)}
           </Typography>
+          <Typography
+            variant="p"
+            fontWeight="300"
+            color={colors.primary[200]}
+            fontSize="11px"
+          >
+           Budget: {getFormatedCurrency(budget)}
+          </Typography>
         </Box>
-        <Box>
+        <Box sx={{position:"relative", top:"12px"}}>
           <ProgressCircle progress={progress} colorVal={colorVal} />
         </Box>
       </Box>

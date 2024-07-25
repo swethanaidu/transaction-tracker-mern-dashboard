@@ -92,10 +92,10 @@ const Dashboard = () => {
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
-        sx={!isNonMobile && { 
+        sx={ { 
           "& .MuiBox-root": {
             // display: "block",
-            marginBottom: "20px",
+            marginBottom: !isNonMobile? "20px" : 0,
           }
         }}
       >
@@ -106,10 +106,10 @@ const Dashboard = () => {
           gridRow="span 1"
           backgroundColor= {colors.blueAccent[700]}
           p="10px 30px"
-          sx={!isNonMobile && { 
+          sx={ { 
             "& .MuiBox-root": {
               // display: "block",
-              marginBottom: "0",
+              marginBottom: !isNonMobile && "0",
             }
           }}
         >

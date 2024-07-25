@@ -22,9 +22,9 @@ const RecentTranscationsWidget = (data) => {
               p="15px"
               mb="0 !important"
               
-              sx={!isNonMobile &&  { 
+              sx={ { 
                 "& .MuiBox-root": {
-                  marginBottom: 0
+                  marginBottom:!isNonMobile && 0,
                  }
                   
               }}
