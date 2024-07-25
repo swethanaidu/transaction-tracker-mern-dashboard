@@ -1,8 +1,6 @@
 import { tokens } from "../../theme";
 import { Box, Typography, useTheme } from "@mui/material";
-import Loader from "../Loader";
 import StatBankBox from "../StatBankBox";
- 
 
 const BankStatsWidget = (data) => {
   const theme = useTheme();
@@ -20,7 +18,7 @@ const BankStatsWidget = (data) => {
     "#198754",
   ];
 
-  if (!data?.data) return <Loader />;
+  
   return (
     <>
       {data?.data &&
@@ -39,7 +37,6 @@ const BankStatsWidget = (data) => {
             <StatBankBox
               data={category}
               colorVal={dashboardColors[i]}
-              // icon={getIconComponent(category?._id, dashboardColors[i])}
             />
           </Box>
         ))}

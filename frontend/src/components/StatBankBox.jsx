@@ -17,7 +17,7 @@ import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
-
+import Loader from "./Loader";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 
@@ -82,6 +82,7 @@ const StatBankBox = ({ data, icon, progress, colorVal }) => {
         );
     }
   };
+  if (!data) return <Loader />;
   return (
     <Box width="100%" m="0 30px">
       <Box display="flex" justifyContent="space-between">
@@ -157,7 +158,7 @@ const StatBankBox = ({ data, icon, progress, colorVal }) => {
                     >
                       <List
                         component="div"
-                        dense="true"
+                        dense={true}
                         disablePadding
                         sx={{
                           "& li": {
