@@ -30,6 +30,7 @@ const getMonthlyOverallStats = asyncHandler(async(req, res) => {
             x: {
               $arrayElemAt: [
                 [
+                  "",
                   "Jan",
                   "Feb",
                   "Mar",
@@ -51,12 +52,7 @@ const getMonthlyOverallStats = asyncHandler(async(req, res) => {
        
       }
     },
-    {
-      $project: {
-        _id : 1,
-        data : 1,
-      }
-    }
+     
   ])
   // console.log(monthlyData);
   res.status(200).json(monthlyData)
