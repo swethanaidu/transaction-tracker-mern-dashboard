@@ -12,8 +12,8 @@ const getMonthlyOverallStats = asyncHandler(async(req, res) => {
     {
       $group: {
         _id: {
-           
-            $month: "$paidDate"
+          year: {$year: "$paidDate"},
+          month: {$month: "$paidDate"},
         },
         cost: {
           $sum: {
@@ -23,32 +23,42 @@ const getMonthlyOverallStats = asyncHandler(async(req, res) => {
       }
     },
     {
+      $group: {
+        _id: "$_id.year",
+        data: {
+          $push: { 
+            x: {
+              $arrayElemAt: [
+                [
+                  "Jan",
+                  "Feb",
+                  "Mar",
+                  "Apr",
+                  "May",
+                  "Jun",
+                  "Jul",
+                  "Aug",
+                  "Sep",
+                  "Oct",
+                  "Nov",
+                  "Dec"
+                ],
+                "$_id.month"
+              ]
+            },
+            y:{ $divide: ['$cost', 100000]},
+          }},
+       
+      }
+    },
+    {
       $project: {
-        totalCost: "$cost",
-        Month: {
-          $arrayElemAt: [
-            [
-              "",
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December"
-            ],
-            "$_id"
-          ]
-        }
+        _id : 1,
+        data : 1,
       }
     }
   ])
-//   console.log(monthlyData);
+  // console.log(monthlyData);
   res.status(200).json(monthlyData)
   
 });

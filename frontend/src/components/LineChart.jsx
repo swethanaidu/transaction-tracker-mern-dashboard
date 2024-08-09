@@ -1,6 +1,7 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
+import { mockLineData as linedata } from "../data/mockData";
 import Loader from "./Loader";
 import { useGetMonthlyStatsDataQuery } from "../slices/statsSlice";
 import { useMemo } from "react";
@@ -9,28 +10,46 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetMonthlyStatsDataQuery();
-  // console.log(data);
-  const [totalMonthlyExpensesLine] = useMemo(() => {
-    if (!data) return [];
-
-    const { monthlyData } = data;
-    const totalMonthlyExpensesLine = {
-      id: "2024",
-      color: colors.greenAccent[500],
-      data: [],
-    };
-    totalMonthlyExpensesLine.data = Object.entries(data).map(
-      ([_id, data ], i) => ({
-        x: data.Month.substring(0,3),
-        y: data.totalCost/100000,
-      })
-    );
-   
-   
-    return [[totalMonthlyExpensesLine]];
-  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
-  // console.log(totalMonthlyExpensesLine);
   if (!data || isLoading) return <Loader />;
+  const pieColors = [
+    colors.greenAccent[500],
+    colors.blueAccent[300],
+    colors.greenAccent[200],
+    colors.blueAccent[100],
+   ];
+
+  // console.log(data);
+  // console.log(linedata);
+  const totalMonthlyExpensesLine = Object.entries(data).map(
+    ([_id, data ], i) => ({
+      id: data._id,
+      data: data.data,
+      color: pieColors[i],
+    })
+  );
+
+  // const [totalMonthlyExpensesLine] = useMemo(() => {
+  //   if (!data) return [];
+
+  //   // const { monthlyData } = data;
+  //   // const totalMonthlyExpensesLine = {
+  //   //   id: "",
+  //   //   color: colors.greenAccent[500],
+  //   //   data: [],
+  //   // };
+  //   const totalMonthlyExpensesLine = Object.entries(data).map(
+  //     ([_id, data ], i) => ({
+  //       id: data._id,
+  //       data: data.data,
+  //       color: pieColors[i],
+  //     })
+  //   );
+   
+   
+  //   return [[totalMonthlyExpensesLine]];
+  // }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+  //  console.log(totalMonthlyExpensesLine);
+
 
   return (
     <div style={{ height: isDashboard? "100% " : "100%", width: "100%" }}>
