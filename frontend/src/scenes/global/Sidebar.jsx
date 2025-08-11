@@ -15,6 +15,7 @@ import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useSelector, useDispatch } from "react-redux";
 import profileImage from '../../assets/user.png'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
 
 // import "react-pro-sidebar/dist/css/styles.css";
 
@@ -199,6 +200,13 @@ const SidebarMenu = () => {
               title="Manage Transactions"
               to="/transactions"
               icon={<PointOfSaleIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Manage Debts"
+              to="/debts"
+              icon={<SavingsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />

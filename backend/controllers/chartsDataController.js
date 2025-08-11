@@ -31,28 +31,27 @@ const getMonthlyOverallStats = asyncHandler(async(req, res) => {
               $arrayElemAt: [
                 [
                   "",
-                  "Jan",
-                  "Feb",
-                  "Mar",
-                  "Apr",
+                  "January",
+                  "February",
+                  "March",
+                  "April",
                   "May",
-                  "Jun",
-                  "Jul",
-                  "Aug",
-                  "Sep",
-                  "Oct",
-                  "Nov",
-                  "Dec"
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December"
                 ],
                 "$_id.month"
               ]
             },
             y:{ $divide: ['$cost', 100000]},
           }},
-       
       }
     },
-     
+    
   ])
   // console.log(monthlyData);
   res.status(200).json(monthlyData)

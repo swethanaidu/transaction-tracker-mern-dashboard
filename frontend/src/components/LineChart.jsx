@@ -105,8 +105,8 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       axisRight={null}
       axisBottom={{
         format: (v) => {
-          if (isDashboard) return v.slice(0, 3);
-          return v;
+          return v.slice(0, 3);
+          // return v;
         },
         orient: "bottom",
         tickSize: 0,

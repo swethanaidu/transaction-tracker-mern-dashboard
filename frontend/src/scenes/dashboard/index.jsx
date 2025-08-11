@@ -152,7 +152,7 @@ const Dashboard = () => {
         {/* ROW 2 */}
         <Box
           gridColumn= {isNonMobile ?  "span 5" : "span 12" }
-          gridRow="span 2"  
+          gridRow="span 3"  
           display={isNonMobile ? "grid" : "block"}
           gridTemplateColumns="repeat(12, 1fr)"
           // gridAutoRows="140px"

@@ -1,0 +1,36 @@
+ 
+
+###set debt
+
+POST http://localhost:5000/api/debts  HTTP/1.1
+content-type: application/json
+
+{
+   "title": "Test123",
+   "description": "Test34",
+   "userId": "66634d9c7baccac40a35f7a8",
+   "ecId": "6675127226fee1cb20ef53d8",
+   "cost": 123,
+   "paidDate": "06/11/2024"
+}
+  
+###Get all debts 
+GET   http://localhost:5000/api/debts
+
+ 
+###get debt by id
+
+GET   http://localhost:5000/api/debts/689990e0309208d8db5e1529
+
+###update debt by id 
+
+PUT   http://localhost:5000/api/debts/6899b8b116f5d60ba34b96bf HTTP/1.1
+content-type: application/json
+
+{
+   "cost": 50000
+}
+
+###delete debt ID 
+DELETE    http://localhost:5000/api/debts/689990a7309208d8db5e1516 HTTP/1.1
+ 

@@ -4,6 +4,7 @@ import userRoutes from './routes/useRoutes.js'
 import overallStatRoutes from './routes/overallStatRoutes.js';
 import expensesCategoryRoutes from './routes/expensesCategoryRoutes.js'
 import transactionRoutes from './routes/transactionRoutes.js'
+import debtRoutes from './routes/debtRoutes.js';
 import chartsRoutes from './routes/chartsDataRoutes.js'
 import bankRoutes from './routes/bankRoutes.js'
 import vendorRoutes from './routes/vendorRoutes.js'
@@ -30,6 +31,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/expensesCategories', expensesCategoryRoutes);
 app.use('/api/dashboard',  overallStatRoutes);
 app.use('/api/transactions',  transactionRoutes);
+app.use('/api/debts',  debtRoutes);
 app.use('/api/stats',  chartsRoutes);
 app.use('/api/bank',  bankRoutes);
 app.use('/api/vendor',  vendorRoutes);
