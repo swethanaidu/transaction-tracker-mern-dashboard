@@ -21,6 +21,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Moment from "moment";
 import CustomDailogForm from "./CustomDailogForm";
+import CustomDailogTransactionForm from "./CustomDailogTransactionForm";
 import NotInterestedOutlinedIcon from "@mui/icons-material/NotInterestedOutlined";
 import CustomDeleteDailog from "../../components/CustomDeleteDailog";
 import { useGetDebtsQuery, useDeleteDebtMutation } from "../../slices/debtApiSlice";
@@ -31,6 +32,7 @@ import {
   restructuredList,
   getFormatedCurrency,
 } from "../../components/common/Utils";
+import AddTaskIcon from '@mui/icons-material/AddTask';
 import { useGetVendorsQuery } from "../../slices/vendorApiSlice";
 // import { useGetBanksQuery } from "../../slices/bankApiSlice";
 const DataList = ({ handleCurrencydata }) => {
@@ -94,6 +96,10 @@ const DataList = ({ handleCurrencydata }) => {
     setOpen(true);
     setDebtData(data);
   };
+  const handleClickTranscationOpen = (data) => {
+    setOpen(true);
+    setDebtData(data);
+  }
   const handleClose = () => {
     setOpen(false);
     // setID("");
@@ -394,6 +400,13 @@ const DataList = ({ handleCurrencydata }) => {
       renderCell: ({ row: row }) => {
         return (
           <Box m="5px 0" display="flex" justifyContent="start">
+             <IconButton
+              type="button"
+              // sx={{ p: 1 }}
+              onClick={() => handleClickTranscationOpen(row)}
+            >
+              <AddTaskIcon />
+            </IconButton>
             <IconButton
               type="button"
               onClick={() => handleClickOpen(row)}
@@ -408,6 +421,8 @@ const DataList = ({ handleCurrencydata }) => {
             >
               <DeleteOutlineOutlinedIcon />
             </IconButton>
+
+            
           </Box>
         );
       },
@@ -542,6 +557,17 @@ const DataList = ({ handleCurrencydata }) => {
           handleDeleteClose={handleDeleteClose}
           handleDelete={() => handleDelete(id)}
           message={title}
+        />
+        <CustomDailogTransactionForm 
+           open={open}
+           debtData={debtData}
+           handleClose={handleClose}
+           isLoading={isLoading}
+           title={title}
+           usersList={usersList}
+           ecList={ecList}
+           vendorsList={vendorsList}
+           // bankList={bankList}
         />
       </Box>
     </>

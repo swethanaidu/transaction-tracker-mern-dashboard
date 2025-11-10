@@ -19,6 +19,7 @@ const BankStatsWidget = (data) => {
   ];
 
   
+  
   return (
     <>
       {data?.data &&

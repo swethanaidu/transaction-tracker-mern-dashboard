@@ -24,7 +24,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 const StatBankBox = ({ data, icon, progress, colorVal }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  // console.log(data);
+  console.log(data);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState("");
   const [open, setOpen] = useState(false);
@@ -93,8 +93,17 @@ const StatBankBox = ({ data, icon, progress, colorVal }) => {
             fontWeight="bold"
             sx={{ color: colors.grey[100] }}
           >
-            {data?._id}
+            {data?._id}   - {" "}
+
+             {getFormatedCurrency((data?.Bank ?? []).reduce((bankSum, bank) => {
+                const bankTotal = (bank.Accounts ?? []).reduce(
+                  (accSum, acc) => accSum + acc.totalAmountSpent,
+                  0
+                );
+                return bankSum + bankTotal;
+              }, 0))}
           </Typography>
+         
         </Box>
       </Box>
       {data?.Bank &&
