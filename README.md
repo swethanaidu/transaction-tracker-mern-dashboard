@@ -67,9 +67,14 @@ This application consists of a React frontend and a Node.js/Express backend conn
 
 ### Charts
 
+#### Expense Breakdown by Category
 <img width="1867" height="820" alt="image" src="https://github.com/user-attachments/assets/842cee6b-d807-44e9-b131-b6c26893c230" />
 
+#### Budget Performance: Planned vs. Spent
 <img width="1805" height="870" alt="image" src="https://github.com/user-attachments/assets/fc4e7579-db03-469d-8cb2-af08d054953c" />
+
+#### Monthly expense chart
+<img width="1873" height="955" alt="image" src="https://github.com/user-attachments/assets/ebe47e61-59f0-4c0a-a988-b59a551e1ec6" />
 
 ### Profile
 
