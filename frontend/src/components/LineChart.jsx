@@ -50,11 +50,35 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   // }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
   //  console.log(totalMonthlyExpensesLine);
 
+const months = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+function normalizeAndSort(data) {
+  return data.map((yearObj, i) => {
+    const map = new Map(yearObj.data.map(item => [item.x, item.y]));
+
+    const filled = months.map(m => ({
+      x: m,
+      y: map.get(m) ?? 0
+    }));
+
+    return {
+      id: yearObj.id,
+      data: filled,
+      color: pieColors[i],
+    };
+  });
+}
+
+const result = normalizeAndSort(totalMonthlyExpensesLine);
+// console.log(result);
 
   return (
     <div style={{ height: isDashboard? "100% " : "100%", width: "100%" }}>
     <ResponsiveLine
-      data={totalMonthlyExpensesLine}
+      data={result}
       theme={{
         axis: {
           domain: {
