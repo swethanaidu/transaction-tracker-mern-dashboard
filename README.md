@@ -59,7 +59,7 @@ This application consists of a React frontend and a Node.js/Express backend conn
 
 ### Dashboard
 
-<img width="1893" height="861" alt="image" src="https://github.com/user-attachments/assets/cac78632-8ac5-4579-bd02-924874a76233" />
+<img width="1907" height="976" alt="image" src="https://github.com/user-attachments/assets/fc47d5e2-87f4-401d-a7e9-4c1fd9a6cc7a" />
 
 ### Transcations
 
@@ -82,7 +82,8 @@ This application consists of a React frontend and a Node.js/Express backend conn
 
 ### Light mode
 
-<img width="1900" height="856" alt="image" src="https://github.com/user-attachments/assets/63b7b4b1-064e-4587-871b-38f21c39eec9" />
+<img width="1906" height="986" alt="image" src="https://github.com/user-attachments/assets/3b6155e4-a6db-4ae5-9f98-8f9667449312" />
+
 
 
 
